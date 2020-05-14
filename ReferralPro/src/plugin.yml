@@ -1,0 +1,16 @@
+name: Referral_Pro
+version: 0.3
+api-version: 1.13
+author: Teenaapje
+main: Me.Teenaapje.ReferralPro.ReferralPro
+prefix: Referral Pro
+load: POSTWORLD
+description: Referral_Pro
+depend: [Vault]
+softdepend: [PlaceholderAPI]
+commands:
+  Referral:
+    description: /Referral
+  Ref:
+    description: /Ref
+

@@ -1,0 +1,275 @@
+########################################################
+#
+#   Database Config
+#
+########################################################
+
+# DB = 'local' or 'mysql'
+db: local
+
+# Database Login
+host: 0.0.0.0
+port: 3306
+database: users
+username: root
+password: ""
+mainTable: referralTable
+requestTable: requestTable
+blockedTable: blockedTable
+rewardsTable: rewardsTable
+playerCodeTable: playerCodeTable
+
+
+
+
+########################################################
+#
+#   Player Rewards
+#
+########################################################
+
+# the rewards are given based on the player primary group
+# this aplies to all rewards
+
+# these are rewards for the sender
+# the default rewards will be given if the rank is not specified
+rewardsSender: 
+   1:
+      rank: default
+      commands:
+         - give <Player> diamond 64
+   2:
+      rank: owner
+      commands:
+         - give <Player> diamond 64
+         - give <Player> diamond 64
+         - give <Player> diamond 64
+         
+# these are rewards for the receiver
+# the default rewards will be given if the rank is not specified       
+rewardsReceiver: 
+   1:
+      rank: default
+      commands:
+         - give <Player> gold_ingot 64
+   2:
+      rank: owner
+      commands:
+         - give <Player> gold_ingot 64
+         - give <Player> gold_ingot 64
+         - give <Player> gold_ingot 64
+         
+         
+         
+         
+########################################################
+#
+#   MileStone Rewards
+#
+########################################################
+
+# Do you want the milestone rewards to be enabled
+enableMilestone: true
+
+# These are rewards for the player who have achieved a certain amount  
+# Make sure there the total is in order from low to high   
+mileStoneRewards: 
+   1:
+      total: 2
+      commands:
+         - give <Player> iron_ingot 64
+   2:
+      total: 5
+      commands:
+         - give <Player> gold_ingot 64
+
+      
+      
+         
+########################################################
+#
+#   General Options
+#
+########################################################
+
+# The option to refer each other
+# true to enable it - false to disable it
+canReferEachOther: false
+# The message when true for sender
+tryRefEachOther: "&4You can't refer each other."
+
+# The option to refer older players
+# Can the player refer someone who has joined first
+# true to allow it - false to restrict it
+canReferOlderPlayer: true
+# The message when true for sender
+tryRefOlderPlayer: "&4You can't refer an older player!"
+
+# The min play time before referring
+# The time is in minutes
+# -1 to disable it
+minPlayTime: -1
+# The message when true for using code
+notEnoughPlayTimeCode: "&4You haven't played enough to use a refer"
+# The message when true for sender
+notEnoughPlayTime: "&4This player hasn't played enough to get referred"
+
+# The max play time before referring
+# The time is in minutes
+# -1 to disable it
+maxPlayTime: -1
+# The message when true for using code
+tooMuchPlayTimeCode: "&4You have played too much to use a refer"
+# The message for sender
+tooMuchPlayTime: "&4This player has played too much to get referred"
+
+# The max pending requests a player can have
+# -1 to disable it
+maxPendingRequests: 1
+# The message for sender
+maxRequestSend: "&4You have reached the max requests"
+
+# Can players refer from the same ip
+# true to allow it - false to restrict it
+allowSameIPRefer: true
+# The message for sender
+sameIPRefer: "&4You can't refer on the same ip"
+
+# Need to clear request on disable
+clearOnDisable: true
+
+# Notify the player on join if he/she has an open request
+notifyPlayerRequest: true
+
+
+
+
+########################################################
+#
+#   UI panels
+#
+########################################################
+#   UI titles can't be the same
+##########################
+#   UI General things
+##########################
+uIButtonMainMenu: "&fMain menu"
+uIButtonGoBack: "&fGo back"
+uIButtonRetry: "&fRetry"
+uIButtonClose: "&fClose"
+uIButtonPage: "&fPage "
+uIButtonNextPage: "&fNext Page"
+uIButtonReturnPage: "&fReturn Page"
+uIButtonYes: "&fYes"
+uIButtonNo: "&fNo"
+uIButtonBlock: "&fBlock player"
+uIButtonclickReward: "&fClick to recieve reward"
+uIButtonEnoughSpace: "&fMake sure you have enough space"
+uIConfirmDidInvite: "&fDid this player invite you to this server?"
+uIProfiles: "&f's Profile"
+##########################
+#   UI anvil (player name)
+##########################
+uIAnvilTitle: "Refer who?"
+uIAnvilNeverPlayed: "&fThis Player never played here."
+uIAnvilAlreadyRefed: "&fThis Player already got referd."
+uIAnvilCantRefSelf: "&fYou can't refer yourself!"
+uIAnvilAlreadyInQ: "&fThe request is already in queued."
+uIAnvilBlocked: "&fThis player blocked you."
+uIAnvilRequestQed: "&fThe request has been queued."
+uIAnvilInvited: "&fPlayer Invited."
+##########################
+#   UI anvil (player code)
+##########################
+uIAnvilCodeTitle: "Use a refer code!"
+uIAnvilCodeShort: "&fThe code is too short!"
+uIAnvilCodeLong: "&fThe code is too long!"
+uIAnvilCodeNotExist: "&fThe code does not exist!"
+uIAnvilUseOwnCode: "&fYou cant use your own code!"
+##########################
+#   UI anvil response
+##########################
+uIAnvilResponseTitle: "Referral Anvil Response"
+##########################
+#   UI Blocked
+##########################
+uIBlockedTitle: "Referral Blocked"
+uIBlockedNone: "&fYou have not blocked anyone!"
+uIBlockedIsBlocked: "&fis blocked from send referral invites."
+uIBlockedUnban: "&fClick on head to unban player."
+##########################
+#   UI Code Confirm
+##########################
+uICodeConfirmTitle: "Referral code confirm"
+##########################
+#   UI Profile
+##########################
+uIProfileTitle: "Referral Profile"
+uIProfileTotal: "&fTotal refers: %referralpro_total%"
+uIProfileTotalExpl: "&fThe total amount this player referred."
+uIProfileIsRefed: "&f%referralpro_referred%"
+uIProfileRefedBy: "&fReferred by: %referralpro_refedby%"
+uIProfileNonExist: "&fThis player hasn't been on this server!"
+uIProfileButtonReward: "&fRewards"
+uIProfileButtonRewardExpl: "&fA list of the rewards."
+uIProfileButtonBlocked: "&fBlocked"
+uIProfileButtonBlockedExpl: "&fA list of the players you blocked."
+uIProfileButtonMilestone: "&fMileStone Rewards"
+uIProfileNextMilestone: "&fThe next milestone is at: %referralpro_nextmilepoint%"
+uIProfiletooNextMilestone: "&fTill next milestone reward: %referralpro_nextmileneeded%"
+##########################
+#   UI Invites
+##########################
+uIInvitesTitle: "Referral Invites"
+uIInvitesNone: "&fYou have no referral invites"
+uIInvitesReferredYou: "&fsays you are referred by him/her"
+##########################
+#   UI Main menu
+##########################
+uIRefTitle: "Referral menu"
+uIRefButtonInvite: "&fReferral invites"
+uIRefButtonInviteExpl: "&fSee here the players who invited you"
+uIRefUniqCode: "&fYour unique code is: %referralpro_refcode%"
+uIRefCodeExpl: "&fYou can share this code to refer others!"
+uIRefButtonRef: "&fRefer a Player"
+uIRefButtonRefCode: "&fUse Referral Code!"
+uIRefButtonAdmin: "&fAdmin pannel"
+##########################
+#   UI Referral accept
+##########################
+uIRefAcceptTitle: "Referral Request"
+##########################
+#   UI Rewards
+##########################
+uIRewardsTitle: "Referral Rewards"
+uIRewardsNon: "&fYou have no rewards."
+uIRewardsGotRefed: "&fYou have been referred by this player"
+uIRewardsYouRefed: "&fYou Referred this player"
+uIRewardsClick: "&fClick on head to accept the reward"
+uIRewardsSpace: "&fMake Sure you have enough space"
+
+##########################
+#
+#   PlaceHolder Referred
+#
+##########################
+placeHolderGotRefed: "&fThis player is referred"
+placeHolderNotRefed: "&fThis player hasn't been referred"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
