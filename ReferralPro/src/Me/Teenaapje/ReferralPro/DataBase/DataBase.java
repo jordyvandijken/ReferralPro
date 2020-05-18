@@ -80,7 +80,7 @@ public class DataBase {
                 return;
             }
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + file + "StringParametersAsUnicode=false");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + file);
 			
             
             //Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Connected to " + referralPro.getConfig().getString("db") + " database");

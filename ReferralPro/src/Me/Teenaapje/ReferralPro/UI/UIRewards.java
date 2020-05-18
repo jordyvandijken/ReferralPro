@@ -138,7 +138,7 @@ public class UIRewards {
 			
 			// give player the reward
 			//ReferralPro.Instance.rewards.GiveRewards(p, false);
-			boolean isSender = lore.get(0).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIRewardsYouRefed));
+			boolean isSender = lore.get(0).equalsIgnoreCase(Utils.ColorCode(ConfigManager.uIRewardsYouRefed));
 			
 			if (isSender) {
 				ReferralPro.Instance.rewards.GiveSenderReward(p);

@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>ReferralPro</groupId>
    <artifactId>ReferralPro</artifactId>
-   <version>0.3.5</version>
+   <version>0.4</version>
    <name>ReferralPro</name>
    <description>Minecraft Referral Plugin</description>
    <repositories>
