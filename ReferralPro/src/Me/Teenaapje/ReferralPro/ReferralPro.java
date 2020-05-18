@@ -133,7 +133,7 @@ public class ReferralPro extends JavaPlugin{
 		// Give the player his rewards
 		for (int i = 0; i < list.size(); i++) {
 			String command = (String) list.get(i);
-						
+			System.out.print(command);	
 			getServer().dispatchCommand(getServer().getConsoleSender(), command.toLowerCase().replace("<player>", player.getName()));
 		}
 	}

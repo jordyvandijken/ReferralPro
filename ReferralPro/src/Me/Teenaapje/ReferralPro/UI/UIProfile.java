@@ -1,5 +1,7 @@
 package Me.Teenaapje.ReferralPro.UI;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -34,8 +36,16 @@ public class UIProfile {
 		
 		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(pProfile);
 		
-		@SuppressWarnings("deprecation")
-		OfflinePlayer op = Bukkit.getOfflinePlayer(profileUUID);
+		OfflinePlayer op = null;
+		
+		if (profileUUID != null) {
+			//convert
+			UUID pUUID = UUID.fromString(profileUUID);
+			// get offline p
+			op = Bukkit.getOfflinePlayer(pUUID);
+		} else {
+			op = Bukkit.getOfflinePlayer(pProfile);
+		}
 		
 		// the total of player referrals
 		Utils.CreateItem(inv, "NAME_TAG", 1, 4, Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
@@ -139,7 +149,7 @@ public class UIProfile {
 				
 		// Clicked on reset player
 		else if (clicked.getItemMeta().getDisplayName().equals("Reset Player")) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.uIProfiles), "");
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Reset player
 			ReferralPro.Instance.db.PlayerReset(ReferralPro.Instance.db.GetPlayersUUID(pName));
@@ -150,7 +160,7 @@ public class UIProfile {
 		
 		// Clicked on remove refers
 		else if (clicked.getItemMeta().getDisplayName().equals("Remove Player Referrals")) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.uIProfiles), "");
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Remove player
 			ReferralPro.Instance.db.PlayerResetReferral(ReferralPro.Instance.db.GetPlayersUUID(pName));
