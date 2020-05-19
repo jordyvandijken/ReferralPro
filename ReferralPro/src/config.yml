@@ -92,6 +92,11 @@ mileStoneRewards:
 #
 ########################################################
 
+# Enable plugin for non Admins
+# Options of the plugin needs to be temp disabled
+# true to enable it - false to disable it
+enablePlugin: true
+
 # The option to refer each other
 # true to enable it - false to disable it
 canReferEachOther: false

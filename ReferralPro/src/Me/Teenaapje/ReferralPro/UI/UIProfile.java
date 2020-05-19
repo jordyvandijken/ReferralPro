@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import Me.Teenaapje.ReferralPro.ReferralCodeGen;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
@@ -29,6 +30,7 @@ public class UIProfile {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static Inventory GUI (Player p, String pProfile) {
 		//long startTime = System.nanoTime();
 		
@@ -94,10 +96,19 @@ public class UIProfile {
 
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin") && playerExists) {
-			// the list of blocked 
+			// Reset Player
 			Utils.CreateItem(toReturn, "TNT", 1, 2, "Reset Player", "Clicking on this WILL reset the player in the database");
+			// Remove Player Referrals 
+			Utils.CreateItem(toReturn, "TNT", 1, 6, "Remove Player Referrals", "Clicking on this WILL remove the player referrals in the database", 
+																			   "This will not reset the milestone rewards");
+			// Reset player Code
+			Utils.CreateItem(toReturn, "TNT", 1, 11, "Reset Player Code", "Clicking on this WILL reset the player his code");
+			// Remove rewards
+			Utils.CreateItem(toReturn, "TNT", 1, 15, "Remove Player Rewards", "Clicking on this WILL remove every reward that's connected to this player");
+			
+			
 			// the list of blocked 
-			Utils.CreateItem(toReturn, "TNT", 1, 6, "Remove Player Referrals", "Clicking on this WILL remove the player referrals in the database", "This will not reset the milestone rewards");
+			Utils.CreateItem(toReturn, "COMMAND_BLOCK", 1, 0, Utils.FormatString(null, ConfigManager.uIRefButtonAdmin));
 		}
 		
 		// timing 
@@ -146,9 +157,15 @@ public class UIProfile {
 			// reopen the profiles
 			p.openInventory(UIProfile.GUI(p, p.getName()));
 		}
+		
+		//////////////////////////////////
+		//
+		//	Admin stuff
+		//
+		//////////////////////////////////
 				
 		// Clicked on reset player
-		else if (clicked.getItemMeta().getDisplayName().equals("Reset Player")) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Reset Player"))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Reset player
@@ -157,9 +174,10 @@ public class UIProfile {
 			// reopen the profiles
 			p.openInventory(UIProfile.GUI(p, pName));
 		}
-		
+		//////////////////////////////////
 		// Clicked on remove refers
-		else if (clicked.getItemMeta().getDisplayName().equals("Remove Player Referrals")) {
+		//////////////////////////////////
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove Player Referrals"))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Remove player
@@ -168,6 +186,41 @@ public class UIProfile {
 			// reopen the profiles
 			p.openInventory(UIProfile.GUI(p, pName));
 		}
+		//////////////////////////////////
+		// Clicked on Reset Player Code
+		//////////////////////////////////
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Reset Player Code"))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+			
+			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);
+			
+    		ReferralPro.Instance.db.UpdateCode(pUUID, ReferralCodeGen.GetShortID());
+
+			// reopen the profiles
+			p.openInventory(UIProfile.GUI(p, pName));
+		}
+		//////////////////////////////////
+		// Clicked on Remove Player Rewards
+		//////////////////////////////////
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove Player Rewards"))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+			
+			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);
+			
+			// Remove player rewards
+			ReferralPro.Instance.db.RemoveRewardUUID(pUUID);
+			
+			// reopen the profiles
+			p.openInventory(UIProfile.GUI(p, pName));
+		}
+		//////////////////////////////////
+		// Clicked on Admin panel
+		//////////////////////////////////
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonAdmin))) {
+			p.openInventory(UIAdmin.GUI(p));
+		}
 		
 	}
 }
+
+

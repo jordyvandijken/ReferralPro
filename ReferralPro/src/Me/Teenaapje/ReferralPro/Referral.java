@@ -36,9 +36,14 @@ public class Referral implements CommandExecutor, TabExecutor {
         if (!cmd.getName().equalsIgnoreCase("Ref") && !cmd.getName().equalsIgnoreCase("Referral")) {
         	return false;
         }
-
+        
+       
         Player p = (Player)sender;
         
+        if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has(p, "ReferralPro.Admin")) {
+        	return false;
+		}
+
 
     	// check if is player
 		if (!(sender instanceof Player)) {
@@ -209,7 +214,7 @@ public class Referral implements CommandExecutor, TabExecutor {
     	if (args.length <= 1) {
     		for (Commands  command : Commands.values()) { 
         		if (command.toString().toLowerCase().contains(args[0].toLowerCase()) || args.length == 0) {
-        			if (command == Commands.Admin || command == Commands.Reload && !ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
+        			if ((command == Commands.Admin || command == Commands.Reload) && !ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
 						continue;
 					}
         			

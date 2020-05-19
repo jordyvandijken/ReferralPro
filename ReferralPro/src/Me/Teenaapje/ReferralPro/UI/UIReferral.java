@@ -29,14 +29,16 @@ public class UIReferral {
 		Utils.CreateItem(inv, "SHULKER_SHELL", 1, 11, Utils.FormatString(p, ConfigManager.uIRefButtonInvite),
 													  Utils.FormatString(p, ConfigManager.uIRefButtonInviteExpl));
 		
-		Utils.CreatePlayerHead(inv, 13, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
-																   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
-																   Utils.FormatString(null, ConfigManager.uIRefCodeExpl));
+		
 		Utils.CreateItem(inv, "NAME_TAG", 1, 15, Utils.FormatString(null, ConfigManager.uIRefButtonRef));
 		
 		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
 
 		toReturn.setContents(inv.getContents());
+		
+		Utils.CreatePlayerHead(toReturn, 13, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
+				   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
+				   Utils.FormatString(null, ConfigManager.uIRefCodeExpl));
 		
 		// the referral code
 		if (!ReferralPro.Instance.db.PlayerReferrald(p.getUniqueId().toString())) {
@@ -71,6 +73,11 @@ public class UIReferral {
 		// Use referral code
 		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonRefCode))) {
 			UIAnvilCode.GUI(p, "Code");
+		}
+		
+		// Use referral code
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonAdmin))) {
+			p.openInventory(UIAdmin.GUI(p));
 		}
 				
 		// Go to profile
