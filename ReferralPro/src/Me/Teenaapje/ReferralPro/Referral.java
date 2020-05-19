@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import Me.Teenaapje.ReferralPro.UI.UIAdmin;
 import Me.Teenaapje.ReferralPro.UI.UIAnvil;
 import Me.Teenaapje.ReferralPro.UI.UIAnvilCode;
 import Me.Teenaapje.ReferralPro.UI.UIBlocked;
@@ -40,11 +41,6 @@ public class Referral implements CommandExecutor, TabExecutor {
        
         Player p = (Player)sender;
         
-        if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has(p, "ReferralPro.Admin")) {
-        	return false;
-		}
-
-
     	// check if is player
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Only players can use this command.");
@@ -68,39 +64,7 @@ public class Referral implements CommandExecutor, TabExecutor {
 				if ((sender instanceof Player) && !ReferralPro.perms.has(sender, "Referral.Admin")) {
 					break;
 				}
-				
-				if (args.length < 3) {
-					return false;
-				}
-				
-				// Check for the admin commands
-				AdminCommands chosenSubCommand = null;
-				
-				for (AdminCommands  command : AdminCommands.values()) { 
-					if (args[1].compareToIgnoreCase(command.toString()) == 0) {
-						chosenSubCommand = command;
-					}
-			    } 
-			
-				
-				
-				
-				switch (chosenSubCommand) {
-				case Remove:
-					// Reset player
-					ReferralPro.Instance.db.PlayerReset(args[2]);
-					break;
-					
-				case Reset:
-					// Reset player
-					ReferralPro.Instance.db.PlayerRemove(args[2]);
-					break;
-					
-				default:
-					break;
-				}
-				
-				break;
+				p.openInventory(UIAdmin.GUI(p));
 				
 			case Rewards:
 				// Open the rewards UI
@@ -196,11 +160,6 @@ public class Referral implements CommandExecutor, TabExecutor {
 		Code
 	}
 	
-	public enum AdminCommands {
-		Reset,
-		Remove
-	}
-	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		// Show the commands first 
@@ -218,18 +177,6 @@ public class Referral implements CommandExecutor, TabExecutor {
 						continue;
 					}
         			
-                	availableCommands.add(command.toString());
-    			}	
-            }
-		}
-    	
-    	
-    	// Check if it is the admin commands
-    	if (args.length == 2 && args[0].equalsIgnoreCase(Commands.Admin.toString()) && ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
-    		availableCommands.clear();
-    		
-    		for (AdminCommands  command : AdminCommands.values()) { 
-        		if (command.toString().toLowerCase().contains(args[1].toLowerCase()) || args.length == 1) {
                 	availableCommands.add(command.toString());
     			}	
             }

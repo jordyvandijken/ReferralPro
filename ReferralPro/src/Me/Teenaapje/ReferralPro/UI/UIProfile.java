@@ -97,14 +97,18 @@ public class UIProfile {
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin") && playerExists) {
 			// Reset Player
-			Utils.CreateItem(toReturn, "TNT", 1, 2, "Reset Player", "Clicking on this WILL reset the player in the database");
+			Utils.CreateItem(toReturn, "TNT", 1, 2, Utils.FormatString(null, ConfigManager.uIAdminPReset), 
+													Utils.FormatString(null, "&cClicking on this WILL reset the player in the database"));
 			// Remove Player Referrals 
-			Utils.CreateItem(toReturn, "TNT", 1, 6, "Remove Player Referrals", "Clicking on this WILL remove the player referrals in the database", 
-																			   "This will not reset the milestone rewards");
+			Utils.CreateItem(toReturn, "TNT", 1, 6, Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+													Utils.FormatString(null, "&cClicking on this WILL remove the player referrals in the database"), 
+													Utils.FormatString(null, "&cThis will not reset the milestone rewards"));
 			// Reset player Code
-			Utils.CreateItem(toReturn, "TNT", 1, 11, "Reset Player Code", "Clicking on this WILL reset the player his code");
+			Utils.CreateItem(toReturn, "TNT", 1, 11, Utils.FormatString(null, ConfigManager.uIAdminpResetCode), 
+													 Utils.FormatString(null, "&cClicking on this WILL reset the player his code"));
 			// Remove rewards
-			Utils.CreateItem(toReturn, "TNT", 1, 15, "Remove Player Rewards", "Clicking on this WILL remove every reward that's connected to this player");
+			Utils.CreateItem(toReturn, "TNT", 1, 15, Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+													 Utils.FormatString(null, "&cClicking on this WILL remove every reward that's connected to this player"));
 			
 			
 			// the list of blocked 
@@ -165,7 +169,7 @@ public class UIProfile {
 		//////////////////////////////////
 				
 		// Clicked on reset player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Reset Player"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminPReset))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Reset player
@@ -177,7 +181,7 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on remove refers
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove Player Referrals"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpRemoveRew))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			// Remove player
@@ -189,7 +193,7 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on Reset Player Code
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Reset Player Code"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpResetCode))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);
@@ -202,7 +206,7 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on Remove Player Rewards
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove Player Rewards"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpRemoveRew))) {
 			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
 			
 			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);

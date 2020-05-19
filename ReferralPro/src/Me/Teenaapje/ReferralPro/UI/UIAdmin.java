@@ -17,19 +17,19 @@ public class UIAdmin {
 	public static int invTotal = invRows * 9;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, "Admin Panel");
+		invName = Utils.FormatString(null, ConfigManager.uIAdminTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
 		
 		// resting/removeing players
-		Utils.CreateItem(inv, "TNT", 1, 4, Utils.FormatString(null, "Reset all players"));
-		Utils.CreateItem(inv, "TNT", 1, 12, Utils.FormatString(null, "Remove all player Codes"));
-		Utils.CreateItem(inv, "TNT", 1, 14, Utils.FormatString(null, "Remove all requests"));
-		Utils.CreateItem(inv, "TNT", 1, 22, Utils.FormatString(null, "Remove all player rewards"));
+		Utils.CreateItem(inv, "TNT", 1, 4, Utils.FormatString(null, ConfigManager.uIAdminResetAll));
+		Utils.CreateItem(inv, "TNT", 1, 12, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllCod));
+		Utils.CreateItem(inv, "TNT", 1, 14, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllReq));
+		Utils.CreateItem(inv, "TNT", 1, 22, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllRew));
 
 		
 		// lookUp player
-		Utils.CreateItem(inv, "NAME_TAG", 1, 13, Utils.FormatString(null, "Look up player"));
+		Utils.CreateItem(inv, "NAME_TAG", 1, 13, Utils.FormatString(null, ConfigManager.uIAdminLookUpPlayer));
 
 		
 		
@@ -74,7 +74,7 @@ public class UIAdmin {
 		////////////////////////
 		
 		// Clicked on reset all player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Reset all players"))) {			
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminResetAll))) {			
 			// Reset player
 			ReferralPro.Instance.db.ResetAll();
 
@@ -83,7 +83,7 @@ public class UIAdmin {
 		}
 		
 		// Clicked on Remove player codes
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove all player Codes"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllCod))) {
 			// Remove player codes
 			ReferralPro.Instance.db.RemoveAllCodes();
 			
@@ -91,7 +91,7 @@ public class UIAdmin {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		// Clicked on Remove all requests
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove all requests"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllReq))) {
 			// Remove all requests
 			ReferralPro.Instance.db.RemoveAllRequests();
 			
@@ -99,7 +99,7 @@ public class UIAdmin {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		// Clicked on Remove all rewards
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Remove all player rewards"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllRew))) {
 			// Remove all requests
 			ReferralPro.Instance.db.RemoveAllRewards();
 			
@@ -121,7 +121,7 @@ public class UIAdmin {
 		}
 		
 		// Clicked on Look up player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Look up player"))) {
+		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminLookUpPlayer))) {
 			// Look up player
 			LookUpPlayer(p);
 

@@ -34,11 +34,6 @@ public class InventoryClickListener implements Listener {
 
 		// The Main UI
 		if (title.equals(UIReferral.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -49,11 +44,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the referral invites are
 		if (title.equals(UIReferInvites.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -63,12 +53,7 @@ public class InventoryClickListener implements Listener {
 		}
 		
 		// The UI where the player can accept the referral
-		if (title.equals(UIReferralAccept.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
+		if (title.equals(UIReferralAccept.invName)) {		
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -79,11 +64,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player gets response from the anvil
 		if (title.equals(UIAnvilResponse.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -94,11 +74,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player can see its profile
 		if (title.equals(UIProfile.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -109,11 +84,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player can see the blocked list
 		if (title.equals(UIBlocked.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -124,11 +94,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player can see the Rewards
 		if (title.equals(UIRewards.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -139,11 +104,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player can see the Code confirm
 		if (title.equals(UICodeConfirm.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
@@ -154,11 +114,6 @@ public class InventoryClickListener implements Listener {
 		
 		// The UI where the player can see the admin panel
 		if (title.equals(UIAdmin.invName)) {
-			if (!ReferralPro.Instance.getConfig().getBoolean("enablePlugin") && !ReferralPro.perms.has((Player) e.getWhoClicked(), "ReferralPro.Admin")) {
-				e.getWhoClicked().closeInventory();
-	        	return;
-			}
-			
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
