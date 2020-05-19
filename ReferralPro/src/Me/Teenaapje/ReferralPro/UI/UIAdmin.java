@@ -50,8 +50,7 @@ public class UIAdmin {
 		toReturn.setContents(inv.getContents());
 
 		//Utils.CreateItem(inv, "EGG", 1, 10, Utils.FormatString(null, ""));
-		Utils.CreateItem(toReturn, "EGG", 1, 16, Utils.FormatString(null, "Enable plugin for non Admins"),
-												 Utils.FormatString(null, "This is " + (ReferralPro.Instance.getConfig().getBoolean("enablePlugin") ? "on" : "off")));
+		//Utils.CreateItem(toReturn, "EGG", 1, 16, Utils.FormatString(null, "Enable plugin for non Admins"), Utils.FormatString(null, "This is " + (ReferralPro.Instance.getConfig().getBoolean("enablePlugin") ? "on" : "off")));
 
 		
 		return toReturn;
