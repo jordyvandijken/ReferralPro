@@ -168,6 +168,22 @@ uIButtonEnoughSpace: "&fMake sure you have enough space"
 uIConfirmDidInvite: "&fDid this player invite you to this server?"
 uIProfiles: "&f's Profile"
 ##########################
+#   UI Admin
+##########################
+uIAdminTitle: "&fAdmin panel"
+uIAdminResetAll: "&fReset all players"
+uIAdminRemoveAllCod: "&fRemove all player Codes"
+uIAdminRemoveAllReq: "&fRemove all requests"
+uIAdminRemoveAllRew: "&fRemove all player rewards"
+uIAdminLookUpPlayer: "&fLook up player"
+##########################
+#   UI Admin on profile
+##########################
+uIAdminPReset: "&fReset Player"
+uIAdminPRemoveRef: "&fRemove Player Referrals"
+uIAdminpResetCode: "&fReset Player Code"
+uIAdminpRemoveRew: "&fRemove Player Rewards"
+##########################
 #   UI anvil (player name)
 ##########################
 uIAnvilTitle: "Refer who?"

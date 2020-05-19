@@ -15,6 +15,7 @@ import Me.Teenaapje.ReferralPro.Listener.InventoryClickListener;
 import Me.Teenaapje.ReferralPro.Listener.JoinListener;
 import Me.Teenaapje.ReferralPro.PlaceHolder.Placeholders;
 import Me.Teenaapje.ReferralPro.Rewards.Rewards;
+import Me.Teenaapje.ReferralPro.UI.UIAdmin;
 import Me.Teenaapje.ReferralPro.UI.UIAnvilResponse;
 import Me.Teenaapje.ReferralPro.UI.UIBlocked;
 import Me.Teenaapje.ReferralPro.UI.UICodeConfirm;
@@ -109,6 +110,7 @@ public class ReferralPro extends JavaPlugin{
 		UIBlocked.Initialize();
 		UIRewards.Initialize();
 		UICodeConfirm.Initialize();
+		UIAdmin.Initialize();
 		
 		this.rewards = new Rewards();	
 	}
@@ -120,6 +122,16 @@ public class ReferralPro extends JavaPlugin{
 		Initialize();
 	}
 	
+	public void ReloadConfig () {
+		// reload config
+		reloadConfig();
+
+		// Load the config
+		//getConfig().options().copyDefaults();
+		saveDefaultConfig();
+		
+		ConfigManager.LoadConfigSettings();
+	}
 	
 	public void onDisable() {
 		if (getConfig().getBoolean("clearOnDisable")) {
@@ -133,7 +145,7 @@ public class ReferralPro extends JavaPlugin{
 		// Give the player his rewards
 		for (int i = 0; i < list.size(); i++) {
 			String command = (String) list.get(i);
-			System.out.print(command);	
+
 			getServer().dispatchCommand(getServer().getConsoleSender(), command.toLowerCase().replace("<player>", player.getName()));
 		}
 	}

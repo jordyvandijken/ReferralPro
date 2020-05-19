@@ -60,7 +60,7 @@ public class UIRewards {
 					break;
 				}
 	        	
-	        	String playerName = Bukkit.getPlayer(UUID.fromString(reward.fromUUID)).getName();
+	        	String playerName = Bukkit.getOfflinePlayer(UUID.fromString(reward.fromUUID)).getName();
 	        	
 	        	String pRefed = reward.didRefer == 1 ? Utils.FormatString(null, ConfigManager.uIRewardsYouRefed) : Utils.FormatString(null, ConfigManager.uIRewardsGotRefed);
 	        	

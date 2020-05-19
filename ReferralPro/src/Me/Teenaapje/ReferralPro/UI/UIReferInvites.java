@@ -57,7 +57,7 @@ public class UIReferInvites {
 					break;
 				}
 	        	
-	        	String playerName = Bukkit.getPlayer(UUID.fromString(request.senderUUID)).getName();
+	        	String playerName = Bukkit.getOfflinePlayer(UUID.fromString(request.senderUUID)).getName();
 	        	
 	        	Utils.CreatePlayerHead(toReturn, index, playerName, playerName, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
 	        	

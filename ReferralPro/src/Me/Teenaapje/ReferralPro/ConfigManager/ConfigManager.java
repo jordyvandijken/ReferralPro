@@ -43,6 +43,13 @@ public class ConfigManager {
 	//#
 	//########################################################
 	//##########################
+	//#   UI Admin
+	//##########################
+	public static String uIAdminTitle, uIAdminResetAll, uIAdminRemoveAllCod, uIAdminRemoveAllReq,
+	uIAdminRemoveAllRew, uIAdminLookUpPlayer,
+	uIAdminPReset, uIAdminPRemoveRef, uIAdminpResetCode, uIAdminpRemoveRew;
+	
+	//##########################
 	//#   UI General things
 	//##########################
 	public static String uIButtonMainMenu, uIButtonGoBack, uIButtonRetry, uIButtonClose,
@@ -152,6 +159,20 @@ public class ConfigManager {
 		//#   UI panels
 		//#
 		//########################################################
+		//##########################
+		//#   UI Admin
+		//##########################
+		uIAdminTitle = config.getString("uIAdminTitle");	
+		uIAdminResetAll = config.getString("uIAdminResetAll");	
+		uIAdminRemoveAllCod = config.getString("uIAdminRemoveAllCod");	
+		uIAdminRemoveAllReq = config.getString("uIAdminRemoveAllReq");	
+		uIAdminRemoveAllRew = config.getString("uIAdminRemoveAllRew");	
+		uIAdminLookUpPlayer = config.getString("uIAdminLookUpPlayer");	
+		uIAdminPReset = config.getString("uIAdminPReset");	
+		uIAdminPRemoveRef = config.getString("uIAdminPRemoveRef");	
+		uIAdminpResetCode = config.getString("uIAdminpResetCode");	
+		uIAdminpRemoveRew = config.getString("uIAdminpRemoveRew");	
+
 		//##########################
 		//#   UI General things
 		//##########################

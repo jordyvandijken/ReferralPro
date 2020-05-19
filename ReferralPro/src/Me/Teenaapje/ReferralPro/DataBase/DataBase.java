@@ -960,6 +960,26 @@ public class DataBase {
 		return false;
 	}
 	
+	public boolean RemoveRewardUUID(String pUUID) {
+		try {
+			PreparedStatement statement = getConnection().prepareStatement("delete from " + rewardsTable + " where ForUUID=? or FromUUID=?");
+					
+			statement.setString(1, pUUID);
+			statement.setString(2, pUUID);
+			
+			statement.executeUpdate();
+			
+			statement.close();
+			
+			return true;
+		} catch (SQLException e) {
+			System.out.print("Error Function RemoveRewardUUID");
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public boolean RemoveAllRewards() {
 		try {
 			PreparedStatement statement = getConnection().prepareStatement("delete from " + rewardsTable);
@@ -1052,6 +1072,27 @@ public class DataBase {
 		return false;
 	}
 	
+	public boolean PlayerHasCode (String pUUID) {
+		try {
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + playerCodeTable + " where UUID=?");
+			
+			statement.setString(1, pUUID);
+			
+			ResultSet result = statement.executeQuery();
+			if (result.next()) {
+				return true;
+			}
+			
+			statement.close();
+			
+		} catch (SQLException e) {
+			System.out.print("Error Function PlayerHasCode");
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public void CreateCode(String UUID, String code) {
 		try {
 			if (CodeExists(code)) {
@@ -1062,6 +1103,28 @@ public class DataBase {
 
 			insert.setString(1, UUID);
 			insert.setString(2, code);
+
+			insert.executeUpdate();
+			
+			insert.close();
+
+		} catch (SQLException e) {
+			System.out.print("Error Function CreateCode");
+			e.printStackTrace();
+		}
+	}
+	
+	public void UpdateCode(String pUUID, String code) {
+		try {
+			if (!PlayerHasCode(pUUID)) {
+				CreateCode(pUUID, code);
+				return;
+			}
+			
+			PreparedStatement insert = getConnection().prepareStatement("Update " + playerCodeTable + " set CODE=? where UUID=?");
+
+			insert.setString(1, code);
+			insert.setString(2, pUUID);
 
 			insert.executeUpdate();
 			

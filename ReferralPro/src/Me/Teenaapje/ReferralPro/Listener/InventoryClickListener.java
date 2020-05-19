@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.UI.UIAdmin;
 import Me.Teenaapje.ReferralPro.UI.UIAnvilResponse;
 import Me.Teenaapje.ReferralPro.UI.UIBlocked;
 import Me.Teenaapje.ReferralPro.UI.UICodeConfirm;
@@ -38,6 +39,7 @@ public class InventoryClickListener implements Listener {
 				return;
 			}
 			UIReferral.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
 		// The UI where the referral invites are
@@ -47,15 +49,17 @@ public class InventoryClickListener implements Listener {
 				return;
 			}
 			UIReferInvites.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
 		// The UI where the player can accept the referral
-		if (title.equals(UIReferralAccept.invName)) {
+		if (title.equals(UIReferralAccept.invName)) {		
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
 			UIReferralAccept.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
 		// The UI where the player gets response from the anvil
@@ -65,6 +69,7 @@ public class InventoryClickListener implements Listener {
 				return;
 			}
 			UIAnvilResponse.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
 		// The UI where the player can see its profile
@@ -74,6 +79,7 @@ public class InventoryClickListener implements Listener {
 				return;
 			}
 			UIProfile.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
 		// The UI where the player can see the blocked list
@@ -83,24 +89,37 @@ public class InventoryClickListener implements Listener {
 				return;
 			}
 			UIBlocked.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
-		// The UI where the player can see the blocked list
+		// The UI where the player can see the Rewards
 		if (title.equals(UIRewards.invName)) {
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
 			UIRewards.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
 		
-		// The UI where the player can see the blocked list
+		// The UI where the player can see the Code confirm
 		if (title.equals(UICodeConfirm.invName)) {
 			e.setCancelled(true);
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
 			UICodeConfirm.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
+		}
+		
+		// The UI where the player can see the admin panel
+		if (title.equals(UIAdmin.invName)) {
+			e.setCancelled(true);
+			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+				return;
+			}
+			UIAdmin.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+			return;
 		}
     }
 }
