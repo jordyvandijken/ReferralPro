@@ -21,21 +21,22 @@ public class UICodeConfirm {
 		invName = Utils.FormatString(null, ConfigManager.uICodeConfirmTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
+		Utils.CreateItem(inv, "EXPERIENCE_BOTTLE", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonRetry));
+		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+
+		Utils.CreateItem(inv, "GREEN_STAINED_GLASS", 1, 4, Utils.FormatString(null, ConfigManager.uIButtonYes));
 	}
 	
 	public static Inventory GUI (String playerSender) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
+		toReturn.setContents(inv.getContents());
 		
-		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
-		Utils.CreateItem(toReturn, "EXPERIENCE_BOTTLE", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonRetry));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
-
-		Utils.CreateItem(toReturn, "GREEN_STAINED_GLASS", 1, 4, Utils.FormatString(null, ConfigManager.uIButtonYes));
+		// show the player head
 		Utils.CreatePlayerHead(toReturn, 13, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
 	
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	

@@ -19,20 +19,22 @@ public class UIReferral {
 		invName = Utils.FormatString(null, ConfigManager.uIRefTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		// close
+		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		
+		// Ref invite
+		Utils.CreateItem(inv, "SHULKER_SHELL", 1, 11, Utils.FormatString(null, ConfigManager.uIRefButtonInvite),
+				  									  Utils.FormatString(null, ConfigManager.uIRefButtonInviteExpl));
+		// Ref Ref
+		Utils.CreateItem(inv, "NAME_TAG", 1, 15, Utils.FormatString(null, ConfigManager.uIRefButtonRef));
+
 	}
 	
 	public static Inventory GUI (Player p) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(inv, "SHULKER_SHELL", 1, 11, Utils.FormatString(p, ConfigManager.uIRefButtonInvite),
-													  Utils.FormatString(p, ConfigManager.uIRefButtonInviteExpl));
-		
-		
-		Utils.CreateItem(inv, "NAME_TAG", 1, 15, Utils.FormatString(null, ConfigManager.uIRefButtonRef));
-		
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
-
 		toReturn.setContents(inv.getContents());
+		
 		
 		Utils.CreatePlayerHead(toReturn, 13, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
 				   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
