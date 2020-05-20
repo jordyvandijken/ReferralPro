@@ -2,6 +2,7 @@ package Me.Teenaapje.ReferralPro;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -61,17 +62,28 @@ public class ReferralPro extends JavaPlugin{
         	papiEnabled = false;
         }
 		
-		int pluginId = 7522;
-		@SuppressWarnings("unused")
-		Metrics metrics = new Metrics(this, pluginId);
-
-		
-		
+		// Ini plugin
 		Initialize();
-	}
-	
-	public int getone() {
-		return 1;
+		
+		
+		// Bstat plugin 
+		int pluginId = 7522;
+		// the bstat
+		Metrics metrics = new Metrics(this, pluginId);
+		
+		// Get total referrals
+		Callable<Integer> callable = new Callable<Integer>() {
+		    @Override
+		    public Integer call() throws Exception {
+		        // Perform some computation
+		        //Thread.sleep(2000);
+		        return db.TotalPlayersReferred();
+		    }
+		};
+
+		// add the custom chart
+		metrics.addCustomChart(new Metrics.SingleLineChart("players_referred", callable));
+		
 	}
 	
 	// Initialize plugin

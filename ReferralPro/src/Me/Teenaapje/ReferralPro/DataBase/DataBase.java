@@ -210,6 +210,27 @@ public class DataBase {
         }
 	}
 	
+	public int TotalPlayersReferred() {
+		try {
+			PreparedStatement statement = getConnection().prepareStatement("SELECT count(*) as total from " + mainTable + " WHERE REFERRED IS NOT NULL");
+			
+			ResultSet result = statement.executeQuery();
+						
+			if (result.next()) {
+				return result.getInt("total");
+			}
+			
+			
+			statement.close();
+			
+		} catch (SQLException e) {
+			System.out.print("Error Function PlayerExists");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
 	public boolean PlayerExists (String uuid) {
 		try {
 			PreparedStatement statement = getConnection().prepareStatement("select * from " + mainTable + " where UUID=?");
