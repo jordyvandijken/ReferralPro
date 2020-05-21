@@ -40,7 +40,7 @@ public class UIProfile {
 		
 		// get the player from the profile
 		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(pProfile);
-		
+
 		OfflinePlayer op = null;
 		
 		if (profileUUID != null) {

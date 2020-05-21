@@ -18,6 +18,7 @@ import Me.Teenaapje.ReferralPro.UI.UIProfile;
 import Me.Teenaapje.ReferralPro.UI.UIReferInvites;
 import Me.Teenaapje.ReferralPro.UI.UIReferral;
 import Me.Teenaapje.ReferralPro.UI.UIRewards;
+import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class Referral implements CommandExecutor, TabExecutor {
 
@@ -115,6 +116,9 @@ public class Referral implements CommandExecutor, TabExecutor {
 				}
 				
 				ReferralPro.Instance.Reload();
+				
+				Utils.SendMessage(p, p, "[Referral Pro] &2Plugin Reloaded");
+
 				break;
 		
 			case Code:
