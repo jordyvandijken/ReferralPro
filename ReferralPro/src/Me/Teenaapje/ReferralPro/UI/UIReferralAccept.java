@@ -22,25 +22,31 @@ public class UIReferralAccept {
 		invName = Utils.FormatString(null, ConfigManager.uIRefAcceptTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		// default buttons
+		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		
+		
+		// yes and no
+		Utils.CreateItem(inv, "GREEN_STAINED_GLASS", 1, 11, Utils.FormatString(null, ConfigManager.uIButtonYes));
+		Utils.CreateItem(inv, "RED_STAINED_GLASS", 1, 15, Utils.FormatString(null, ConfigManager.uIButtonNo));
+
+
 	}
 	
 	public static Inventory GUI (Player p, String playerSender) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		toReturn.setContents(inv.getContents());
+
 
 		if (ReferralPro.perms.has(p, "ReferralPro.Block")) {
 			Utils.CreateItem(toReturn, "BARRIER", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonBlock));
 		}
 		
 
-		Utils.CreateItem(toReturn, "GREEN_STAINED_GLASS", 1, 11, Utils.FormatString(null, ConfigManager.uIButtonYes));
 		Utils.CreatePlayerHead(toReturn, 13, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
-		Utils.CreateItem(toReturn, "RED_STAINED_GLASS", 1, 15, Utils.FormatString(null, ConfigManager.uIButtonNo));
-	
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	

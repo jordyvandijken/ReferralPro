@@ -25,13 +25,15 @@ public class UIReferInvites {
 		invName = Utils.FormatString(null, ConfigManager.uIInvitesTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, int page) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		toReturn.setContents(inv.getContents());
+
 
 		ArrayList<Request> requests = ReferralPro.Instance.db.GetPlayerRequests(p.getUniqueId().toString(), page);
         
@@ -67,7 +69,6 @@ public class UIReferInvites {
         
         
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	

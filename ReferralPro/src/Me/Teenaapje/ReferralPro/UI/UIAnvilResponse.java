@@ -20,16 +20,18 @@ public class UIAnvilResponse {
 		invName = Utils.FormatString(null, ConfigManager.uIAnvilResponseTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
+		Utils.CreateItem(inv, "EXPERIENCE_BOTTLE", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonRetry));
+		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (String anvilMessage, int anvilCase) {
 		//Inventory toReturn = Bukkit.createInventory(null,  invTotal, anvilMessage);
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
-		Utils.CreateItem(toReturn, "EXPERIENCE_BOTTLE", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonRetry));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		toReturn.setContents(inv.getContents());
 
+		// Show messages
 		if (anvilCase == 0) {
 			Utils.CreateItem(toReturn, "GREEN_STAINED_GLASS", 1, 13, anvilMessage);
 		} else {
@@ -37,7 +39,6 @@ public class UIAnvilResponse {
 		}
 
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	

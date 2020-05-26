@@ -35,9 +35,12 @@ public class UIProfile {
 		//long startTime = System.nanoTime();
 		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
+		toReturn.setContents(inv.getContents());
 		
+		
+		// get the player from the profile
 		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(pProfile);
-		
+
 		OfflinePlayer op = null;
 		
 		if (profileUUID != null) {
@@ -50,22 +53,22 @@ public class UIProfile {
 		}
 		
 		// the total of player referrals
-		Utils.CreateItem(inv, "NAME_TAG", 1, 4, Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
+		Utils.CreateItem(toReturn, "NAME_TAG", 1, 4, Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
 		
 		boolean playerExists = ReferralPro.Instance.db.PlayerExistsName(pProfile);
 		
 		// check if the player has joined the server once
 		if (playerExists) {
 			// the player
-			Utils.CreatePlayerHead(inv, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles),
+			Utils.CreatePlayerHead(toReturn, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles),
 																 Utils.FormatString(op, ConfigManager.uIProfileIsRefed), 
 																 Utils.FormatString(op, ConfigManager.uIProfileRefedBy));
 		} else {
 			// the player
-			Utils.CreatePlayerHead(inv, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
+			Utils.CreatePlayerHead(toReturn, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
 		}
 
-		toReturn.setContents(inv.getContents());
+		
 		
 		if (p.getName().equalsIgnoreCase(pProfile)) {
 			// the list of rewards

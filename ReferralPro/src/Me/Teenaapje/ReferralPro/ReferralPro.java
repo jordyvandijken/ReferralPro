@@ -1,8 +1,10 @@
 package Me.Teenaapje.ReferralPro;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -30,6 +32,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.permission.Permission;
+import sll.coding.songodaapi.Resource;
 
 public class ReferralPro extends JavaPlugin{
 	
@@ -44,8 +47,7 @@ public class ReferralPro extends JavaPlugin{
 	public InventoryClickListener clickListener;
 	public Referral referral;
 	public Rewards rewards;
-	
-	
+		
 	public void onEnable() {
 		Instance = this;
 		
@@ -83,7 +85,19 @@ public class ReferralPro extends JavaPlugin{
 
 		// add the custom chart
 		metrics.addCustomChart(new Metrics.SingleLineChart("players_referred", callable));
+
 		
+		String lastVersion = getDescription().getVersion();
+		String newVersion = null;
+		try {
+			newVersion = Resource.fromId(386).getVersions().get(0).getVersion();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!newVersion.equals(lastVersion)) {
+			Utils.SendMessage(null, null, "&cThere is a newer version available online!");
+		}
 	}
 	
 	// Initialize plugin
@@ -125,6 +139,7 @@ public class ReferralPro extends JavaPlugin{
 		UIAdmin.Initialize();
 		
 		this.rewards = new Rewards();	
+		
 	}
 	
 	public void Reload () {
