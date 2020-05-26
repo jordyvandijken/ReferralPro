@@ -11,6 +11,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
+import Me.Teenaapje.ReferralPro.ConfigManager.UIConfigManager;
 import Me.Teenaapje.ReferralPro.DataBase.DataBase;
 import Me.Teenaapje.ReferralPro.Listener.InventoryClickListener;
 import Me.Teenaapje.ReferralPro.Listener.JoinListener;
@@ -25,6 +26,7 @@ import Me.Teenaapje.ReferralPro.UI.UIReferInvites;
 import Me.Teenaapje.ReferralPro.UI.UIReferral;
 import Me.Teenaapje.ReferralPro.UI.UIReferralAccept;
 import Me.Teenaapje.ReferralPro.UI.UIRewards;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -61,6 +63,9 @@ public class ReferralPro extends JavaPlugin{
 			// make sure the bool gets set to false
         	papiEnabled = false;
         }
+		
+		new UIConfigManager();
+		new UIElementManager();
 		
 		// Ini plugin
 		Initialize();
@@ -103,6 +108,8 @@ public class ReferralPro extends JavaPlugin{
 		// setup the vault 
 		setupPermissions();
 		
+		UIConfigManager.instance.Initialize();
+		UIElementManager.instance.LoadUIElements();
 		
 		/// The commands
 		this.referral = new Referral();
