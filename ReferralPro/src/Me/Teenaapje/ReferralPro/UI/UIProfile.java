@@ -11,22 +11,33 @@ import org.bukkit.inventory.ItemStack;
 import Me.Teenaapje.ReferralPro.ReferralCodeGen;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIProfile {
 	public static Inventory inv;
 	public static String invName;
-	public static int invRows = 3;
-	public static int invTotal = invRows * 9;
+	public static int invRows;
+	public static int invTotal;
 	
+	public static UIElement element;
+
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIProfileTitle);
 		
+		element = UIElementManager.instance.GetElement("profile");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
 		inv = Bukkit.createInventory(null, invTotal); 
+
 		
-		
-		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateFillers(inv, element.fillers);
+
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 		
 	}
 	
@@ -53,30 +64,32 @@ public class UIProfile {
 		}
 		
 		// the total of player referrals
-		Utils.CreateItem(toReturn, "NAME_TAG", 1, 4, Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
+		Utils.CreateButton(toReturn, element.GetButton("profiletotal"), Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
+
 		
 		boolean playerExists = ReferralPro.Instance.db.PlayerExistsName(pProfile);
 		
 		// check if the player has joined the server once
 		if (playerExists) {
 			// the player
-			Utils.CreatePlayerHead(toReturn, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles),
-																 Utils.FormatString(op, ConfigManager.uIProfileIsRefed), 
-																 Utils.FormatString(op, ConfigManager.uIProfileRefedBy));
+			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles),
+																 											Utils.FormatString(op, ConfigManager.uIProfileIsRefed), 
+																 											Utils.FormatString(op, ConfigManager.uIProfileRefedBy));
 		} else {
 			// the player
-			Utils.CreatePlayerHead(toReturn, 13, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
+			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
+
 		}
 
 		
 		
 		if (p.getName().equalsIgnoreCase(pProfile)) {
 			// the list of rewards
-			Utils.CreateItem(toReturn, "CHEST", 1, 12, Utils.FormatString(null, ConfigManager.uIProfileButtonReward), 
+			Utils.CreateButton(toReturn, element.GetButton("rewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonReward), 
 													   Utils.FormatString(null, ConfigManager.uIProfileButtonRewardExpl));
 			
 			// the list of blocked 
-			Utils.CreateItem(toReturn, "BARRIER", 1, 22, Utils.FormatString(null, ConfigManager.uIProfileButtonBlocked),
+			Utils.CreateButton(toReturn, element.GetButton("blocked"), Utils.FormatString(null, ConfigManager.uIProfileButtonBlocked),
 														 Utils.FormatString(null, ConfigManager.uIProfileButtonBlockedExpl));
 			
 			
@@ -84,14 +97,14 @@ public class UIProfile {
 			// make the text change if player can receive reward
 			if (ReferralPro.Instance.rewards.NextMileReward(p.getUniqueId().toString()) == 0 && ReferralPro.Instance.getConfig().getBoolean("enableMilestone")) {
 				// the list of mileStone Rewards
-				Utils.CreateItem(toReturn, "ENDER_CHEST", 1, 14, Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
+				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
 								Utils.FormatString(op, ConfigManager.uIProfileNextMilestone),
 								Utils.FormatString(op, ConfigManager.uIProfiletooNextMilestone),
 								Utils.FormatString(op, ConfigManager.uIButtonclickReward),
 								Utils.FormatString(op, ConfigManager.uIButtonEnoughSpace));
 			} else if (ReferralPro.Instance.getConfig().getBoolean("enableMilestone")){
 				// the list of mileStone Rewards
-				Utils.CreateItem(toReturn, "ENDER_CHEST", 1, 14, Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
+				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
 								Utils.FormatString(op, ConfigManager.uIProfileNextMilestone),
 								Utils.FormatString(op, ConfigManager.uIProfiletooNextMilestone));
 			}
@@ -100,22 +113,22 @@ public class UIProfile {
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin") && playerExists) {
 			// Reset Player
-			Utils.CreateItem(toReturn, "TNT", 1, 2, Utils.FormatString(null, ConfigManager.uIAdminPReset), 
-													Utils.FormatString(null, "&cClicking on this WILL reset the player in the database"));
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.uIAdminPReset), 
+																		 Utils.FormatString(null, "&cClicking on this WILL reset the player in the database"));
 			// Remove Player Referrals 
-			Utils.CreateItem(toReturn, "TNT", 1, 6, Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
-													Utils.FormatString(null, "&cClicking on this WILL remove the player referrals in the database"), 
-													Utils.FormatString(null, "&cThis will not reset the milestone rewards"));
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+																		 Utils.FormatString(null, "&cClicking on this WILL remove the player referrals in the database"), 
+																		 Utils.FormatString(null, "&cThis will not reset the milestone rewards"));
 			// Reset player Code
-			Utils.CreateItem(toReturn, "TNT", 1, 11, Utils.FormatString(null, ConfigManager.uIAdminpResetCode), 
-													 Utils.FormatString(null, "&cClicking on this WILL reset the player his code"));
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.uIAdminpResetCode), 
+													 					 Utils.FormatString(null, "&cClicking on this WILL reset the player his code"));
 			// Remove rewards
-			Utils.CreateItem(toReturn, "TNT", 1, 15, Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
-													 Utils.FormatString(null, "&cClicking on this WILL remove every reward that's connected to this player"));
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+													 					 Utils.FormatString(null, "&cClicking on this WILL remove every reward that's connected to this player"));
 			
 			
 			// the list of blocked 
-			Utils.CreateItem(toReturn, "COMMAND_BLOCK", 1, 0, Utils.FormatString(null, ConfigManager.uIRefButtonAdmin));
+			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(null, ConfigManager.uIRefButtonAdmin));
 		}
 		
 		// timing 

@@ -85,10 +85,6 @@
       <id>CodeMC</id>
       <url>https://repo.codemc.org/repository/maven-public</url>
     </repository>
-    <repository>
-      <id>sllcoding</id>
-      <url>https://repo.sllcoding.dev</url>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>

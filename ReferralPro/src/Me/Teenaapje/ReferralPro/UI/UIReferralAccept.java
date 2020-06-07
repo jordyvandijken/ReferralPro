@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Listener.Reward;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIReferralAccept {
@@ -16,36 +18,38 @@ public class UIReferralAccept {
 	public static String invName;
 	public static int invRows = 3;
 	public static int invTotal = invRows * 9;
-
+	public static UIElement element;
 	
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRefAcceptTitle);
 		
+		element = UIElementManager.instance.GetElement("refaccept");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
 		inv = Bukkit.createInventory(null, invTotal); 
-		
-		// default buttons
-		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
-		
-		
-		// yes and no
-		Utils.CreateItem(inv, "GREEN_STAINED_GLASS", 1, 11, Utils.FormatString(null, ConfigManager.uIButtonYes));
-		Utils.CreateItem(inv, "RED_STAINED_GLASS", 1, 15, Utils.FormatString(null, ConfigManager.uIButtonNo));
 
-
+		
+		Utils.CreateFillers(inv, element.fillers);
+		
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, String playerSender) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-
 		if (ReferralPro.perms.has(p, "ReferralPro.Block")) {
-			Utils.CreateItem(toReturn, "BARRIER", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonBlock));
+			Utils.CreateButton(toReturn, element.GetButton("block"), Utils.FormatString(null, ConfigManager.uIButtonBlock));
 		}
 		
 
-		Utils.CreatePlayerHead(toReturn, 13, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+		Utils.CreateButton(toReturn, element.GetButton("no"), Utils.FormatString(null, ConfigManager.uIButtonNo));
+
         
 		return toReturn;
 	}

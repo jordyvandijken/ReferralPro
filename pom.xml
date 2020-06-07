@@ -24,10 +24,6 @@
 		 <id>CodeMC</id>
 		 <url>https://repo.codemc.org/repository/maven-public</url>
 	  </repository>
-	  <repository>
-		 <id>sllcoding</id>
-		 <url>https://repo.sllcoding.dev</url>
-	  </repository>
    </repositories>
    <dependencies>
       <!--This adds the Spigot API artifact to the build -->
@@ -60,11 +56,6 @@
 	     <artifactId>bstats-bukkit</artifactId>
 	     <version>1.7</version>
 	     <scope>compile</scope>
-	  </dependency>
-	  <dependency>
-  		 <groupId>sll.coding</groupId>
-  		 <artifactId>SongodaAPI</artifactId>
-  		 <version>LATEST</version>
 	  </dependency>
    </dependencies>
    <build>

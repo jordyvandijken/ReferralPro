@@ -8,34 +8,43 @@ import org.bukkit.inventory.ItemStack;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Listener.Reward;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UICodeConfirm {
 	public static Inventory inv;
 	public static String invName;
-	public static int invRows = 3;
-	public static int invTotal = invRows * 9;
+	public static int invRows;
+	public static int invTotal;
 
-	
+	public static UIElement element;
+
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uICodeConfirmTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
+		element = UIElementManager.instance.GetElement("anvilcodecon");
 		
-		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
-		Utils.CreateItem(inv, "EXPERIENCE_BOTTLE", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonRetry));
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
+		inv = Bukkit.createInventory(null, invTotal); 
 
-		Utils.CreateItem(inv, "GREEN_STAINED_GLASS", 1, 4, Utils.FormatString(null, ConfigManager.uIButtonYes));
+		Utils.CreateFillers(inv, element.fillers);
+		
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
+		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.uIButtonRetry));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+
 	}
 	
 	public static Inventory GUI (String playerSender) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
-		
-		// show the player head
-		Utils.CreatePlayerHead(toReturn, 13, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
-	
+
+		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+
         
 		return toReturn;
 	}

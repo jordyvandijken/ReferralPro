@@ -7,35 +7,45 @@ import org.bukkit.inventory.ItemStack;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 import net.wesjd.anvilgui.AnvilGUI;
 
 public class UIAdmin {
 	public static Inventory inv;
 	public static String invName;
-	public static int invRows = 3;
-	public static int invTotal = invRows * 9;
+	public static int invRows;
+	public static int invTotal;
+	
+	public static UIElement element;
 	
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIAdminTitle);
 		
+		element = UIElementManager.instance.GetElement("admin");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
 		inv = Bukkit.createInventory(null, invTotal); 
 		
+		
+		Utils.CreateFillers(inv, element.fillers);
+		
 		// resting/removeing players
-		Utils.CreateItem(inv, "TNT", 1, 4, Utils.FormatString(null, ConfigManager.uIAdminResetAll));
-		Utils.CreateItem(inv, "TNT", 1, 12, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllCod));
-		Utils.CreateItem(inv, "TNT", 1, 14, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllReq));
-		Utils.CreateItem(inv, "TNT", 1, 22, Utils.FormatString(null, ConfigManager.uIAdminRemoveAllRew));
+		Utils.CreateButton(inv, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.uIAdminResetAll));
+		Utils.CreateButton(inv, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllCod));
+		Utils.CreateButton(inv, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllReq));
+		Utils.CreateButton(inv, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllRew));
 
 		
 		// lookUp player
-		Utils.CreateItem(inv, "NAME_TAG", 1, 13, Utils.FormatString(null, ConfigManager.uIAdminLookUpPlayer));
+		Utils.CreateButton(inv, element.GetButton("lookupplayer"), Utils.FormatString(null, ConfigManager.uIAdminLookUpPlayer));
 
-		
-		
+
 		// default buttons
-		Utils.CreateItem(inv, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 		
 	}
 	

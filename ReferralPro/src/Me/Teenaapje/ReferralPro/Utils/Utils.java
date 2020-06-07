@@ -13,6 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.UIElements.Button;
+import Me.Teenaapje.ReferralPro.UIElements.Filler;
 import me.clip.placeholderapi.PlaceholderAPI;
 
 public class Utils {
@@ -134,4 +136,41 @@ public class Utils {
 		return item;
 	}
 	
+	public static ItemStack CreateButton(Inventory inv, Button button, String displayName, String... loreString) {
+		ItemStack item;
+		List<String> lore = new ArrayList<String>();
+		
+		item = new ItemStack(Material.getMaterial(button.buttonItem),  1);
+		
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(Utils.ColorCode(displayName));
+		for (String s : loreString) {
+			lore.add(s);
+		}
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		
+		if (inv != null) {
+			inv.setItem(button.position, item);
+		}
+
+		return item;
+	}
+	
+	public static void CreateFillers(Inventory inv, List<Filler> fillers) {
+		for (Filler filler : fillers) {
+			ItemStack item;
+			
+			item = new ItemStack(Material.getMaterial(filler.fillerItem),  1);
+			ItemMeta meta = item.getItemMeta();
+			meta.setDisplayName(".");
+			item.setItemMeta(meta);
+			
+			if (inv != null) {
+				inv.setItem(filler.position, item);
+			} else {
+				return;
+			}
+		}
+	}
 }
