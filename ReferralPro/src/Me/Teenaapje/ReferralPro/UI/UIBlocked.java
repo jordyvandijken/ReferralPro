@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Listener.Request;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIBlocked {
@@ -20,36 +22,47 @@ public class UIBlocked {
 	public static int invRows = 3;
 	public static int invTotal = invRows * 9;
 
+	public static UIElement element;
 	
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIBlockedTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		
+		element = UIElementManager.instance.GetElement("blocked");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
+		Utils.CreateFillers(inv, element.fillers);
+		
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, int page) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(p, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(p, ConfigManager.uIButtonClose));
+		toReturn.setContents(inv.getContents());
 
-		ArrayList<Request> requests = ReferralPro.Instance.db.GetPlayerBlocks(p.getUniqueId().toString(), page);
+		
+
+		ArrayList<Request> requests = ReferralPro.Instance.db.GetPlayerBlocks(p.getUniqueId().toString(), page, invTotal - 9);
         
 		if (requests.size() == 0) {
-    		Utils.CreateItem(toReturn, "BARRIER", 1, 13, Utils.FormatString(p, ConfigManager.uIBlockedNone));
+    		Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(p, ConfigManager.uIBlockedNone));
 		} else {
 			// when there are requests
 			int index = 0;
 			
 			// show page number
-    		Utils.CreateItem(toReturn, "OAK_SIGN", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIProfiles) + page);
+			Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.uIProfiles) + page);
 			
     		// make scroll
     		if (requests.size() == 19) {
-	        	Utils.CreatePlayerHead(toReturn, invTotal - 4, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
 			}
     		if (page > 1 ) {
-	        	Utils.CreatePlayerHead(toReturn, invTotal - 6, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
 			}
     		
     		//loop trough blocks
@@ -67,7 +80,6 @@ public class UIBlocked {
 		}
         
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	

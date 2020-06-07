@@ -710,11 +710,11 @@ public class DataBase {
 		return false;
 	}
 	
-	public ArrayList<Request> GetPlayerRequests (String receiverUUID, int page) {
+	public ArrayList<Request> GetPlayerRequests (String receiverUUID, int page, int max) {
 		try {
 			ArrayList<Request> requests = new ArrayList<Request>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + requestTable + " where RequestForUUID=? LIMIT " + ((page-1) * 18 - 1) + " , " + (page * 18 + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + requestTable + " where RequestForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			
@@ -912,11 +912,11 @@ public class DataBase {
 		return false;
 	}
 	
-	public ArrayList<Request> GetPlayerBlocks (String receiverUUID, int page) {
+	public ArrayList<Request> GetPlayerBlocks (String receiverUUID, int page, int max) {
 		try {
 			ArrayList<Request> requests = new ArrayList<Request>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + blockedTable + " where RequestForUUID=? LIMIT " + ((page-1) * 18 - 1) + " , " + (page * 18 + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + blockedTable + " where RequestForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			
@@ -1017,11 +1017,11 @@ public class DataBase {
 		return false;
 	}
 	
-	public ArrayList<Reward> GetPlayerRewards (String receiverUUID, int page) {
+	public ArrayList<Reward> GetPlayerRewards (String receiverUUID, int page, int max) {
 		try {
 			ArrayList<Reward> requests = new ArrayList<Reward>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + rewardsTable + " where ForUUID=? LIMIT " + ((page-1) * 18 - 1) + " , " + (page * 18 + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + rewardsTable + " where ForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			

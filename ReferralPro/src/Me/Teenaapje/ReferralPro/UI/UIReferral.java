@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIReferral {
@@ -15,37 +17,47 @@ public class UIReferral {
 	public static int invRows = 3;
 	public static int invTotal = invRows * 9;
 	
+	public static UIElement element;
+
+	
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRefTitle);
 		
 		inv = Bukkit.createInventory(null, invTotal); 
+		element = UIElementManager.instance.GetElement("referral");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
+		Utils.CreateFillers(inv, element.fillers);
+		
+		Utils.CreateButton(inv, element.GetButton("invites"), Utils.FormatString(null, ConfigManager.uIRefButtonInvite),
+				  											  Utils.FormatString(null , ConfigManager.uIRefButtonInviteExpl));
+
+
+		Utils.CreateButton(inv, element.GetButton("refer"), Utils.FormatString(null, ConfigManager.uIRefButtonRef));
+
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
-		
-		Utils.CreateItem(inv, "SHULKER_SHELL", 1, 11, Utils.FormatString(p, ConfigManager.uIRefButtonInvite),
-													  Utils.FormatString(p, ConfigManager.uIRefButtonInviteExpl));
-		
-		
-		Utils.CreateItem(inv, "NAME_TAG", 1, 15, Utils.FormatString(null, ConfigManager.uIRefButtonRef));
-		
-		Utils.CreateItem(inv, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
-
 		toReturn.setContents(inv.getContents());
 		
-		Utils.CreatePlayerHead(toReturn, 13, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
+		
+		
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
 				   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
 				   Utils.FormatString(null, ConfigManager.uIRefCodeExpl));
 		
 		// the referral code
 		if (!ReferralPro.Instance.db.PlayerReferrald(p.getUniqueId().toString())) {
-			Utils.CreateItem(toReturn, "NAME_TAG", 1, 4, Utils.FormatString(p, ConfigManager.uIRefButtonRefCode));
+			Utils.CreateButton(toReturn, element.GetButton("refercode"), Utils.FormatString(p, ConfigManager.uIRefButtonRefCode));
 		}
 		
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin")) {
-			Utils.CreateItem(toReturn, "COMMAND_BLOCK", 1, invTotal - 9, Utils.FormatString(p, ConfigManager.uIRefButtonAdmin));
+			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(p, ConfigManager.uIRefButtonAdmin));
 		}
 		
 		return toReturn;

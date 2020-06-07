@@ -13,4 +13,8 @@ public class UIElement {
 		this.buttons = buttons;
 		this.fillers = fillers;
 	}
+	
+	public Button GetButton(String buttonName) {
+		return buttons.get(buttonName);
+	}
 }

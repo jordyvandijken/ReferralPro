@@ -13,45 +13,56 @@ import org.bukkit.inventory.ItemStack;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Listener.Reward;
+import Me.Teenaapje.ReferralPro.UIElements.UIElement;
+import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
 import Me.Teenaapje.ReferralPro.Utils.HiddenStringUtils;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIRewards {
 	public static Inventory inv;
 	public static String invName;
-	public static int invRows = 3;
-	public static int invTotal = invRows * 9;
+	public static int invRows;
+	public static int invTotal;
 
+	public static UIElement element;
 	
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRewardsTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
+		inv = Bukkit.createInventory(null, invTotal);
+		element = UIElementManager.instance.GetElement("refrewards");
+		
+		invRows = element.rows;
+		invTotal = invRows * 9;
+		
+		Utils.CreateFillers(inv, element.fillers);
+
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, int page) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
+		toReturn.setContents(inv.getContents());
 		
-		Utils.CreateItem(toReturn, "OAK_DOOR", 1, invTotal - 9, Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateItem(toReturn, "IRON_DOOR", 1, invTotal - 1, Utils.FormatString(null, ConfigManager.uIButtonClose));
 
-		ArrayList<Reward> rewards = ReferralPro.Instance.db.GetPlayerRewards(p.getUniqueId().toString(), page);
+		ArrayList<Reward> rewards = ReferralPro.Instance.db.GetPlayerRewards(p.getUniqueId().toString(), page, invTotal - 9);
         
 		if (rewards.size() == 0) {
-    		Utils.CreateItem(toReturn, "BARRIER", 1, 13, Utils.FormatString(null, ConfigManager.uIRewardsNon));
+			Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(null, ConfigManager.uIRewardsNon));
 		} else {
 			// when there are requests
 			int index = 0;
 			
 			// show page number
-    		Utils.CreateItem(toReturn, "OAK_SIGN", 1, invTotal - 5, Utils.FormatString(null, ConfigManager.uIButtonPage) + page);
+			Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.uIButtonPage) + page);
 			
     		// make scroll
     		if (rewards.size() == 19) {
-	        	Utils.CreatePlayerHead(toReturn, invTotal - 4, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
 			}
     		if (page > 1 ) {
-	        	Utils.CreatePlayerHead(toReturn, invTotal - 6, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
 			}
     		
     		//loop trough blocks
@@ -73,7 +84,6 @@ public class UIRewards {
 		}
         
         
-		//toReturn.setContents(inv.getContents());
 		return toReturn;
 	}
 	
