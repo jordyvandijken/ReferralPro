@@ -23,11 +23,13 @@ public class UIReferralAccept {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRefAcceptTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
-		element = UIElementManager.instance.GetElement("referral");
+		element = UIElementManager.instance.GetElement("refaccept");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
+		
+		inv = Bukkit.createInventory(null, invTotal); 
+		
 		
 		Utils.CreateFillers(inv, element.fillers);
 		

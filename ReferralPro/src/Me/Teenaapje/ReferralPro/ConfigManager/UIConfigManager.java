@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.json.simple.JSONObject;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
 
@@ -30,11 +31,13 @@ public class UIConfigManager {
             }
         }
         customFile = YamlConfiguration.loadConfiguration(file);
+        
+        SetDefaults();
     }
     
     public void SetDefaults() {
     	// enable plugin
-    	customFile.addDefault("ui.enableplugin", true);
+    	//customFile.addDefault("enableplugin", true);
     	
     	UIAdmin();
     	UIAnvilResponse();
@@ -46,6 +49,8 @@ public class UIConfigManager {
     	UIReferAccept();
     	UIRewards();
     	
+    	customFile.options().copyDefaults(true);
+    	save();
     }
     
     public void UIAdmin() {
@@ -75,7 +80,7 @@ public class UIConfigManager {
     	customFile.addDefault("ui.admin.buttons.26.buttonitem", "IRON_DOOR");
     	
     	// add at least one filler example
-    	customFile.addDefault("ui.admin.fillers.13.filleritem", "WHITE_WOOL");
+    	customFile.addDefault("ui.admin.fillers.0.filleritem", "none");
     }
  
     public void UIAnvilResponse() {
@@ -84,8 +89,8 @@ public class UIConfigManager {
     	// resetall players reward
     	customFile.addDefault("ui.anvilresponse.buttons.13.buttontype", "anvilsucces");
     	// look up player
-    	customFile.addDefault("ui.anvilresponse.buttons.21.buttontype", "retry");
-    	customFile.addDefault("ui.anvilresponse.buttons.21.buttonitem", "EXPERIENCE_BOTTLE");
+    	customFile.addDefault("ui.anvilresponse.buttons.22.buttontype", "retry");
+    	customFile.addDefault("ui.anvilresponse.buttons.22.buttonitem", "EXPERIENCE_BOTTLE");
     	
     	// back
     	customFile.addDefault("ui.anvilresponse.buttons.18.buttontype", "back");
@@ -93,6 +98,9 @@ public class UIConfigManager {
     	// close
     	customFile.addDefault("ui.anvilresponse.buttons.26.buttontype", "close");
     	customFile.addDefault("ui.anvilresponse.buttons.26.buttonitem", "IRON_DOOR");
+    	
+    	customFile.addDefault("ui.anvilresponse.fillers.0.filleritem", "none");
+
     }
     
     public void UIBlocked() {
@@ -111,12 +119,15 @@ public class UIConfigManager {
     	customFile.addDefault("ui.blocked.buttons.13.buttonitem", "BARRIER");
     	
     	// return
-    	customFile.addDefault("ui.blocked.buttons.20.buttontype", "return");
+    	customFile.addDefault("ui.blocked.buttons.21.buttontype", "return");
     	// page
-    	customFile.addDefault("ui.blocked.buttons.21.buttontype", "page");
-    	customFile.addDefault("ui.blocked.buttons.21.buttonitem", "OAK_SIGN");
+    	customFile.addDefault("ui.blocked.buttons.22.buttontype", "page");
+    	customFile.addDefault("ui.blocked.buttons.22.buttonitem", "OAK_SIGN");
     	// next
-    	customFile.addDefault("ui.blocked.buttons.22.buttontype", "next");
+    	customFile.addDefault("ui.blocked.buttons.23.buttontype", "next");
+    	
+    	customFile.addDefault("ui.blocked.fillers.0.filleritem", "none");
+
     }
     
     public void UICodeConfirm() {
@@ -128,14 +139,17 @@ public class UIConfigManager {
     	customFile.addDefault("ui.anvilcodecon.buttons.4.buttontype", "yes");
     	customFile.addDefault("ui.anvilcodecon.buttons.4.buttonitem", "GREEN_STAINED_GLASS");
     	// retry
-    	customFile.addDefault("ui.anvilcodecon.buttons.21.buttontype", "retry");
-    	customFile.addDefault("ui.anvilcodecon.buttons.21.buttonitem", "EXPERIENCE_BOTTLE");
+    	customFile.addDefault("ui.anvilcodecon.buttons.22.buttontype", "retry");
+    	customFile.addDefault("ui.anvilcodecon.buttons.22.buttonitem", "EXPERIENCE_BOTTLE");
     	// back
     	customFile.addDefault("ui.anvilcodecon.buttons.18.buttontype", "back");
     	customFile.addDefault("ui.anvilcodecon.buttons.18.buttonitem", "OAK_DOOR");
     	// close
     	customFile.addDefault("ui.anvilcodecon.buttons.26.buttontype", "close");
     	customFile.addDefault("ui.anvilcodecon.buttons.26.buttonitem", "IRON_DOOR");
+    	
+    	customFile.addDefault("ui.anvilcodecon.fillers.0.filleritem", "none");
+
     }
     
     public void UIProfile() {
@@ -156,8 +170,8 @@ public class UIConfigManager {
     	customFile.addDefault("ui.profile.buttons.12.buttontype", "rewards");
     	customFile.addDefault("ui.profile.buttons.12.buttonitem", "CHEST");
     	// milerewards
-    	customFile.addDefault("ui.profile.buttons.12.buttontype", "milerewards");
-    	customFile.addDefault("ui.profile.buttons.12.buttonitem", "ENDER_CHEST");
+    	customFile.addDefault("ui.profile.buttons.14.buttontype", "milerewards");
+    	customFile.addDefault("ui.profile.buttons.14.buttonitem", "ENDER_CHEST");
     	// blocked
     	customFile.addDefault("ui.profile.buttons.22.buttontype", "blocked");
     	customFile.addDefault("ui.profile.buttons.22.buttonitem", "BARRIER");
@@ -178,6 +192,9 @@ public class UIConfigManager {
     	// Back to admin panel
     	customFile.addDefault("ui.profile.buttons.0.buttontype", "adminpanel");
     	customFile.addDefault("ui.profile.buttons.0.buttonitem", "COMMAND_BLOCK");
+    	
+    	customFile.addDefault("ui.profile.fillers.0.filleritem", "none");
+
     }
     
     public void UIRefInvites() {
@@ -202,6 +219,9 @@ public class UIConfigManager {
     	customFile.addDefault("ui.refinvites.buttons.22.buttonitem", "OAK_SIGN");
     	// next
     	customFile.addDefault("ui.refinvites.buttons.23.buttontype", "next");
+    	
+    	customFile.addDefault("ui.refinvites.fillers.0.filleritem", "none");
+
     }
     
     public void UIRefer() {
@@ -222,8 +242,8 @@ public class UIConfigManager {
     	customFile.addDefault("ui.referral.buttons.15.buttonitem", "NAME_TAG");
     	
     	// refer code
-    	customFile.addDefault("ui.referral.buttons.15.buttontype", "refercode");
-    	customFile.addDefault("ui.referral.buttons.15.buttonitem", "NAME_TAG");
+    	customFile.addDefault("ui.referral.buttons.4.buttontype", "refercode");
+    	customFile.addDefault("ui.referral.buttons.4.buttonitem", "NAME_TAG");
     	
     	// admin pannel
     	customFile.addDefault("ui.referral.buttons.18.buttontype", "adminpanel");
@@ -231,6 +251,9 @@ public class UIConfigManager {
     	
     	// player head
     	customFile.addDefault("ui.referral.buttons.13.buttontype", "playerhead");
+    	
+    	customFile.addDefault("ui.referral.fillers.0.filleritem", "none");
+
     }
     
     public void UIReferAccept() {
@@ -259,6 +282,9 @@ public class UIConfigManager {
     	
     	// player head
     	customFile.addDefault("ui.refaccept.buttons.13.buttontype", "playerhead");
+    	
+    	customFile.addDefault("ui.refaccept.fillers.0.filleritem", "none");
+
     }
     
     public void UIRewards() {
@@ -283,6 +309,9 @@ public class UIConfigManager {
     	customFile.addDefault("ui.refrewards.buttons.22.buttonitem", "OAK_SIGN");
     	// next
     	customFile.addDefault("ui.refrewards.buttons.23.buttontype", "next");
+    	
+    	customFile.addDefault("ui.refrewards.fillers.0.filleritem", "none");
+
     }
     
     public FileConfiguration get(){

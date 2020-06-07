@@ -23,12 +23,12 @@ public class UIAdmin {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIAdminTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
-		
 		element = UIElementManager.instance.GetElement("admin");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
+		inv = Bukkit.createInventory(null, invTotal); 
+		
 		
 		Utils.CreateFillers(inv, element.fillers);
 		

@@ -27,11 +27,13 @@ public class UIReferInvites {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIInvitesTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
 		element = UIElementManager.instance.GetElement("refinvites");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
+		
+		inv = Bukkit.createInventory(null, invTotal); 
+		
 		
 		Utils.CreateFillers(inv, element.fillers);
 

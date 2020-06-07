@@ -35,8 +35,8 @@ public class UIElementManager {
 			for (String buttonP : UIConfigManager.instance.get().getConfigurationSection("ui." + ui + ".buttons").getKeys(false)) {
 				// get button info
 				int buttonPos = Integer.parseInt(buttonP);
-				String buttonType = file.getString("ui." + ui + ".buttons." + buttonP + "buttontype");
-				String buttonItem = file.getString("ui." + ui + ".buttons." + buttonP + "buttonitem");
+				String buttonType = file.getString("ui." + ui + ".buttons." + buttonP + ".buttontype");
+				String buttonItem = file.getString("ui." + ui + ".buttons." + buttonP + ".buttonitem");
 				
 				// create button
 				Button button = new Button(buttonPos, buttonItem);
@@ -52,13 +52,15 @@ public class UIElementManager {
 			for (String fillerP : UIConfigManager.instance.get().getConfigurationSection("ui." + ui + ".fillers").getKeys(false)) {
 				// get the filler info
 				int fillerPos = Integer.parseInt(fillerP);
-				String fillerItem = file.getString("ui." + ui + ".fillers." + fillerP + "filleritem");
+				String fillerItem = file.getString("ui." + ui + ".fillers." + fillerP + ".filleritem");
 				
-				// create filler
-				Filler filler = new Filler(fillerPos, fillerItem);
-				
-				// add filler
-				fillers.add(filler);
+				if (!fillerItem.equalsIgnoreCase("none")) {
+					// create filler
+					Filler filler = new Filler(fillerPos, fillerItem);
+					
+					// add filler
+					fillers.add(filler);
+				}	
 			}//*/
 			
 			UIElement element = new UIElement(rows, buttons, fillers);

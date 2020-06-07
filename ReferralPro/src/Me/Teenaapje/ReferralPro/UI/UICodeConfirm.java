@@ -23,13 +23,14 @@ public class UICodeConfirm {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uICodeConfirmTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
-		
 		element = UIElementManager.instance.GetElement("anvilcodecon");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
 		
+		inv = Bukkit.createInventory(null, invTotal); 
+
+
 		Utils.CreateFillers(inv, element.fillers);
 		
 		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));

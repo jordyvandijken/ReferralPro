@@ -27,16 +27,17 @@ public class UIBlocked {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIBlockedTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
-		
 		element = UIElementManager.instance.GetElement("blocked");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
 		
+		inv = Bukkit.createInventory(null, invTotal); 
+
+
 		Utils.CreateFillers(inv, element.fillers);
 		
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
 		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
 	}
 	

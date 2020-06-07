@@ -139,7 +139,7 @@ public class Utils {
 	public static ItemStack CreateButton(Inventory inv, Button button, String displayName, String... loreString) {
 		ItemStack item;
 		List<String> lore = new ArrayList<String>();
-				
+		
 		item = new ItemStack(Material.getMaterial(button.buttonItem),  1);
 		
 		ItemMeta meta = item.getItemMeta();

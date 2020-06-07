@@ -14,8 +14,8 @@ import Me.Teenaapje.ReferralPro.Utils.Utils;
 public class UIReferral {
 	public static Inventory inv;
 	public static String invName;
-	public static int invRows = 3;
-	public static int invTotal = invRows * 9;
+	public static int invRows;
+	public static int invTotal;
 	
 	public static UIElement element;
 
@@ -23,11 +23,13 @@ public class UIReferral {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRefTitle);
 		
-		inv = Bukkit.createInventory(null, invTotal); 
 		element = UIElementManager.instance.GetElement("referral");
 		
 		invRows = element.rows;
 		invTotal = invRows * 9;
+		
+		inv = Bukkit.createInventory(null, invTotal); 
+		
 		
 		Utils.CreateFillers(inv, element.fillers);
 		
