@@ -29,6 +29,7 @@ public class UIRewards {
 	public static void Initialize() {
 		invName = Utils.FormatString(null, ConfigManager.uIRewardsTitle);
 		
+
 		element = UIElementManager.instance.GetElement("refrewards");
 		
 		invRows = element.rows;
@@ -46,7 +47,7 @@ public class UIRewards {
 	public static Inventory GUI (Player p, int page) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
-		
+
 
 		ArrayList<Reward> rewards = ReferralPro.Instance.db.GetPlayerRewards(p.getUniqueId().toString(), page, invTotal - 9);
         

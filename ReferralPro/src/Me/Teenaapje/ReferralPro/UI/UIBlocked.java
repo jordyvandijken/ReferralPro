@@ -39,13 +39,13 @@ public class UIBlocked {
 		
 		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
 		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+
 	}
 	
 	public static Inventory GUI (Player p, int page) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-		
 
 		ArrayList<Request> requests = ReferralPro.Instance.db.GetPlayerBlocks(p.getUniqueId().toString(), page, invTotal - 9);
         

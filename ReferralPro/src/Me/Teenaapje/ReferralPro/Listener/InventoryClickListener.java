@@ -28,7 +28,11 @@ public class InventoryClickListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onClick(InventoryClickEvent e) {				
+	public void onClick(InventoryClickEvent e) {
+		if (e == null) {
+			return;
+		}
+		
 		String title = e.getView().getTitle();
 
 

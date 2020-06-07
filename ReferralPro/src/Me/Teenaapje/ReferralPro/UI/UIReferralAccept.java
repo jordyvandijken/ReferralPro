@@ -29,7 +29,7 @@ public class UIReferralAccept {
 		invTotal = invRows * 9;
 		
 		inv = Bukkit.createInventory(null, invTotal); 
-		
+
 		
 		Utils.CreateFillers(inv, element.fillers);
 		
@@ -41,8 +41,6 @@ public class UIReferralAccept {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-
-
 		if (ReferralPro.perms.has(p, "ReferralPro.Block")) {
 			Utils.CreateButton(toReturn, element.GetButton("block"), Utils.FormatString(null, ConfigManager.uIButtonBlock));
 		}
@@ -51,7 +49,7 @@ public class UIReferralAccept {
 		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
 		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
 		Utils.CreateButton(toReturn, element.GetButton("no"), Utils.FormatString(null, ConfigManager.uIButtonNo));
-	
+
         
 		return toReturn;
 	}

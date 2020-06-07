@@ -29,6 +29,7 @@ public class UIAnvilResponse {
 		
 		inv = Bukkit.createInventory(null, invTotal); 
 		
+
 		Utils.CreateFillers(inv, element.fillers);
 		
 		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
@@ -40,7 +41,7 @@ public class UIAnvilResponse {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-
+		// Show messages
 		if (anvilCase == 0) {
 			Utils.CreateItem(toReturn, "GREEN_STAINED_GLASS", 1, element.GetButton("anvilsucces").position, anvilMessage);
 		} else {

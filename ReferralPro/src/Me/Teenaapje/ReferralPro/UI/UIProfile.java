@@ -48,8 +48,10 @@ public class UIProfile {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 		
-		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(pProfile);
 		
+		// get the player from the profile
+		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(pProfile);
+
 		OfflinePlayer op = null;
 		
 		if (profileUUID != null) {
@@ -63,6 +65,7 @@ public class UIProfile {
 		
 		// the total of player referrals
 		Utils.CreateButton(toReturn, element.GetButton("profiletotal"), Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
+
 		
 		boolean playerExists = ReferralPro.Instance.db.PlayerExistsName(pProfile);
 		
@@ -75,6 +78,7 @@ public class UIProfile {
 		} else {
 			// the player
 			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
+
 		}
 
 		

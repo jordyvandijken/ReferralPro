@@ -29,8 +29,7 @@ public class UIReferral {
 		invTotal = invRows * 9;
 		
 		inv = Bukkit.createInventory(null, invTotal); 
-		
-		
+
 		Utils.CreateFillers(inv, element.fillers);
 		
 		Utils.CreateButton(inv, element.GetButton("invites"), Utils.FormatString(null, ConfigManager.uIRefButtonInvite),
@@ -45,10 +44,9 @@ public class UIReferral {
 	public static Inventory GUI (Player p) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
-		
-		
-		
+
 		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
+
 				   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
 				   Utils.FormatString(null, ConfigManager.uIRefCodeExpl));
 		

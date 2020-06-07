@@ -254,7 +254,7 @@ public class DataBase {
 	
 	public boolean PlayerExistsName (String name) {
 		try {
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + mainTable + " where NAME=?");
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + mainTable + " where LOWER(NAME)=?");
 			
 			statement.setString(1, name.toLowerCase());
 			
@@ -361,7 +361,7 @@ public class DataBase {
 				return null;
 			}	
 			
-			PreparedStatement statement = getConnection().prepareStatement("select UUID from " + mainTable + " where NAME=?");
+			PreparedStatement statement = getConnection().prepareStatement("select UUID from " + mainTable + " where LOWER(NAME)=?");
 			
 			statement.setString(1, playerName.toLowerCase());
 			

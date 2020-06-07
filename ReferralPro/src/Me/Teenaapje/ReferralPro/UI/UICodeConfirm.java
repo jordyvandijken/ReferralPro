@@ -30,12 +30,12 @@ public class UICodeConfirm {
 		
 		inv = Bukkit.createInventory(null, invTotal); 
 
-
 		Utils.CreateFillers(inv, element.fillers);
 		
 		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
 		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.uIButtonRetry));
 		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+
 	}
 	
 	public static Inventory GUI (String playerSender) {
@@ -44,6 +44,7 @@ public class UICodeConfirm {
 
 		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
 		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+
         
 		return toReturn;
 	}
