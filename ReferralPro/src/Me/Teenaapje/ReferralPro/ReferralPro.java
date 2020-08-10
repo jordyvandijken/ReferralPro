@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.logging.Logger;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -15,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.ConfigManager.UIConfigManager;
 import Me.Teenaapje.ReferralPro.DataBase.DataBase;
+import Me.Teenaapje.ReferralPro.LeaderBoard.Leaderboard;
 import Me.Teenaapje.ReferralPro.Listener.InventoryClickListener;
 import Me.Teenaapje.ReferralPro.Listener.JoinListener;
 import Me.Teenaapje.ReferralPro.PlaceHolder.Placeholders;
@@ -49,6 +49,7 @@ public class ReferralPro extends JavaPlugin{
 	public InventoryClickListener clickListener;
 	public Referral referral;
 	public Rewards rewards;
+	public Leaderboard leaderboard;
 		
 	public void onEnable() {
 		Instance = this;
@@ -68,6 +69,7 @@ public class ReferralPro extends JavaPlugin{
 		
 		new UIConfigManager();
 		new UIElementManager();
+		new ConfigManager();
 		
 		// Ini plugin
 		Initialize();
@@ -95,14 +97,14 @@ public class ReferralPro extends JavaPlugin{
 		String lastVersion = getDescription().getVersion();
 		String newVersion = null;
 		try {
-			newVersion = Resource.fromId(386).getVersions().get(0).getVersion();
+			newVersion = Resource.fromSlug("referralpro-referralpro").getVersions().get(0).getVersion();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (!newVersion.equals(lastVersion)) {
+		if (newVersion != null && !newVersion.equals(lastVersion)) {
 			Utils.SendMessage(null, null, "&cThere is a newer version available online!");
-		}
+		} //*/
 	}
 	
 	// Initialize plugin
@@ -111,7 +113,7 @@ public class ReferralPro extends JavaPlugin{
 		//getConfig().options().copyDefaults();
 		saveDefaultConfig();
 		
-		ConfigManager.LoadConfigSettings();
+		ConfigManager.instance.LoadConfigSettings();
 		
 		// The Database handling
 		if (db != null) {
@@ -146,6 +148,10 @@ public class ReferralPro extends JavaPlugin{
 		UIAdmin.Initialize();
 		
 		this.rewards = new Rewards();	
+		if (this.leaderboard != null) {
+			this.leaderboard.StopLeaderboard();
+		}
+		this.leaderboard = new Leaderboard();
 		
 	}
 	
@@ -164,7 +170,7 @@ public class ReferralPro extends JavaPlugin{
 		//getConfig().options().copyDefaults();
 		saveDefaultConfig();
 		
-		ConfigManager.LoadConfigSettings();
+		ConfigManager.instance.LoadConfigSettings();
 	}
 	
 	public void onDisable() {

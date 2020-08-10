@@ -9,12 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.LeaderBoard.LeaderboardPlayer;
 import Me.Teenaapje.ReferralPro.Listener.Request;
 import Me.Teenaapje.ReferralPro.Listener.Reward;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
@@ -49,7 +51,6 @@ public class DataBase {
 		createReferredDB();
 		createRequestDB();
 		createBlockedDB();
-		createRewardsDB();
 		createPlayerCodeDB();
 	}
 	
@@ -83,15 +84,15 @@ public class DataBase {
             connection = DriverManager.getConnection("jdbc:sqlite:" + file);
 			
             
-            //Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "Connected to " + referralPro.getConfig().getString("db") + " database");
             Utils.SendMessage(null, null, ChatColor.GREEN + "Connected to local database");
             
-            return;
         } catch (SQLException ex) {
             referralPro.getLogger().log(Level.SEVERE,"SQLite exception on initialize", ex);
         } catch (ClassNotFoundException ex) {
             referralPro.getLogger().log(Level.SEVERE, "You need the SQLite JBDC library. Google it. Put it in /lib folder.");
-        } 
+        }
+        
+		createRewardsDB("AUTOINCREMENT");
 	}
 	
 	public void mysqlSetup() {
@@ -119,6 +120,8 @@ public class DataBase {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		createRewardsDB("AUTO_INCREMENT");
 	}
 	
 	public Connection getConnection() {
@@ -178,12 +181,12 @@ public class DataBase {
         }
 	}
 	
-	private void createRewardsDB() {
-		String createRewardsDB = "CREATE TABLE IF NOT EXISTS " + rewardsTable + "(" +
-				" `ID`				INTEGER PRIMARY KEY AUTOINCREMENT," +
-				" `ForUUID`			varchar(40) NOT NULL," +
-				" `FromUUID`		varchar(40) NOT NULL," +
-				" `DidRefer`		int(5)    NOT NULL)";
+	private void createRewardsDB(String typeOfAuto) {
+		String createRewardsDB = "CREATE TABLE IF NOT EXISTS " + rewardsTable +
+				" (`ID`				INTEGER PRIMARY KEY " + typeOfAuto + "," +
+				"  `ForUUID`		varchar(40) NOT NULL," +
+				"  `FromUUID`		varchar(40) NOT NULL," +
+				"  `DidRefer`		int(5)    NOT NULL)";
 	    
 	    try {
             Statement s = connection.createStatement();
@@ -271,6 +274,40 @@ public class DataBase {
 		}
 		
 		return false;
+	}
+	
+	public List<LeaderboardPlayer> GetTopPlayers (int min, int max) {
+		try {
+			List<LeaderboardPlayer> topPlayer = new ArrayList<LeaderboardPlayer>();
+			//
+
+
+			PreparedStatement statement = getConnection().prepareStatement("SELECT U.UUID, U.NAME, (SELECT count(*)from [" + mainTable + "] US WHERE US.REFERRED=U.UUID) as REFTOTAL "
+					+ " FROM " + mainTable + " U ORDER BY REFTOTAL DESC, NAME ASC LIMIT ?, ?");
+				
+			statement.setInt(1, min);
+			statement.setInt(2, max);
+			
+			
+			ResultSet result = statement.executeQuery();
+			
+			int position = min + 1;
+			while (result.next()) {
+				// create and add top player
+				topPlayer.add(new LeaderboardPlayer(result.getString("UUID"), result.getString("NAME"), position, result.getInt("REFTOTAL")));
+				position++;
+			}
+			
+			statement.close();
+			
+			return topPlayer;
+			
+		} catch (SQLException e) {
+			System.out.print("Error Function GetReferrals");
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 	
 	public void CreatePlayer(String playerUUID, String playerName) {
@@ -714,7 +751,7 @@ public class DataBase {
 		try {
 			ArrayList<Request> requests = new ArrayList<Request>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + requestTable + " where RequestForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + requestTable + " where RequestForUUID=? LIMIT " + ((page-1) * (max - 1)) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			
@@ -916,7 +953,7 @@ public class DataBase {
 		try {
 			ArrayList<Request> requests = new ArrayList<Request>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + blockedTable + " where RequestForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + blockedTable + " where RequestForUUID=? LIMIT " + ((page-1) * (max - 1)) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			
@@ -1021,7 +1058,7 @@ public class DataBase {
 		try {
 			ArrayList<Reward> requests = new ArrayList<Reward>();
 			
-			PreparedStatement statement = getConnection().prepareStatement("select * from " + rewardsTable + " where ForUUID=? LIMIT " + ((page-1) * max - 1) + " , " + (page * max + 1));
+			PreparedStatement statement = getConnection().prepareStatement("select * from " + rewardsTable + " where ForUUID=? LIMIT " + ((page-1) * (max - 1)) + " , " + (page * max + 1));
 			
 			statement.setString(1, receiverUUID);
 			

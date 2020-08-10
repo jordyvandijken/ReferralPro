@@ -21,7 +21,7 @@ public class UIAdmin {
 	public static UIElement element;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIAdminTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIAdminTitle);
 		
 		element = UIElementManager.instance.GetElement("admin");
 		
@@ -33,19 +33,19 @@ public class UIAdmin {
 		Utils.CreateFillers(inv, element.fillers);
 		
 		// resting/removeing players
-		Utils.CreateButton(inv, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.uIAdminResetAll));
-		Utils.CreateButton(inv, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllCod));
-		Utils.CreateButton(inv, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllReq));
-		Utils.CreateButton(inv, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.uIAdminRemoveAllRew));
+		Utils.CreateButton(inv, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.instance.uIAdminResetAll));
+		Utils.CreateButton(inv, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.instance.uIAdminRemoveAllCod));
+		Utils.CreateButton(inv, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.instance.uIAdminRemoveAllReq));
+		Utils.CreateButton(inv, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.instance.uIAdminRemoveAllRew));
 
 		
 		// lookUp player
-		Utils.CreateButton(inv, element.GetButton("lookupplayer"), Utils.FormatString(null, ConfigManager.uIAdminLookUpPlayer));
+		Utils.CreateButton(inv, element.GetButton("lookupplayer"), Utils.FormatString(null, ConfigManager.instance.uIAdminLookUpPlayer));
 
 
 		// default buttons
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 		
 	}
 	
@@ -68,11 +68,11 @@ public class UIAdmin {
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
 		// Clicked back
-		if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIButtonGoBack))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonGoBack))) {
 			p.openInventory(UIReferral.GUI(p));
 		} 
 		// Clicked close
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			//p.openInventory(UIReferralPlayer.GUI(p));
 			p.closeInventory();
 		}		
@@ -84,7 +84,7 @@ public class UIAdmin {
 		////////////////////////
 		
 		// Clicked on reset all player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminResetAll))) {			
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminResetAll))) {			
 			// Reset player
 			ReferralPro.Instance.db.ResetAll();
 
@@ -93,7 +93,7 @@ public class UIAdmin {
 		}
 		
 		// Clicked on Remove player codes
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllCod))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminRemoveAllCod))) {
 			// Remove player codes
 			ReferralPro.Instance.db.RemoveAllCodes();
 			
@@ -101,7 +101,7 @@ public class UIAdmin {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		// Clicked on Remove all requests
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllReq))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminRemoveAllReq))) {
 			// Remove all requests
 			ReferralPro.Instance.db.RemoveAllRequests();
 			
@@ -109,7 +109,7 @@ public class UIAdmin {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		// Clicked on Remove all rewards
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminRemoveAllRew))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminRemoveAllRew))) {
 			// Remove all requests
 			ReferralPro.Instance.db.RemoveAllRewards();
 			
@@ -117,7 +117,7 @@ public class UIAdmin {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		// Clicked on Remove all rewards
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal("Enable plugin for non Admins"))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal("Enable plugin for non Admins"))) {
 			boolean option = ReferralPro.Instance.getConfig().getBoolean("enablePlugin");
 
 			ReferralPro.Instance.getConfig().set("enablePlugin", !option);
@@ -131,7 +131,7 @@ public class UIAdmin {
 		}
 		
 		// Clicked on Look up player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminLookUpPlayer))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminLookUpPlayer))) {
 			// Look up player
 			LookUpPlayer(p);
 

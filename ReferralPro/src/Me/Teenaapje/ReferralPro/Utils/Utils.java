@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.UIElements.Button;
 import Me.Teenaapje.ReferralPro.UIElements.Filler;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -80,13 +81,22 @@ public class Utils {
 			playerReferredBy = "This player hasn't been referred";
 		}
 		
+		int pos = ReferralPro.Instance.leaderboard.GetPlayerPosition(playerUUID) ;
+		String posString = "";
+    	if (pos == 0) {
+    		posString = Integer.toString(ReferralPro.Instance.leaderboard.GetLeaderboard().size()) + "+";
+		}
+    			
+    	posString = Integer.toString(pos);
+		
 		return ChatColor.translateAlternateColorCodes('&', string.replace("%player_name%", playerName)
 				 .replace("%referralpro_total%", Integer.toString(plugin.db.GetReferrals(playerUUID)))
 				 .replace("%referralpro_referred%", Boolean.toString(plugin.db.PlayerReferrald(playerUUID)))
 				 .replace("%referralpro_refedby%", playerReferredBy)
 				 .replace("%referralpro_nextmilepoint%", Integer.toString(ReferralPro.Instance.rewards.NextMileRewardTotal(playerUUID)))
 				 .replace("%referralpro_nextmileneeded%", Integer.toString(ReferralPro.Instance.rewards.NextMileReward(playerUUID)))
-				 .replace("%referralpro_refcode%", ReferralPro.Instance.db.GetPlayerCode(playerUUID)));
+				 .replace("%referralpro_refcode%", ReferralPro.Instance.db.GetPlayerCode(playerUUID))
+				 .replace("%referralpro_boardposition%", posString));
 	}
 	
 	public static ItemStack CreateItem(Inventory inv, String materialID, int amount, int invSlot, String displayName, String... loreString) {
@@ -137,6 +147,10 @@ public class Utils {
 	}
 	
 	public static ItemStack CreateButton(Inventory inv, Button button, String displayName, String... loreString) {
+		if (!button.enable) {
+			return null;
+		}
+		
 		ItemStack item;
 		List<String> lore = new ArrayList<String>();
 		
@@ -163,7 +177,7 @@ public class Utils {
 			
 			item = new ItemStack(Material.getMaterial(filler.fillerItem),  1);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(".");
+			meta.setDisplayName(ConfigManager.instance.fillerName);
 			item.setItemMeta(meta);
 			
 			if (inv != null) {

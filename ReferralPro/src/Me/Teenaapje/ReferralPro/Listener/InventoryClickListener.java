@@ -29,19 +29,23 @@ public class InventoryClickListener implements Listener {
 	
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
+		// check if click was on window
 		if (e == null) {
 			return;
 		}
 		
+		
+		
 		String title = e.getView().getTitle();
-
-
+		
 		// The Main UI
 		if (title.equals(UIReferral.invName)) {
 			e.setCancelled(true);
+
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
+
 			UIReferral.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 			return;
 		}
@@ -49,6 +53,7 @@ public class InventoryClickListener implements Listener {
 		// The UI where the referral invites are
 		if (title.equals(UIReferInvites.invName)) {
 			e.setCancelled(true);
+			
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
@@ -79,6 +84,7 @@ public class InventoryClickListener implements Listener {
 		// The UI where the player can see its profile
 		if (title.equals(UIProfile.invName)) {
 			e.setCancelled(true);
+			
 			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}

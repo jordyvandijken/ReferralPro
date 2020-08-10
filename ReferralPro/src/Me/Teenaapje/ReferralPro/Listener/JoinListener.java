@@ -8,6 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import Me.Teenaapje.ReferralPro.ReferralCodeGen;
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 
 public class JoinListener implements Listener {
 	
@@ -17,23 +18,31 @@ public class JoinListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-        Player p = event.getPlayer();
+		// An Async task always executes in new thread 
+        new Thread(new Runnable() { 
+            public void run() 
+            { 
+            	Player p = event.getPlayer();
+                
+                String pUUID = p.getUniqueId().toString();
+                
+                if (!ReferralPro.Instance.db.PlayerExists(pUUID)) {
+                	ReferralPro.Instance.db.CreatePlayer(pUUID, p.getName());        
+                } else {
+                    // Tell the player that he/she has an request
+                	if (ConfigManager.instance.notifyPlayerRequest && ReferralPro.Instance.db.PlayerHasRequests(pUUID)) {
+                    	ReferralPro.Instance.PlayerHasBox(pUUID);
+        			}
+                }
+                
+                if (ReferralPro.Instance.db.GetPlayerCode(pUUID) == null) {
+            		ReferralPro.Instance.db.CreateCode(pUUID, ReferralCodeGen.GetShortID());
+        		}
+                
+                ReferralPro.Instance.db.UpdatePlayerIP(pUUID, p.getAddress().getHostName());
+            } 
+        }).start(); 
         
-        String pUUID = p.getUniqueId().toString();
         
-        if (!ReferralPro.Instance.db.PlayerExists(pUUID)) {
-        	ReferralPro.Instance.db.CreatePlayer(pUUID, p.getName());        
-        } else {
-            // Tell the player that he/she has an request
-        	if (ReferralPro.Instance.getConfig().getBoolean("notifyPlayerRequest") && ReferralPro.Instance.db.PlayerHasRequests(pUUID)) {
-            	ReferralPro.Instance.PlayerHasBox(pUUID);
-			}
-        }
-        
-        if (ReferralPro.Instance.db.GetPlayerCode(pUUID) == null) {
-    		ReferralPro.Instance.db.CreateCode(pUUID, ReferralCodeGen.GetShortID());
-		}
-        
-        ReferralPro.Instance.db.UpdatePlayerIP(pUUID, p.getAddress().getHostName());
     }
 }

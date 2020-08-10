@@ -141,14 +141,21 @@ clearOnDisable: true
 # Notify the player on join if he/she has an open request
 notifyPlayerRequest: true
 
-
-
+# Code Length
+codeLength: 8
+# Code Confirmation
+# if the code exist let the player be refered directly
+codeConfirmation: true
+# /ref code to show players ref code
+codeShow: "Your ref code is: %referralpro_refcode%"
 
 ########################################################
 #
 #   UI panels
 #
 ########################################################
+#   Filler name
+fillerName: "§e "
 #   UI titles can't be the same
 ##########################
 #   UI General things
@@ -194,6 +201,7 @@ uIAnvilAlreadyInQ: "&fThe request is already in queued."
 uIAnvilBlocked: "&fThis player blocked you."
 uIAnvilRequestQed: "&fThe request has been queued."
 uIAnvilInvited: "&fPlayer Invited."
+uIAnvilNameDefault: "Player"
 ##########################
 #   UI anvil (player code)
 ##########################
@@ -202,6 +210,7 @@ uIAnvilCodeShort: "&fThe code is too short!"
 uIAnvilCodeLong: "&fThe code is too long!"
 uIAnvilCodeNotExist: "&fThe code does not exist!"
 uIAnvilUseOwnCode: "&fYou cant use your own code!"
+uIAnvilCodeDefault: "Code"
 ##########################
 #   UI anvil response
 ##########################
@@ -217,6 +226,7 @@ uIBlockedUnban: "&fClick on head to unban player."
 #   UI Code Confirm
 ##########################
 uICodeConfirmTitle: "Referral code confirm"
+uICodeRefed: "You got referred by %referralpro_refedby%"
 ##########################
 #   UI Profile
 ##########################
@@ -272,9 +282,17 @@ uIRewardsSpace: "&fMake Sure you have enough space"
 placeHolderGotRefed: "&fThis player is referred"
 placeHolderNotRefed: "&fThis player hasn't been referred"
 
-
-
-
+##########################
+#
+#   Leaderboards
+#
+##########################
+# /ref top title
+leaderboardTitle: "Top referrels"
+# leaderboard place
+leaderboardPlace: "%referralpro_boardposition% : %player_name% - %referralpro_total%"
+# leaderboard the amount to show player
+leaderboardShowTotal: 5
 
 
 

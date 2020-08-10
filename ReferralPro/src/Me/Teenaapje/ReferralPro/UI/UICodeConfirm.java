@@ -21,7 +21,7 @@ public class UICodeConfirm {
 	public static UIElement element;
 
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uICodeConfirmTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uICodeConfirmTitle);
 		
 		element = UIElementManager.instance.GetElement("anvilcodecon");
 		
@@ -32,9 +32,9 @@ public class UICodeConfirm {
 
 		Utils.CreateFillers(inv, element.fillers);
 		
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
-		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.uIButtonRetry));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonMainMenu));
+		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.instance.uIButtonRetry));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 
 	}
 	
@@ -42,21 +42,21 @@ public class UICodeConfirm {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
-		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.instance.uIButtonYes));
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.instance.uIConfirmDidInvite));
 
         
 		return toReturn;
 	}
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
-		if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonMainMenu))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonMainMenu))) {
 			p.openInventory(UIReferral.GUI(p));
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonYes))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonYes))) {
 			// get the player who send the refer
     	    //OfflinePlayer op = Bukkit.getOfflinePlayer(inv.getItem(13).getItemMeta().getDisplayName());
     	    
@@ -94,8 +94,11 @@ public class UICodeConfirm {
 			
 			// return to profile
 			p.openInventory(UIProfile.GUI(p, p.getName()));
+			
+			// Update Leaderboard
+			ReferralPro.Instance.leaderboard.UpdateLeaderboard();
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonRetry))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonRetry))) {
 			UIAnvilCode.GUI(p, "Code");
 		}
 

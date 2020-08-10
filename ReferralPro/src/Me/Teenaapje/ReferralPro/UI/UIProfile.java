@@ -24,7 +24,7 @@ public class UIProfile {
 	public static UIElement element;
 
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIProfileTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIProfileTitle);
 		
 		element = UIElementManager.instance.GetElement("profile");
 		
@@ -36,8 +36,8 @@ public class UIProfile {
 		
 		Utils.CreateFillers(inv, element.fillers);
 
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 		
 	}
 	
@@ -64,7 +64,7 @@ public class UIProfile {
 		}
 		
 		// the total of player referrals
-		Utils.CreateButton(toReturn, element.GetButton("profiletotal"), Utils.FormatString(op, ConfigManager.uIProfileTotal), Utils.FormatString(null, ConfigManager.uIProfileTotalExpl));
+		Utils.CreateButton(toReturn, element.GetButton("profiletotal"), Utils.FormatString(op, ConfigManager.instance.uIProfileTotal), Utils.FormatString(null, ConfigManager.instance.uIProfileTotalExpl));
 
 		
 		boolean playerExists = ReferralPro.Instance.db.PlayerExistsName(pProfile);
@@ -72,12 +72,12 @@ public class UIProfile {
 		// check if the player has joined the server once
 		if (playerExists) {
 			// the player
-			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles),
-																 											Utils.FormatString(op, ConfigManager.uIProfileIsRefed), 
-																 											Utils.FormatString(op, ConfigManager.uIProfileRefedBy));
+			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.instance.uIProfiles),
+																 											Utils.FormatString(op, ConfigManager.instance.uIProfileIsRefed), 
+																 											Utils.FormatString(op, ConfigManager.instance.uIProfileRefedBy));
 		} else {
 			// the player
-			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.uIProfiles), Utils.FormatString(null, ConfigManager.uIProfileNonExist));
+			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.instance.uIProfiles), Utils.FormatString(null, ConfigManager.instance.uIProfileNonExist));
 
 		}
 
@@ -85,50 +85,50 @@ public class UIProfile {
 		
 		if (p.getName().equalsIgnoreCase(pProfile)) {
 			// the list of rewards
-			Utils.CreateButton(toReturn, element.GetButton("rewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonReward), 
-													   Utils.FormatString(null, ConfigManager.uIProfileButtonRewardExpl));
+			Utils.CreateButton(toReturn, element.GetButton("rewards"), Utils.FormatString(null, ConfigManager.instance.uIProfileButtonReward), 
+													   Utils.FormatString(null, ConfigManager.instance.uIProfileButtonRewardExpl));
 			
 			// the list of blocked 
-			Utils.CreateButton(toReturn, element.GetButton("blocked"), Utils.FormatString(null, ConfigManager.uIProfileButtonBlocked),
-														 Utils.FormatString(null, ConfigManager.uIProfileButtonBlockedExpl));
+			Utils.CreateButton(toReturn, element.GetButton("blocked"), Utils.FormatString(null, ConfigManager.instance.uIProfileButtonBlocked),
+														 Utils.FormatString(null, ConfigManager.instance.uIProfileButtonBlockedExpl));
 			
 			
 			
 			// make the text change if player can receive reward
 			if (ReferralPro.Instance.rewards.NextMileReward(p.getUniqueId().toString()) == 0 && ReferralPro.Instance.getConfig().getBoolean("enableMilestone")) {
 				// the list of mileStone Rewards
-				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
-								Utils.FormatString(op, ConfigManager.uIProfileNextMilestone),
-								Utils.FormatString(op, ConfigManager.uIProfiletooNextMilestone),
-								Utils.FormatString(op, ConfigManager.uIButtonclickReward),
-								Utils.FormatString(op, ConfigManager.uIButtonEnoughSpace));
+				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.instance.uIProfileButtonMilestone),
+								Utils.FormatString(op, ConfigManager.instance.uIProfileNextMilestone),
+								Utils.FormatString(op, ConfigManager.instance.uIProfiletooNextMilestone),
+								Utils.FormatString(op, ConfigManager.instance.uIButtonclickReward),
+								Utils.FormatString(op, ConfigManager.instance.uIButtonEnoughSpace));
 			} else if (ReferralPro.Instance.getConfig().getBoolean("enableMilestone")){
 				// the list of mileStone Rewards
-				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.uIProfileButtonMilestone),
-								Utils.FormatString(op, ConfigManager.uIProfileNextMilestone),
-								Utils.FormatString(op, ConfigManager.uIProfiletooNextMilestone));
+				Utils.CreateButton(toReturn, element.GetButton("milerewards"), Utils.FormatString(null, ConfigManager.instance.uIProfileButtonMilestone),
+								Utils.FormatString(op, ConfigManager.instance.uIProfileNextMilestone),
+								Utils.FormatString(op, ConfigManager.instance.uIProfiletooNextMilestone));
 			}
 		}	
 
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin") && playerExists) {
 			// Reset Player
-			Utils.CreateButton(toReturn, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.uIAdminPReset), 
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayers"), Utils.FormatString(null, ConfigManager.instance.uIAdminPReset), 
 																		 Utils.FormatString(null, "&cClicking on this WILL reset the player in the database"));
 			// Remove Player Referrals 
-			Utils.CreateButton(toReturn, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayercodes"), Utils.FormatString(null, ConfigManager.instance.uIAdminpRemoveRew), 
 																		 Utils.FormatString(null, "&cClicking on this WILL remove the player referrals in the database"), 
 																		 Utils.FormatString(null, "&cThis will not reset the milestone rewards"));
 			// Reset player Code
-			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.uIAdminpResetCode), 
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrequests"), Utils.FormatString(null, ConfigManager.instance.uIAdminpResetCode), 
 													 					 Utils.FormatString(null, "&cClicking on this WILL reset the player his code"));
 			// Remove rewards
-			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.uIAdminpRemoveRew), 
+			Utils.CreateButton(toReturn, element.GetButton("resetallplayerrewards"), Utils.FormatString(null, ConfigManager.instance.uIAdminpRemoveRew), 
 													 					 Utils.FormatString(null, "&cClicking on this WILL remove every reward that's connected to this player"));
 			
 			
 			// the list of blocked 
-			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(null, ConfigManager.uIRefButtonAdmin));
+			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(null, ConfigManager.instance.uIRefButtonAdmin));
 		}
 		
 		// timing 
@@ -144,29 +144,29 @@ public class UIProfile {
 	}
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
-		// Clicked back
-		if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIButtonGoBack))) {
+		// Clicked back		
+		if (Utils.RemoveButtonNormal(Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName())).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonGoBack))) {
 			p.openInventory(UIReferral.GUI(p));
 		} 
 		
 		// Clicked close
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			//p.openInventory(UIReferralPlayer.GUI(p));
 			p.closeInventory();
 		}
 		
 		// Clicked on blocked list
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIProfileButtonBlocked))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIProfileButtonBlocked))) {
 			p.openInventory(UIBlocked.GUI(p, 1));
 		}
 		
 		// Clicked on Reward list
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIProfileButtonReward))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIProfileButtonReward))) {
 			p.openInventory(UIRewards.GUI(p, 1));
 		}
 		
 		// Clicked on milestone Reward
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIProfileButtonMilestone))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIProfileButtonMilestone))) {
 			// check if true
 			if (ReferralPro.Instance.rewards.NextMileReward(p.getUniqueId().toString()) != 0) {
 				return;
@@ -185,8 +185,8 @@ public class UIProfile {
 		//////////////////////////////////
 				
 		// Clicked on reset player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminPReset))) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminPReset))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.instance.uIProfiles), "");
 			
 			// Reset player
 			ReferralPro.Instance.db.PlayerReset(ReferralPro.Instance.db.GetPlayersUUID(pName));
@@ -197,8 +197,8 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on remove refers
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpRemoveRew))) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminpRemoveRew))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.instance.uIProfiles), "");
 			
 			// Remove player
 			ReferralPro.Instance.db.PlayerResetReferral(ReferralPro.Instance.db.GetPlayersUUID(pName));
@@ -209,8 +209,8 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on Reset Player Code
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpResetCode))) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminpResetCode))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.instance.uIProfiles), "");
 			
 			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);
 			
@@ -222,8 +222,8 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on Remove Player Rewards
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIAdminpRemoveRew))) {
-			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.uIProfiles), "");
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIAdminpRemoveRew))) {
+			String pName = inv.getItem(13).getItemMeta().getDisplayName().replace(Utils.ColorCode(ConfigManager.instance.uIProfiles), "");
 			
 			String pUUID = ReferralPro.Instance.db.GetPlayersUUID(pName);
 			
@@ -236,7 +236,7 @@ public class UIProfile {
 		//////////////////////////////////
 		// Clicked on Admin panel
 		//////////////////////////////////
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonAdmin))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIRefButtonAdmin))) {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 		

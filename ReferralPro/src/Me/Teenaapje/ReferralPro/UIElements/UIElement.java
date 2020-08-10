@@ -7,11 +7,13 @@ public class UIElement {
 	public int rows;
 	public HashMap<String, Button> buttons;
 	public List<Filler> fillers;
+	public boolean enable;
 	
-	public UIElement(int rows, HashMap<String, Button> buttons, List<Filler> fillers) {
+	public UIElement(int rows, HashMap<String, Button> buttons, List<Filler> fillers, boolean enable) {
 		this.rows = rows;
 		this.buttons = buttons;
 		this.fillers = fillers;
+		this.enable  = enable;
 	}
 	
 	public Button GetButton(String buttonName) {

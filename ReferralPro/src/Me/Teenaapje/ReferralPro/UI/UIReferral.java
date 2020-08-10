@@ -21,7 +21,7 @@ public class UIReferral {
 
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIRefTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIRefTitle);
 		
 		element = UIElementManager.instance.GetElement("referral");
 		
@@ -32,32 +32,32 @@ public class UIReferral {
 
 		Utils.CreateFillers(inv, element.fillers);
 		
-		Utils.CreateButton(inv, element.GetButton("invites"), Utils.FormatString(null, ConfigManager.uIRefButtonInvite),
-				  											  Utils.FormatString(null , ConfigManager.uIRefButtonInviteExpl));
+		Utils.CreateButton(inv, element.GetButton("invites"), Utils.FormatString(null, ConfigManager.instance.uIRefButtonInvite),
+				  											  Utils.FormatString(null , ConfigManager.instance.uIRefButtonInviteExpl));
 
 
-		Utils.CreateButton(inv, element.GetButton("refer"), Utils.FormatString(null, ConfigManager.uIRefButtonRef));
+		Utils.CreateButton(inv, element.GetButton("refer"), Utils.FormatString(null, ConfigManager.instance.uIRefButtonRef));
 
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p) {
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
-		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.uIProfiles), 
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, p.getName(), p.getName() + Utils.FormatString(p, ConfigManager.instance.uIProfiles), 
 
-				   Utils.FormatString(p, ConfigManager.uIRefUniqCode),
-				   Utils.FormatString(null, ConfigManager.uIRefCodeExpl));
+				   Utils.FormatString(p, ConfigManager.instance.uIRefUniqCode),
+				   Utils.FormatString(null, ConfigManager.instance.uIRefCodeExpl));
 		
 		// the referral code
 		if (!ReferralPro.Instance.db.PlayerReferrald(p.getUniqueId().toString())) {
-			Utils.CreateButton(toReturn, element.GetButton("refercode"), Utils.FormatString(p, ConfigManager.uIRefButtonRefCode));
+			Utils.CreateButton(toReturn, element.GetButton("refercode"), Utils.FormatString(p, ConfigManager.instance.uIRefButtonRefCode));
 		}
 		
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin")) {
-			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(p, ConfigManager.uIRefButtonAdmin));
+			Utils.CreateButton(toReturn, element.GetButton("adminpanel"), Utils.FormatString(p, ConfigManager.instance.uIRefButtonAdmin));
 		}
 		
 		return toReturn;
@@ -65,28 +65,28 @@ public class UIReferral {
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
 		// Clicked on player referrals
-		if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonInvite))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIRefButtonInvite))) {
 			p.openInventory(UIReferInvites.GUI(p, 1));
 		} 
 		
 		// Clicked on refer a player
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonRef))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIRefButtonRef))) {
 			// Check for perms
 			if (!(ReferralPro.perms.has(p, "ReferralPro.Invite") || ReferralPro.perms.has(p, "ReferralPro.Admin"))) {
 				p.sendMessage("No permision");
 				return;
 			}
 		
-			UIAnvil.GUI(p, "Player");
+			UIAnvil.GUI(p, ConfigManager.instance.uIAnvilNameDefault);
 		}
 		
 		// Use referral code
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonRefCode))) {
-			UIAnvilCode.GUI(p, "Code");
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIRefButtonRefCode))) {
+			UIAnvilCode.GUI(p, ConfigManager.instance.uIAnvilCodeDefault);
 		}
 		
 		// Use referral code
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIRefButtonAdmin))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIRefButtonAdmin))) {
 			p.openInventory(UIAdmin.GUI(p));
 		}
 				
@@ -97,7 +97,7 @@ public class UIReferral {
 		}
 				
 		// Clicked on close
-		else if (clicked.getItemMeta().getDisplayName().equals(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equals(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
 	}

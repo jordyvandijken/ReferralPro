@@ -25,7 +25,7 @@ public class UIReferInvites {
 	public static UIElement element;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIInvitesTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIInvitesTitle);
 		
 		element = UIElementManager.instance.GetElement("refinvites");
 		
@@ -37,8 +37,8 @@ public class UIReferInvites {
 		
 		Utils.CreateFillers(inv, element.fillers);
 
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 
 	}
 	
@@ -49,20 +49,20 @@ public class UIReferInvites {
 		ArrayList<Request> requests = ReferralPro.Instance.db.GetPlayerRequests(p.getUniqueId().toString(), page, invTotal - 9);
         
 		if (requests.size() == 0) {
-    		Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(null, ConfigManager.uIInvitesNone));
+    		Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(null, ConfigManager.instance.uIInvitesNone));
 		} else {
 			// when there are requests
 			int index = 0;
 			
 			// show page number
-    		Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.uIButtonPage) + page);
+    		Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.instance.uIButtonPage) + page);
 			
     		// make scroll
     		if (requests.size() == 19) {
-	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.instance.uIButtonNextPage));
 			}
     		if (page > 1 ) {
-	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.instance.uIButtonReturnPage));
 			}
     		
 	        for (Request request : requests) {
@@ -72,7 +72,7 @@ public class UIReferInvites {
 	        	
 	        	String playerName = Bukkit.getOfflinePlayer(UUID.fromString(request.senderUUID)).getName();
 	        	
-	        	Utils.CreatePlayerHead(toReturn, index, playerName, playerName, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
+	        	Utils.CreatePlayerHead(toReturn, index, playerName, playerName, Utils.FormatString(null, ConfigManager.instance.uIConfirmDidInvite));
 	        	
 	        	index++;
 			}
@@ -84,24 +84,24 @@ public class UIReferInvites {
 	}
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
-		if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonGoBack))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonGoBack))) {
 			p.openInventory(UIReferral.GUI(p));
 		}
 		
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
 		
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonBlock))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonBlock))) {
 			p.closeInventory();
 		}
 		
 		// Return page
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonReturnPage))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonReturnPage))) {
 			int page = 1;
 			try {
 				// the String to int conversion happens here
-				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.FormatString(null, ConfigManager.uIButtonPage), ""));
+				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.FormatString(null, ConfigManager.instance.uIButtonPage), ""));
 			}
 			catch (NumberFormatException nfe) {
 				System.out.println("NumberFormatException: " + nfe.getMessage());
@@ -111,11 +111,11 @@ public class UIReferInvites {
 		}
 		
 		// Next page
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonNextPage))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonNextPage))) {
 			int page = 1;
 			try {
 				// the String to int conversion happens here
-				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.FormatString(null, ConfigManager.uIButtonPage), ""));
+				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.FormatString(null, ConfigManager.instance.uIButtonPage), ""));
 			}
 			catch (NumberFormatException nfe) {
 				System.out.println("NumberFormatException: " + nfe.getMessage());
@@ -130,7 +130,7 @@ public class UIReferInvites {
 				p.sendMessage("No permision");
 				return;
 			}
-			p.openInventory(UIReferralAccept.GUI(p, clicked.getItemMeta().getDisplayName()));
+			p.openInventory(UIReferralAccept.GUI(p, Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName())));
 		}
 	}
 }

@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>ReferralPro</groupId>
    <artifactId>ReferralPro</artifactId>
-   <version>0.6</version>
+   <version>0.9</version>
    <name>ReferralPro</name>
    <description>Refer an Friend</description>
    <repositories>
@@ -46,7 +46,7 @@
       <dependency>
          <groupId>com.github.WesJD</groupId>
          <artifactId>AnvilGUI</artifactId>
-         <version>ac6d25a6b9</version>
+         <version>-SNAPSHOT</version>
          <scope>compile</scope>
       </dependency>
       <dependency>
