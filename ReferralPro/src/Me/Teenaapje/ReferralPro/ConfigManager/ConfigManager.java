@@ -5,37 +5,48 @@ import org.bukkit.configuration.file.FileConfiguration;
 import Me.Teenaapje.ReferralPro.ReferralPro;
 
 public class ConfigManager {
-	public static FileConfiguration config;
+	public static ConfigManager instance;
+	
+	public FileConfiguration config;
 	//########################################################
 	//#
 	//#   General Options
 	//#
 	//########################################################
 	
-	public static boolean milestoneEnabled;
+	public boolean milestoneEnabled;
 	
-	public static boolean canReferEachOther;
-	public static String tryRefEachOther;
+	public boolean canReferEachOther;
+	public String tryRefEachOther;
 
-	public static boolean canReferOlderPlayers;
-	public static String tryRefOlderPlayer;
+	public boolean canReferOlderPlayers;
+	public String tryRefOlderPlayer;
 
-	public static int minPlayTime;
-	public static String notEnoughPlayTimeCode;
-	public static String notEnoughPlayTime;
+	public int minPlayTime;
+	public String notEnoughPlayTimeCode;
+	public String notEnoughPlayTime;
 	
-	public static int maxPlayTime;
-	public static String tooMuchPlayTimeCode;
-	public static String tooMuchPlayTime;
+	public int maxPlayTime;
+	public String tooMuchPlayTimeCode;
+	public String tooMuchPlayTime;
 	
-	public static int maxPendingRequests;
-	public static String maxRequestSend;
+	public int maxPendingRequests;
+	public String maxRequestSend;
 	
-	public static boolean allowSameIPRefer;
-	public static String sameIPRefer;
+	public boolean allowSameIPRefer;
+	public String sameIPRefer;
 	
-	public static boolean clearOnDisable;
-	public static boolean notifyPlayerRequest;
+	public boolean clearOnDisable;
+	public boolean notifyPlayerRequest;
+	
+	public int codeLength;
+	public boolean codeConfirmation;
+	public String showCode;
+	
+	public String leaderboardTitle, leaderboardPlace;
+	public int leaderboardShowTotal;
+	
+	public String fillerName;
 	
 	//########################################################
 	//#
@@ -45,14 +56,14 @@ public class ConfigManager {
 	//##########################
 	//#   UI Admin
 	//##########################
-	public static String uIAdminTitle, uIAdminResetAll, uIAdminRemoveAllCod, uIAdminRemoveAllReq,
+	public String uIAdminTitle, uIAdminResetAll, uIAdminRemoveAllCod, uIAdminRemoveAllReq,
 	uIAdminRemoveAllRew, uIAdminLookUpPlayer,
 	uIAdminPReset, uIAdminPRemoveRef, uIAdminpResetCode, uIAdminpRemoveRew;
 	
 	//##########################
 	//#   UI General things
 	//##########################
-	public static String uIButtonMainMenu, uIButtonGoBack, uIButtonRetry, uIButtonClose,
+	public String uIButtonMainMenu, uIButtonGoBack, uIButtonRetry, uIButtonClose,
 	uIButtonPage, uIButtonNextPage, uIButtonReturnPage, uIButtonYes, uIButtonNo, 
 	uIButtonBlock, uIButtonclickReward, uIButtonEnoughSpace, uIConfirmDidInvite,
 	uIProfiles;
@@ -61,34 +72,34 @@ public class ConfigManager {
 	//##########################
 	//#   UI anvil (player name)
 	//##########################
-	public static String uIAnvilTitle, uIAnvilNeverPlayed, uIAnvilAlreadyRefed, uIAnvilCantRefSelf,
-	uIAnvilAlreadyInQ, uIAnvilBlocked, uIAnvilRequestQed, uIAnvilInvited;
+	public String uIAnvilTitle, uIAnvilNeverPlayed, uIAnvilAlreadyRefed, uIAnvilCantRefSelf,
+	uIAnvilAlreadyInQ, uIAnvilBlocked, uIAnvilRequestQed, uIAnvilInvited, uIAnvilNameDefault;
 	
 	//##########################
 	//#   UI anvil (player code)
 	//##########################
-	public static String uIAnvilCodeTitle, uIAnvilCodeShort, uIAnvilCodeLong, uIAnvilCodeNotExist,
-	uIAnvilUseOwnCode;
+	public String uIAnvilCodeTitle, uIAnvilCodeShort, uIAnvilCodeLong, uIAnvilCodeNotExist,
+	uIAnvilUseOwnCode, uIAnvilCodeDefault;
 	
 	//##########################
 	//#   UI anvil response
 	//##########################
-	public static String uIAnvilResponseTitle;
+	public String uIAnvilResponseTitle;
 	
 	//##########################
 	//#   UI Blocked
 	//##########################
-	public static String uIBlockedTitle, uIBlockedNone, uIBlockedIsBlocked, uIBlockedUnban;
+	public String uIBlockedTitle, uIBlockedNone, uIBlockedIsBlocked, uIBlockedUnban;
 	
 	//##########################
 	//#   UI Code Confirm
 	//##########################
-	public static String uICodeConfirmTitle;
+	public String uICodeConfirmTitle, uICodeRefed;
 	
 	//##########################
 	//#   UI Profile
 	//##########################
-	public static String uIProfileTitle, uIProfileTotal, uIProfileTotalExpl, uIProfileIsRefed,
+	public String uIProfileTitle, uIProfileTotal, uIProfileTotalExpl, uIProfileIsRefed,
 	uIProfileRefedBy, uIProfileNonExist, uIProfileButtonReward, uIProfileButtonRewardExpl,
 	uIProfileButtonBlocked, uIProfileButtonBlockedExpl, uIProfileButtonMilestone,
 	uIProfileNextMilestone, uIProfiletooNextMilestone;
@@ -96,35 +107,36 @@ public class ConfigManager {
 	//##########################
 	//#   UI Invites
 	//##########################
-	public static String uIInvitesTitle, uIInvitesNone, uIInvitesReferredYou;
+	public String uIInvitesTitle, uIInvitesNone, uIInvitesReferredYou;
 	
 	//##########################
 	//#   UI Main menu
 	//##########################
-	public static String uIRefTitle, uIRefButtonInvite, uIRefButtonInviteExpl, uIRefUniqCode,
+	public String uIRefTitle, uIRefButtonInvite, uIRefButtonInviteExpl, uIRefUniqCode,
 	uIRefCodeExpl, uIRefButtonRef, uIRefButtonRefCode, uIRefButtonAdmin;
 	
 	//##########################
 	//#   UI Referral accept
 	//##########################
-	public static String uIRefAcceptTitle;
+	public String uIRefAcceptTitle;
 	
 	//##########################
 	//#   UI Rewards
 	//##########################
-	public static String uIRewardsTitle, uIRewardsNon, uIRewardsGotRefed, uIRewardsYouRefed,
+	public String uIRewardsTitle, uIRewardsNon, uIRewardsGotRefed, uIRewardsYouRefed,
 	uIRewardsClick, uIRewardsSpace;
 	
 	//##########################
 	//#   Placeholder
 	//##########################
-	public static String placeHolderGotRefed, placeHolderNotRefed;
+	public String placeHolderGotRefed, placeHolderNotRefed;
 	
 	
 	public ConfigManager() {
+		instance = this;
 	}
 	
-	public static void LoadConfigSettings() {
+	public void LoadConfigSettings() {
 		config = ReferralPro.Instance.getConfig();
 
 		//########################################################
@@ -145,6 +157,10 @@ public class ConfigManager {
 		notEnoughPlayTimeCode = config.getString("notEnoughPlayTimeCode");
 		notEnoughPlayTime = config.getString("notEnoughPlayTime");	
 		
+		maxPlayTime = config.getInt("maxPlayTime");
+		tooMuchPlayTimeCode = config.getString("tooMuchPlayTimeCode");
+		tooMuchPlayTime = config.getString("tooMuchPlayTime");	
+		
 		maxPendingRequests = config.getInt("maxPendingRequests");
 		maxRequestSend = config.getString("maxRequestSend");
 		
@@ -153,6 +169,16 @@ public class ConfigManager {
 
 		clearOnDisable = config.getBoolean("clearOnDisable");
 		notifyPlayerRequest = config.getBoolean("notifyPlayerRequest");
+		
+		codeLength = config.getInt("codeLength");
+		codeConfirmation = config.getBoolean("codeConfirmation");
+		showCode = config.getString("codeShow");
+		
+		leaderboardTitle = config.getString("leaderboardTitle");
+		leaderboardPlace = config.getString("leaderboardPlace");
+		leaderboardShowTotal = config.getInt("leaderboardShowTotal");
+		
+		fillerName = config.getString("fillerName");
 		
 		//########################################################
 		//#
@@ -172,7 +198,7 @@ public class ConfigManager {
 		uIAdminPRemoveRef = config.getString("uIAdminPRemoveRef");	
 		uIAdminpResetCode = config.getString("uIAdminpResetCode");	
 		uIAdminpRemoveRew = config.getString("uIAdminpRemoveRew");	
-
+	
 		//##########################
 		//#   UI General things
 		//##########################
@@ -202,6 +228,7 @@ public class ConfigManager {
 		uIAnvilBlocked = config.getString("uIAnvilBlocked");	
 		uIAnvilRequestQed = config.getString("uIAnvilRequestQed");	
 		uIAnvilInvited = config.getString("uIAnvilInvited");	
+		uIAnvilNameDefault = config.getString("uIAnvilNameDefault");
 		
 		//##########################
 		//#   UI anvil (player code)
@@ -211,6 +238,7 @@ public class ConfigManager {
 		uIAnvilCodeLong = config.getString("uIAnvilCodeLong");	
 		uIAnvilCodeNotExist = config.getString("uIAnvilCodeNotExist");	
 		uIAnvilUseOwnCode = config.getString("uIAnvilUseOwnCode");	
+		uIAnvilCodeDefault = config.getString("uIAnvilCodeDefault");	
 		
 		//##########################
 		//#   UI anvil response
@@ -229,6 +257,7 @@ public class ConfigManager {
 		//#   UI Code Confirm
 		//##########################
 		uICodeConfirmTitle = config.getString("uICodeConfirmTitle");	
+		uICodeRefed = config.getString("uICodeRefed");	
 	
 		//##########################
 		//#   UI Profile

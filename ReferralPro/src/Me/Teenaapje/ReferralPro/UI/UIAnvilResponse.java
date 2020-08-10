@@ -20,7 +20,7 @@ public class UIAnvilResponse {
 	public static UIElement element;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIAnvilResponseTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIAnvilResponseTitle);
 		
 		element = UIElementManager.instance.GetElement("anvilresponse");
 		
@@ -32,9 +32,9 @@ public class UIAnvilResponse {
 
 		Utils.CreateFillers(inv, element.fillers);
 		
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonMainMenu));
-		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.uIButtonRetry));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonMainMenu));
+		Utils.CreateButton(inv, element.GetButton("retry"), Utils.FormatString(null, ConfigManager.instance.uIButtonRetry));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 	}
 	
 	public static Inventory GUI (String anvilMessage, int anvilCase) {
@@ -53,13 +53,13 @@ public class UIAnvilResponse {
 	}
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
-		if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonRetry))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonRetry))) {
 			UIAnvil.GUI(p, "Player");
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonMainMenu))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonMainMenu))) {
 			p.openInventory(UIReferral.GUI(p));
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
 	}

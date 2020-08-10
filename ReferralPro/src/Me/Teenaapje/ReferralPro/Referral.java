@@ -2,18 +2,23 @@ package Me.Teenaapje.ReferralPro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
+import Me.Teenaapje.ReferralPro.LeaderBoard.LeaderboardPlayer;
+import Me.Teenaapje.ReferralPro.Listener.Reward;
 import Me.Teenaapje.ReferralPro.UI.UIAdmin;
-import Me.Teenaapje.ReferralPro.UI.UIAnvil;
-import Me.Teenaapje.ReferralPro.UI.UIAnvilCode;
 import Me.Teenaapje.ReferralPro.UI.UIBlocked;
+import Me.Teenaapje.ReferralPro.UI.UICodeConfirm;
 import Me.Teenaapje.ReferralPro.UI.UIProfile;
 import Me.Teenaapje.ReferralPro.UI.UIReferInvites;
 import Me.Teenaapje.ReferralPro.UI.UIReferral;
@@ -24,8 +29,7 @@ public class Referral implements CommandExecutor, TabExecutor {
 
 	@SuppressWarnings("unused")
 	private ReferralPro referralPro;
-	
-	
+
 	public Referral () {
 		// The main class
 		referralPro = ReferralPro.Instance;
@@ -67,6 +71,7 @@ public class Referral implements CommandExecutor, TabExecutor {
 				}
 				p.openInventory(UIAdmin.GUI(p));
 				
+				break;
 			case Rewards:
 				// Open the rewards UI
 				p.openInventory(UIRewards.GUI(p, 1));
@@ -123,12 +128,25 @@ public class Referral implements CommandExecutor, TabExecutor {
 		
 			case Code:
 				if (args.length == 1) {
-					p.sendMessage("Your code is: " + ReferralPro.Instance.db.GetPlayerCode(p.getUniqueId().toString()));
+					p.sendMessage(Utils.FormatString(p, ConfigManager.instance.showCode));
 				} else {
-					UIAnvilCode.GUI(p, args[1]);
+					//UIAnvilCode.GUI(p, args[1]);
+					ReferPlayerCode(p, args[1]);
 				}
 
 				
+				break;
+				
+			case Top:
+				// set the title
+				p.sendMessage(Utils.FormatString(p, ConfigManager.instance.leaderboardTitle));
+
+				// loop trough board
+				for (LeaderboardPlayer topPlayer : ReferralPro.Instance.leaderboard.GetLeaderboard()) {
+					OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(topPlayer.playerUUID));
+					p.sendMessage(Utils.FormatString(op, ConfigManager.instance.leaderboardPlace));
+					//essentials_nickname
+				}				
 				break;
 		
 			default:
@@ -147,12 +165,271 @@ public class Referral implements CommandExecutor, TabExecutor {
 		        return false;
 		    } 
 			
-			UIAnvil.GUI(p, args[0].substring(0, args[0].length() - 1));
+			ReferPlayer(p, args[0]);
 		}
         
 		return false;
 	}
 	
+	private void ReferPlayerCode(Player player, String code) {
+		// check length
+    	if (code.length() < ConfigManager.instance.codeLength) {
+    		player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilCodeShort));
+            return;
+		} // to long
+    	else if (code.length() > ConfigManager.instance.codeLength) {
+    		player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilCodeLong));
+            return;
+		}
+    	
+    	// Check if the code exists
+    	if (!ReferralPro.Instance.db.CodeExists(code)) {
+    		player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilCodeNotExist));
+            return;
+		}
+    	
+    	// Check if is own code
+    	if (ReferralPro.Instance.db.GetPlayerCode(player.getUniqueId().toString()).equalsIgnoreCase(code)) {
+    		player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilUseOwnCode));
+            return;
+		}
+    	
+    	// the other players UUID
+		String UUIDs = ReferralPro.Instance.db.GetPlayerCodeUUID(code);
+		UUID pUUID = UUID.fromString(UUIDs);
+
+		OfflinePlayer op = Bukkit.getOfflinePlayer(pUUID);
+    	
+		/////////////////////////////////////////////////////
+		//
+		//	Config stuf start
+		//
+		/////////////////////////////////////////////////////
+    	
+    	// Check if this player is referred
+		if (ReferralPro.Instance.db.PlayerReferrald(player.getUniqueId().toString())) {		
+			
+			
+			// Check if the player try to refer each other
+			if (!ReferralPro.Instance.getConfig().getBoolean("canReferEachOther") 
+			  && ReferralPro.Instance.db.PlayerReferraldBy(player.getUniqueId().toString()).equalsIgnoreCase(UUIDs)) {	
+				
+				
+		        //player.openInventory(UIAnvilResponse.GUI("You can't refer each other.", 1));
+				player.sendMessage(Utils.FormatString(player, ConfigManager.instance.tryRefEachOther));
+	            return;
+			}
+		}
+
+		
+		// Check if the player try to refer an older player
+		if (!ReferralPro.Instance.getConfig().getBoolean("canReferOlderPlayer") && player.getFirstPlayed() > op.getFirstPlayed()) {			
+	        //player.openInventory(UIAnvilResponse.GUI("You can't refer an older player!", 1));
+			player.sendMessage(Utils.FormatString(player, ConfigManager.instance.tryRefOlderPlayer));
+            return;
+		}
+					
+		// Check if server uses time limit if so did the player play enough
+		int pTime = ReferralPro.Instance.getConfig().getInt("minPlayTime");
+        if (pTime != -1 && ((player.getLastPlayed() - player.getFirstPlayed()) / 60000) < pTime) {
+	        //player.openInventory(UIAnvilResponse.GUI("You haven't played enough to use a refer", 1));
+        	player.sendMessage(Utils.FormatString(player, ConfigManager.instance.notEnoughPlayTimeCode));
+            return;
+		}
+        
+        // Check if server uses time limit if so did the player play enough
+		int maxTime = ReferralPro.Instance.getConfig().getInt("maxPlayTime");
+        if (maxTime != -1 && ((player.getLastPlayed() - player.getFirstPlayed()) / 60000) > maxTime) {
+	        //player.openInventory(UIAnvilResponse.GUI("You have played too much to use a refer", 1));
+        	player.sendMessage(Utils.FormatString(player, ConfigManager.instance.tooMuchPlayTimeCode));
+            return;
+		}
+    
+        // Check if the server blocks same ips
+        if (!ReferralPro.Instance.getConfig().getBoolean("allowSameIPRefer") && player.getAddress().getHostName().equals(ReferralPro.Instance.db.GetPlayerIP(UUIDs))) {
+	        //player.openInventory(UIAnvilResponse.GUI("You can't refer on the same ip", 1));
+        	player.sendMessage(Utils.FormatString(player, ConfigManager.instance.sameIPRefer));
+            return;
+		}
+        
+        // check if the other player is already referred
+    	if (ReferralPro.Instance.db.PlayerReferrald(player.getUniqueId().toString())) {
+			//player.openInventory(UIAnvilResponse.GUI("This Player already got referd.", 1));
+    		player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilAlreadyRefed));
+            return;
+		}
+
+    
+		/////////////////////////////////////////////////////
+		//
+		//	Check for confirm
+		//
+		/////////////////////////////////////////////////////
+    
+    	if (ConfigManager.instance.codeConfirmation) {
+    		// Open confirmation pannel
+    	    player.openInventory(UICodeConfirm.GUI(ReferralPro.Instance.db.GetPlayersName(UUIDs)));
+		} else {
+			// get the players UUID
+			String playerUUID = player.getUniqueId().toString();
+			
+			// Set the Referral
+			ReferralPro.Instance.db.ReferralPlayer(UUIDs, playerUUID);
+
+			// The player who got referred
+			ReferralPro.Instance.db.CreateReward(new Reward(-999, playerUUID, UUIDs, 0));
+			
+			// The player who referred someone
+			ReferralPro.Instance.db.CreateReward(new Reward(-999, UUIDs, playerUUID, 1));
+
+			// Remove all open requests
+			ReferralPro.Instance.db.RemovePlayerRequests(playerUUID);
+			
+			player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uICodeRefed));
+			
+			ReferralPro.Instance.leaderboard.UpdateLeaderboard();
+		}
+    	
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void ReferPlayer (Player player, String refP) {
+		// get the player from the profile
+		String profileUUID = ReferralPro.Instance.db.GetPlayersUUID(refP);
+
+		OfflinePlayer op = null;
+		
+		if (profileUUID != null) {
+			//convert
+			UUID pUUID = UUID.fromString(profileUUID);
+			// get offline p
+			op = Bukkit.getOfflinePlayer(pUUID);
+		} else {
+			op = Bukkit.getOfflinePlayer(refP);
+		}
+
+    	// check if the player is online
+    	if (op.getPlayer() == null) {
+		
+	        //* Add option to disalble it
+		    if (!op.hasPlayedBefore()) {
+		    	player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilNeverPlayed));
+	            return;
+		    }//*/
+			
+		}
+
+        // turn the UUID to String
+		String senderString = player.getUniqueId().toString();
+		String receiverString = "";
+		//
+		if (op.isOnline()) {
+			receiverString = op.getUniqueId().toString();
+		} else {
+			receiverString = ReferralPro.Instance.db.GetPlayersUUID(refP);
+		}			
+		
+		// check if the other player is already referred
+		if (ReferralPro.Instance.db.PlayerReferrald(receiverString)) {
+			player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilAlreadyRefed));
+            return;
+		}
+		
+		
+		// check if its not the same player
+		if (senderString.compareTo(receiverString) == 0) {
+	        player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilCantRefSelf));
+            return;
+		}
+		
+		// Check if the request already exists
+		if (ReferralPro.Instance.db.RequestExists(senderString, receiverString)) {			
+	        player.sendMessage(Utils.FormatString(player, ConfigManager.instance.uIAnvilAlreadyInQ));
+            return;
+		}
+
+		/////////////////////////////////////////////////////
+		//
+		//	Config stuf start
+		//
+		/////////////////////////////////////////////////////
+		
+		// Check if player is referred
+		if (ReferralPro.Instance.db.PlayerReferrald(player.getUniqueId().toString())) {
+			
+			String refedName = ReferralPro.Instance.db.GetPlayersName(ReferralPro.Instance.db.PlayerReferraldBy(player.getUniqueId().toString()));
+					
+			// Check if the player try to refer each other
+			if (!ReferralPro.Instance.getConfig().getBoolean("canReferEachOther") && refedName.equalsIgnoreCase(refP)) {			
+		        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.tryRefEachOther));
+	            return;
+			}
+		}
+		
+		// Check if the player try to refer an older player
+		if (!ReferralPro.Instance.getConfig().getBoolean("canReferOlderPlayer") && player.getFirstPlayed() > op.getFirstPlayed()) {			
+	        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.tryRefOlderPlayer));
+            return;
+		}
+		
+		// Check if server uses time limit if so did the player play enough
+		int minTime = ReferralPro.Instance.getConfig().getInt("minPlayTime");
+        if (minTime != -1 && ((op.getLastPlayed() - op.getFirstPlayed()) / 60000) < minTime) {
+	        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.notEnoughPlayTime));
+            return;
+		}
+        
+        // Check if server uses time limit if so did the player play enough
+			int maxTime = ReferralPro.Instance.getConfig().getInt("maxPlayTime");
+	        if (maxTime != -1 && ((op.getLastPlayed() - op.getFirstPlayed()) / 60000) > maxTime) {
+		        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.tooMuchPlayTime));
+            return;
+			}
+	        
+	        
+	        // Check if the server uses a max request
+	        int maxRequests = ReferralPro.Instance.getConfig().getInt("maxPendingRequests");
+	        if (maxRequests != -1 && ReferralPro.Instance.db.TotalRequests(senderString) >= maxRequests) {
+	        player.sendMessage(Utils.FormatString(player, ConfigManager.instance.maxRequestSend));
+            return;
+		}
+	        
+	        // Check if the server blocks same ips
+	        if (!ReferralPro.Instance.getConfig().getBoolean("allowSameIPRefer") && player.getAddress().getHostName().equals(ReferralPro.Instance.db.GetPlayerIP(receiverString))) {
+	        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.sameIPRefer));
+            return;
+		}
+	        
+	        
+		/////////////////////////////////////////////////////
+		//
+		//	Config stuf end
+		//
+		/////////////////////////////////////////////////////
+		
+		// Check if the player blocked him
+		if (ReferralPro.Instance.db.BlockExists(senderString, receiverString)) {			
+	        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.uIAnvilBlocked));
+            return;
+		}
+		
+		// Make request
+		ReferralPro.Instance.db.CreateRequest(senderString, receiverString);
+		
+		// check if the player is online
+		Player playerReceiver = ReferralPro.Instance.getServer().getPlayer(receiverString);
+	    if (playerReceiver == null) {
+	        // Not Online
+	        player.sendMessage(Utils.FormatString(op, ConfigManager.instance.uIAnvilRequestQed));
+            return;
+	    }
+	    		    
+	    // If the player is online make a notification
+	    //ReferralPro.Instance.commandReferral.CreateResponseBox(senderString, receiverString);
+
+	    player.sendMessage(Utils.FormatString(op, ConfigManager.instance.uIAnvilInvited));
+        return;		
+	}
 	
 	public enum Commands {
 		Invites,
@@ -161,7 +438,8 @@ public class Referral implements CommandExecutor, TabExecutor {
 		Admin,
 		Profile,
 		Reload,
-		Code
+		Code,
+		Top
 	}
 	
 	@Override

@@ -21,7 +21,7 @@ public class UIReferralAccept {
 	public static UIElement element;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIRefAcceptTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIRefAcceptTitle);
 		
 		element = UIElementManager.instance.GetElement("refaccept");
 		
@@ -33,8 +33,8 @@ public class UIReferralAccept {
 		
 		Utils.CreateFillers(inv, element.fillers);
 		
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, String playerSender) {
@@ -42,13 +42,13 @@ public class UIReferralAccept {
 		toReturn.setContents(inv.getContents());
 
 		if (ReferralPro.perms.has(p, "ReferralPro.Block")) {
-			Utils.CreateButton(toReturn, element.GetButton("block"), Utils.FormatString(null, ConfigManager.uIButtonBlock));
+			Utils.CreateButton(toReturn, element.GetButton("block"), Utils.FormatString(null, ConfigManager.instance.uIButtonBlock));
 		}
 		
 
-		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.uIButtonYes));
-		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.uIConfirmDidInvite));
-		Utils.CreateButton(toReturn, element.GetButton("no"), Utils.FormatString(null, ConfigManager.uIButtonNo));
+		Utils.CreateButton(toReturn, element.GetButton("yes"), Utils.FormatString(null, ConfigManager.instance.uIButtonYes));
+		Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, playerSender, playerSender, Utils.FormatString(null, ConfigManager.instance.uIConfirmDidInvite));
+		Utils.CreateButton(toReturn, element.GetButton("no"), Utils.FormatString(null, ConfigManager.instance.uIButtonNo));
 
         
 		return toReturn;
@@ -56,19 +56,19 @@ public class UIReferralAccept {
 	
 	@SuppressWarnings("deprecation")
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
-		if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonGoBack))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonGoBack))) {
 			p.openInventory(UIReferInvites.GUI(p, 1));
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonYes))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonYes))) {
 			// get the player who send the refer
 
 			String refUUID = ReferralPro.Instance.db.GetPlayersUUID(inv.getItem(13).getItemMeta().getDisplayName());
 
 			String playerUUID = p.getUniqueId().toString();
-    	    
+			
     	    // remove from the databse
 			ReferralPro.Instance.db.RemoveRequest(refUUID, playerUUID);
 						
@@ -98,8 +98,11 @@ public class UIReferralAccept {
 			
 			// return
 			p.openInventory(UIReferInvites.GUI(p, 1));
+			
+			// Update Leaderboard
+			ReferralPro.Instance.leaderboard.UpdateLeaderboard();
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonNo))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonNo))) {
 			// get the player
 			OfflinePlayer op = Bukkit.getOfflinePlayer(inv.getItem(13).getItemMeta().getDisplayName());
 			// remove request from database
@@ -108,7 +111,7 @@ public class UIReferralAccept {
 			// return
 			p.openInventory(UIReferInvites.GUI(p, 1));
 		}
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonBlock))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonBlock))) {
 			// get the player
 			OfflinePlayer op = Bukkit.getOfflinePlayer(inv.getItem(13).getItemMeta().getDisplayName());
 

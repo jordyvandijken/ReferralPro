@@ -114,9 +114,9 @@ public class Placeholders extends PlaceholderExpansion {
         // %referralpro_referred%
         if(identifier.equals("referred")){
         	if (plugin.db.PlayerReferrald(UUIDs)) {
-				return ConfigManager.placeHolderGotRefed;
+				return ConfigManager.instance.placeHolderGotRefed;
 			}
-            return ConfigManager.placeHolderNotRefed;
+            return ConfigManager.instance.placeHolderNotRefed;
         }
         
         // %referralpro_refedby%
@@ -142,6 +142,17 @@ public class Placeholders extends PlaceholderExpansion {
         if(identifier.equals("refcode")){
             return ReferralPro.Instance.db.GetPlayerCode(UUIDs);
         }
+        
+        if(identifier.equals("boardposition")){
+        	// try to get position
+        	int pos = ReferralPro.Instance.leaderboard.GetPlayerPosition(UUIDs) ;
+        	
+        	if (pos == 0) {
+				return Integer.toString(ReferralPro.Instance.leaderboard.GetLeaderboard().size()) + "+";
+			}
+        			
+            return Integer.toString(pos);
+        }
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 
         // was provided
@@ -164,9 +175,9 @@ public class Placeholders extends PlaceholderExpansion {
         // %referralpro_referred%
         if(identifier.equals("referred")){
         	if (plugin.db.PlayerReferrald(UUIDs)) {
-				return ConfigManager.placeHolderGotRefed;
+				return ConfigManager.instance.placeHolderGotRefed;
 			}
-            return ConfigManager.placeHolderNotRefed;
+            return ConfigManager.instance.placeHolderNotRefed;
         }
         
         // %referralpro_refedby%
@@ -191,6 +202,17 @@ public class Placeholders extends PlaceholderExpansion {
         // %referralpro_refcode%
         if(identifier.equals("refcode")){
             return ReferralPro.Instance.db.GetPlayerCode(UUIDs);
+        }
+        
+        if(identifier.equals("boardposition")){
+        	// try to get position
+        	int pos = ReferralPro.Instance.leaderboard.GetPlayerPosition(UUIDs) ;
+        	
+        	if (pos == 0) {
+				return Integer.toString(ReferralPro.Instance.leaderboard.GetLeaderboard().size()) + "+";
+			}
+        			
+            return Integer.toString(pos);
         }
 
         return null;

@@ -37,9 +37,10 @@ public class UIElementManager {
 				int buttonPos = Integer.parseInt(buttonP);
 				String buttonType = file.getString("ui." + ui + ".buttons." + buttonP + ".buttontype");
 				String buttonItem = file.getString("ui." + ui + ".buttons." + buttonP + ".buttonitem");
+				boolean enable    = file.getBoolean("ui." + ui + ".buttons." + buttonP + ".enable");
 				
 				// create button
-				Button button = new Button(buttonPos, buttonItem);
+				Button button = new Button(buttonPos, buttonItem, enable);
 				
 				// add button
 				buttons.put(buttonType, button);
@@ -63,7 +64,7 @@ public class UIElementManager {
 				}	
 			}//*/
 			
-			UIElement element = new UIElement(rows, buttons, fillers);
+			UIElement element = new UIElement(rows, buttons, fillers, true);
 			
 			this.ui.put(ui, element);
 		}//*/

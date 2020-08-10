@@ -15,7 +15,6 @@ import Me.Teenaapje.ReferralPro.ConfigManager.ConfigManager;
 import Me.Teenaapje.ReferralPro.Listener.Reward;
 import Me.Teenaapje.ReferralPro.UIElements.UIElement;
 import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
-import Me.Teenaapje.ReferralPro.Utils.HiddenStringUtils;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class UIRewards {
@@ -27,7 +26,7 @@ public class UIRewards {
 	public static UIElement element;
 	
 	public static void Initialize() {
-		invName = Utils.FormatString(null, ConfigManager.uIRewardsTitle);
+		invName = Utils.FormatString(null, ConfigManager.instance.uIRewardsTitle);
 		
 
 		element = UIElementManager.instance.GetElement("refrewards");
@@ -40,8 +39,8 @@ public class UIRewards {
 		
 		Utils.CreateFillers(inv, element.fillers);
 
-		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.uIButtonGoBack));
-		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.uIButtonClose));
+		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
+		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 	}
 	
 	public static Inventory GUI (Player p, int page) {
@@ -52,20 +51,20 @@ public class UIRewards {
 		ArrayList<Reward> rewards = ReferralPro.Instance.db.GetPlayerRewards(p.getUniqueId().toString(), page, invTotal - 9);
         
 		if (rewards.size() == 0) {
-			Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(null, ConfigManager.uIRewardsNon));
+			Utils.CreateButton(toReturn, element.GetButton("none"), Utils.FormatString(null, ConfigManager.instance.uIRewardsNon));
 		} else {
 			// when there are requests
 			int index = 0;
 			
 			// show page number
-			Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.uIButtonPage) + page);
+			Utils.CreateButton(toReturn, element.GetButton("page"), Utils.FormatString(null, ConfigManager.instance.uIButtonPage) + page);
 			
     		// make scroll
     		if (rewards.size() == 19) {
-	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.uIButtonNextPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("next").position, "MHF_ArrowRight", Utils.FormatString(null, ConfigManager.instance.uIButtonNextPage));
 			}
     		if (page > 1 ) {
-	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.uIButtonReturnPage));
+	        	Utils.CreatePlayerHead(toReturn, element.GetButton("return").position, "MHF_ArrowLeft", Utils.FormatString(null, ConfigManager.instance.uIButtonReturnPage));
 			}
     		
     		//loop trough blocks
@@ -76,11 +75,11 @@ public class UIRewards {
 	        	
 	        	String playerName = Bukkit.getOfflinePlayer(UUID.fromString(reward.fromUUID)).getName();
 	        	
-	        	String pRefed = reward.didRefer == 1 ? Utils.FormatString(null, ConfigManager.uIRewardsYouRefed) : Utils.FormatString(null, ConfigManager.uIRewardsGotRefed);
+	        	String pRefed = reward.didRefer == 1 ? Utils.FormatString(null, ConfigManager.instance.uIRewardsYouRefed) : Utils.FormatString(null, ConfigManager.instance.uIRewardsGotRefed);
 	        	
-	        	Utils.CreatePlayerHead(toReturn, index, playerName, playerName, pRefed, Utils.FormatString(null, ConfigManager.uIRewardsClick), 
-	        																			Utils.FormatString(null, ConfigManager.uIRewardsSpace), 
-	        																			HiddenStringUtils.encodeString("{RewardID: " + reward.id + "}"));
+	        	Utils.CreatePlayerHead(toReturn, index, playerName, playerName, pRefed, Utils.FormatString(null, ConfigManager.instance.uIRewardsClick), 
+	        																			Utils.FormatString(null, ConfigManager.instance.uIRewardsSpace), 
+	        																			Integer.toString(reward.id));
 	        	
 	        	index++;
 			}
@@ -92,19 +91,19 @@ public class UIRewards {
 	
 	public static void Clicked(Player p , int slot, ItemStack clicked, Inventory inv) {
 		// Return to main page
-		if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonGoBack))) {
+		if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonGoBack))) {
 			p.openInventory(UIProfile.GUI(p, p.getName()));
 		}
 		// Close inv
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonClose))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonClose))) {
 			p.closeInventory();
 		}
 		// Return page
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonReturnPage))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonReturnPage))) {
 			int page = 1;
 			try {
 				// the String to int conversion happens here
-				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.uIButtonPage), ""));
+				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonPage), ""));
 			}
 			catch (NumberFormatException nfe) {
 				System.out.println("NumberFormatException: " + nfe.getMessage());
@@ -113,11 +112,11 @@ public class UIRewards {
 			p.openInventory(UIRewards.GUI(p, page - 1));
 		}
 		// Next page
-		else if (clicked.getItemMeta().getDisplayName().equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.uIButtonNextPage))) {
+		else if (Utils.RemoveButtonNormal(clicked.getItemMeta().getDisplayName()).equalsIgnoreCase(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonNextPage))) {
 			int page = 1;
 			try {
 				// the String to int conversion happens here
-				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.uIButtonPage), ""));
+				page = Integer.parseInt(inv.getItem(invTotal - 5).getItemMeta().getDisplayName().replace(Utils.RemoveButtonNormal(ConfigManager.instance.uIButtonPage), ""));
 			}
 			catch (NumberFormatException nfe) {
 				System.out.println("NumberFormatException: " + nfe.getMessage());
@@ -129,13 +128,13 @@ public class UIRewards {
 		else if (clicked.getType() == Material.PLAYER_HEAD) {
 			List<String> lore = clicked.getItemMeta().getLore();
 			
-			String json = HiddenStringUtils.extractHiddenString(lore.get(3));
-						
+			String hiddenID = lore.get(3);
+			
 			int id = -999;
 			
 			try {
 				// the String to inter conversion happens here
-				id = Integer.parseInt(json.replace("{RewardID: ", "").replace("}", ""));
+				id = Integer.parseInt(hiddenID);
 			}
 			catch (NumberFormatException nfe) {
 				System.out.println("NumberFormatException: " + nfe.getMessage());
@@ -151,7 +150,7 @@ public class UIRewards {
 			
 			// give player the reward
 			//ReferralPro.Instance.rewards.GiveRewards(p, false);
-			boolean isSender = lore.get(0).equalsIgnoreCase(Utils.ColorCode(ConfigManager.uIRewardsYouRefed));
+			boolean isSender = lore.get(0).equalsIgnoreCase(Utils.ColorCode(ConfigManager.instance.uIRewardsYouRefed));
 			
 			if (isSender) {
 				ReferralPro.Instance.rewards.GiveSenderReward(p);
