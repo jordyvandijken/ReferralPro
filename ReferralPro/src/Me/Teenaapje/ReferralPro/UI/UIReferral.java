@@ -42,6 +42,11 @@ public class UIReferral {
 	}
 	
 	public static Inventory GUI (Player p) {
+		if (!element.enable) {
+			p.closeInventory();
+			return null; 
+		}
+		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 

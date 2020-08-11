@@ -1,5 +1,7 @@
 package Me.Teenaapje.ReferralPro.UI;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -38,6 +40,10 @@ public class UIReferralAccept {
 	}
 	
 	public static Inventory GUI (Player p, String playerSender) {
+		if (!element.enable) {
+			return UIReferral.GUI(p); 
+		}
+		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
@@ -84,15 +90,25 @@ public class UIReferralAccept {
 			
 			// Set the Referral
 			ReferralPro.Instance.db.ReferralPlayer(refUUID, playerUUID);
+				
+			OfflinePlayer otherp = Bukkit.getOfflinePlayer(UUID.fromString(refUUID));
+			
+			// Ch
+			if (ConfigManager.instance.giveRewardInstant && otherp.isOnline()) {
+				ReferralPro.Instance.rewards.GiveSenderReward(Bukkit.getPlayer(UUID.fromString(refUUID)));
+			} else {
+				// The player who got referred
+				ReferralPro.Instance.db.CreateReward(new Reward(-999, playerUUID, refUUID, 0));
+			}
+			
+			if (ConfigManager.instance.giveRewardInstant && p.isOnGround()) {
+				ReferralPro.Instance.rewards.GiveReceiverReward(p);
+			} else {
+				// The player who referred someone
+				ReferralPro.Instance.db.CreateReward(new Reward(-999, refUUID, playerUUID, 1));
+			}
 			
 			
-			
-			// The player who got referred
-			ReferralPro.Instance.db.CreateReward(new Reward(-999, playerUUID, refUUID, 0));
-			
-			// The player who referred someone
-			ReferralPro.Instance.db.CreateReward(new Reward(-999, refUUID, playerUUID, 1));
-
 			// Remove all open requests
 			ReferralPro.Instance.db.RemovePlayerRequests(playerUUID);
 			

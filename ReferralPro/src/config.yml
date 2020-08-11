@@ -28,6 +28,10 @@ playerCodeTable: playerCodeTable
 #
 ########################################################
 
+# instant give reward
+# also for the player offline
+giveRewardInstant: false
+
 # the rewards are given based on the player primary group
 # this aplies to all rewards
 

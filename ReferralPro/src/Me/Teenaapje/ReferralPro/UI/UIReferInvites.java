@@ -43,6 +43,10 @@ public class UIReferInvites {
 	}
 	
 	public static Inventory GUI (Player p, int page) {
+		if (!element.enable) {
+			return UIReferral.GUI(p); 
+		}
+		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 

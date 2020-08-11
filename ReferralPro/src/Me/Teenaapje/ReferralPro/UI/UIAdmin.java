@@ -49,9 +49,9 @@ public class UIAdmin {
 		
 	}
 	
-	public static Inventory GUI (Player p) {
+	public static Inventory GUI (Player p) {	
 		// just check if has perm
-		if (!ReferralPro.perms.has(p, "ReferralPro.Admin")) {
+		if (!ReferralPro.perms.has(p, "ReferralPro.Admin") || !element.enable) {
 			// Return to menu
 			return UIReferral.GUI(p);
 		}

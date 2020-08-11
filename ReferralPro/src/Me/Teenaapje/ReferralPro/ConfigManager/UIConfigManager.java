@@ -81,6 +81,7 @@ public class UIConfigManager {
     public void UIAdmin() {
     	// rows
     	customFile.addDefault("ui.admin.rows", 3);
+    	customFile.addDefault("ui.admin.enable", true);
     	
     	
     	// resetall players
@@ -127,6 +128,9 @@ public class UIConfigManager {
     public void UIAnvilResponse() {
     	// rows
     	customFile.addDefault("ui.anvilresponse.rows", 3);
+    	customFile.addDefault("ui.anvilresponse.enable", true);
+
+    	
     	// resetall players reward
     	customFile.addDefault("ui.anvilresponse.buttons.13.buttontype", "anvilsucces");
     	customFile.addDefault("ui.anvilresponse.buttons.13.enable", true);
@@ -154,6 +158,8 @@ public class UIConfigManager {
     public void UIBlocked() {
     	// rows
     	customFile.addDefault("ui.blocked.rows", 3);
+    	customFile.addDefault("ui.blocked.enable", true);
+
 
     	// back
     	customFile.addDefault("ui.blocked.buttons.18.buttontype", "back");
@@ -191,6 +197,9 @@ public class UIConfigManager {
     public void UICodeConfirm() {
     	// rows
     	customFile.addDefault("ui.anvilcodecon.rows", 3);
+    	customFile.addDefault("ui.anvilcodecon.enable", true);
+
+    	
     	// resetall players reward
     	customFile.addDefault("ui.anvilcodecon.buttons.13.buttontype", "playerhead");
     	customFile.addDefault("ui.anvilcodecon.buttons.13.enable", true);
@@ -223,6 +232,9 @@ public class UIConfigManager {
     public void UIProfile() {
     	// rows
     	customFile.addDefault("ui.profile.rows", 3);
+    	customFile.addDefault("ui.profile.enable", true);
+
+    	
     	// resetall players reward
     	customFile.addDefault("ui.profile.buttons.13.buttontype", "playerhead");
     	customFile.addDefault("ui.profile.buttons.13.enable", true);
@@ -292,6 +304,8 @@ public class UIConfigManager {
     public void UIRefInvites() {
     	// rows
     	customFile.addDefault("ui.refinvites.rows", 3);
+    	customFile.addDefault("ui.refinvites.enable", true);
+
 
     	// back
     	customFile.addDefault("ui.refinvites.buttons.18.buttontype", "back");
@@ -329,6 +343,8 @@ public class UIConfigManager {
     public void UIRefer() {
     	// rows
     	customFile.addDefault("ui.referral.rows", 3);
+    	customFile.addDefault("ui.referral.enable", true);
+
 
 
     	// close
@@ -367,6 +383,8 @@ public class UIConfigManager {
     public void UIReferAccept() {
     	// rows
     	customFile.addDefault("ui.refaccept.rows", 3);
+    	customFile.addDefault("ui.refaccept.enable", true);
+
 
     	// back
     	customFile.addDefault("ui.refaccept.buttons.18.buttontype", "back");
@@ -404,6 +422,8 @@ public class UIConfigManager {
     public void UIRewards() {
     	// rows
     	customFile.addDefault("ui.refrewards.rows", 3);
+    	customFile.addDefault("ui.refrewards.enable", true);
+
 
     	// back
     	customFile.addDefault("ui.refrewards.buttons.18.buttontype", "back");
