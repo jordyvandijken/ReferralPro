@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>ReferralPro</groupId>
    <artifactId>ReferralPro</artifactId>
-   <version>0.9</version>
+   <version>1.1</version>
    <name>ReferralPro</name>
    <description>Refer an Friend</description>
    <repositories>
@@ -35,6 +35,12 @@
          <groupId>org.spigotmc</groupId>
          <artifactId>spigot-api</artifactId>
          <version>1.15.2-R0.1-SNAPSHOT</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.spigotmc</groupId>
+         <artifactId>spigot-api</artifactId>
+         <version>1.12.2-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
       </dependency>
       <dependency>

@@ -29,6 +29,7 @@ import Me.Teenaapje.ReferralPro.UI.UIReferral;
 import Me.Teenaapje.ReferralPro.UI.UIReferralAccept;
 import Me.Teenaapje.ReferralPro.UI.UIRewards;
 import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
+import Me.Teenaapje.ReferralPro.Utils.ServerVersion;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -153,6 +154,12 @@ public class ReferralPro extends JavaPlugin{
 		}
 		this.leaderboard = new Leaderboard();
 		
+		
+		/*if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
+            Utils.SendMessage(null, null, ChatColor.GREEN + "Version Above 1.12");
+		} else {
+            Utils.SendMessage(null, null, ChatColor.GREEN + "Version lower or eqeul to 1.12");
+		}*/
 	}
 	
 	public void Reload () {
