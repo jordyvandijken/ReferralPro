@@ -148,6 +148,10 @@ public class UIRewards {
 			// remove the Reward
 			ReferralPro.Instance.db.RemoveReward(id);
 			
+			if (ReferralPro.Instance.getConfig().getBoolean("enableChance")) {
+				ReferralPro.Instance.rewards.GiveRandomRewards(p);
+			}
+			
 			// give player the reward
 			//ReferralPro.Instance.rewards.GiveRewards(p, false);
 			boolean isSender = lore.get(0).equalsIgnoreCase(Utils.ColorCode(ConfigManager.instance.uIRewardsYouRefed));

@@ -122,28 +122,48 @@ public class Utils {
 	
 	@SuppressWarnings("deprecation")
 	public static ItemStack CreatePlayerHead(Inventory inv, int invSlot, String playerName, String displayName, String... loreString) {
-		ItemStack item;
+		ItemStack skull;
 		List<String> lore = new ArrayList<String>();
 				
-		item = new ItemStack(Material.PLAYER_HEAD,  1);
+		//if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_13)) {
+		    //Utils.SendMessage(null, null, ChatColor.GREEN + "Version Above 1.12");
+		    skull = new ItemStack(Material.PLAYER_HEAD,  1);
+
+			SkullMeta skullM = (SkullMeta) skull.getItemMeta();
+			// the player
+			skullM.setDisplayName(Utils.ColorCode(displayName));
+			// add lore
+			for (String s : loreString) {
+				lore.add(s);
+			}
+			skullM.setLore(lore);
+			
+			skullM.setOwner(playerName) ;
+			
+			skull.setItemMeta(skullM);
+		//} else {
+		    //Utils.SendMessage(null, null, ChatColor.GREEN + "Version lower or eqeul to 1.12");
+		    //skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		    //SkullMeta skullM = (SkullMeta) skull.getItemMeta();
+		    
+		    // the player
+		    //skullM.setDisplayName(Utils.ColorCode(displayName));
+ 			// add lore
+ 			//for (String s : loreString) {
+ 			//	lore.add(s);
+ 			//}
+ 			//skullM.setLore(lore);
+		    
+		    //skullM.setOwner(playerName);
+		    
+		    //skull.setItemMeta(skullM);
+		//}
 		
-		SkullMeta meta = (SkullMeta) item.getItemMeta();
-		// the player
-		meta.setDisplayName(Utils.ColorCode(displayName));
-		// add lore
-		for (String s : loreString) {
-			lore.add(s);
-		}
-		meta.setLore(lore);
-		
-		meta.setOwner(playerName) ;
-		
-		item.setItemMeta(meta);
 		
 		if (inv != null) {
-			inv.setItem(invSlot, item);
+			inv.setItem(invSlot, skull);
 		}
-		return item;
+		return skull;
 	}
 	
 	public static ItemStack CreateButton(Inventory inv, Button button, String displayName, String... loreString) {

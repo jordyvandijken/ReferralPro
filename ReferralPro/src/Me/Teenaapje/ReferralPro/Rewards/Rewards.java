@@ -3,9 +3,11 @@ package Me.Teenaapje.ReferralPro.Rewards;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
+import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class Rewards {
 	
@@ -16,13 +18,17 @@ public class Rewards {
 	
 	
 	List<MileStoneRewards> mileStoneRewards;
+
 	
+	List<ChanceRewards> chanceRewards;
+
 	public Rewards() {
 		referralPro = ReferralPro.Instance;
 		
 		senderRewards = new ArrayList<RankRewards>();
 		receiverRewards = new ArrayList<RankRewards>();
 		mileStoneRewards = new ArrayList<MileStoneRewards>();
+		chanceRewards = new ArrayList<ChanceRewards>();
 		
 		LoadRewards();
 	}
@@ -31,6 +37,7 @@ public class Rewards {
 		senderRewards.clear();
 		receiverRewards.clear();
 		mileStoneRewards.clear();
+		chanceRewards.clear();
 				
 		// Load the sender rewards
 		for (String key : referralPro.getConfig().getConfigurationSection("rewardsSender").getKeys(false)) {
@@ -63,6 +70,17 @@ public class Rewards {
 			
 			// add the new reward
 			mileStoneRewards.add(reward);
+		}
+		
+		// Load the Milestone rewards
+		for (String key : referralPro.getConfig().getConfigurationSection("changeRewards").getKeys(false)) {
+			// make new reward
+			ChanceRewards reward = new ChanceRewards (
+					referralPro.getConfig().getInt("changeRewards." 	   + key + ".chance"), 
+					referralPro.getConfig().getStringList("changeRewards." + key + ".commands"));
+			
+			// add the new reward
+			chanceRewards.add(reward);
 		}
 	}
 	
@@ -159,11 +177,55 @@ public class Rewards {
 	}
 	
 	public class MileStoneRewards {
+
 		public int min;
 		public List<String> commands;
 		 
 		public MileStoneRewards (int min, List<String> commands){
 	        this.min = min;
+	        this.commands = commands;
+	    }
+	}
+	
+	//////////////////////////////////
+	//
+	//  Chance Rewards
+	//
+	//////////////////////////////////
+	
+	public void GiveRandomRewards(Player p) {
+		ChanceRewards randomreward = GetRandomChanceReward();
+		ReferralPro.Instance.UseCommand(randomreward.commands, p);
+	}
+	
+	public ChanceRewards GetRandomChanceReward() {
+		float totalChance = 0;
+		
+		for (ChanceRewards chanceRewards : chanceRewards) {
+			totalChance += chanceRewards.chance;
+		}
+		
+		float randint = (float) (Math.random() * totalChance);
+		
+		float currentChance = 0;
+		
+		for (ChanceRewards chanceRewards : chanceRewards) {
+			if (randint <= currentChance + chanceRewards.chance) {
+				return chanceRewards;
+			} else {
+				currentChance += chanceRewards.chance;
+			}
+		}
+		
+		return null;
+	}
+	
+	public class ChanceRewards {
+		public int chance;
+		public List<String> commands;
+		 
+		public ChanceRewards (int chance, List<String> commands){
+	        this.chance = chance;
 	        this.commands = commands;
 	    }
 	}

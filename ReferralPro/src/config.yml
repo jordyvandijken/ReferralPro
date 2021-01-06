@@ -83,9 +83,36 @@ mileStoneRewards:
       commands:
          - give <Player> gold_ingot 64
 
-      
-      
-         
+  
+########################################################
+#
+#   Chance Rewards
+#
+########################################################    
+# Do you want the chance rewards to be enabled
+enableChance: true
+     
+# These are rewards where a player has a chance to get
+# The chance total doesnt have to be 100 can be 1000 - 420
+# The order should not matter but he look nice       
+changeRewards:
+   1:
+      chance: 50
+      commands:
+         - give <Player> coal 64  
+   2:
+      chance: 30
+      commands:
+         - give <Player> iron_ingot 64   
+   3:
+      chance: 15
+      commands:
+         - give <Player> gold_ingot 64   
+   4:
+      chance: 5
+      commands:
+         - give <Player> diamond 64   
+                 
 ########################################################
 #
 #   General Options

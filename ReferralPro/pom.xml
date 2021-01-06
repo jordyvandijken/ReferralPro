@@ -3,15 +3,11 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>ReferralPro</groupId>
    <artifactId>ReferralPro</artifactId>
-   <version>1.1</version>
+   <version>1.2</version>
    <name>ReferralPro</name>
    <description>Refer an Friend</description>
    <repositories>
       <!-- This adds the Spigot Maven repository to the build -->
-      <repository>
-         <id>spigot-repo</id>
-         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-      </repository>
       <repository>
          <id>jitpack.io</id>
          <url>https://jitpack.io</url>
@@ -35,12 +31,6 @@
          <groupId>org.spigotmc</groupId>
          <artifactId>spigot-api</artifactId>
          <version>1.15.2-R0.1-SNAPSHOT</version>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.spigotmc</groupId>
-         <artifactId>spigot-api</artifactId>
-         <version>1.12.2-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
       </dependency>
       <dependency>
@@ -70,7 +60,7 @@
 	  <dependency>
   		 <groupId>sll.coding</groupId>
   		 <artifactId>SongodaAPI</artifactId>
-  		 <version>LATEST</version>
+  		 <version>LATEST-STABLE</version>
 	  </dependency>
    </dependencies>
    <build>

@@ -68,12 +68,12 @@ public class UICodeConfirm {
 			
 			if (ReferralPro.Instance.db.PlayerReferrald(refUUID)) {
 				// Check if the player try to refer each other
-				if (!ReferralPro.Instance.getConfig().getBoolean("CanReferEachOther") 
-				  && ReferralPro.Instance.db.PlayerReferraldBy(playerUUID).equalsIgnoreCase(refUUID)) {	
-					
-					
-			        p.openInventory(UIReferral.GUI(p));
-		            return;
+				if (!ReferralPro.Instance.getConfig().getBoolean("canReferEachOther")) {
+				    String tRef = ReferralPro.Instance.db.PlayerReferraldBy(playerUUID);
+		    		if (tRef != null && tRef.equalsIgnoreCase(refUUID)) {
+		    			p.openInventory(UIReferral.GUI(p));
+			            return;
+					}	  
 				}
 			}
 			
