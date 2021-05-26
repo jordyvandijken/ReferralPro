@@ -18,6 +18,7 @@ requestTable: requestTable
 blockedTable: blockedTable
 rewardsTable: rewardsTable
 playerCodeTable: playerCodeTable
+databaseParameters: "?autoReconnect=true"
 
 
 

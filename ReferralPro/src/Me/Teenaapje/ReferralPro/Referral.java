@@ -1,5 +1,6 @@
 package Me.Teenaapje.ReferralPro;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
@@ -43,16 +45,7 @@ public class Referral implements CommandExecutor, TabExecutor {
         	return false;
         }
         
-       
-        Player p = (Player)sender;
-        
-    	// check if is player
-		if (!(sender instanceof Player)) {
-			sender.sendMessage(ChatColor.RED + "Only players can use this command.");
-			return false;
-		}
-	
-		Commands chosenCommand = null;
+    	Commands chosenCommand = null;
 		
 		if (args.length > 0) {
 			for (Commands  command : Commands.values()) { 
@@ -61,6 +54,21 @@ public class Referral implements CommandExecutor, TabExecutor {
 				}
 		    } 
 		}
+		
+		if (chosenCommand == Commands.Trigger) {
+			TriggerCommands(sender, args);
+			return false;
+		}
+        
+		Player p = (Player)sender;
+        
+    	// check if is player
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.RED + "Only players can use this command.");
+			return false;
+		}
+	
+		
 
 		
 		if (chosenCommand != null) {
@@ -127,9 +135,20 @@ public class Referral implements CommandExecutor, TabExecutor {
 				break;
 		
 			case Code:
+				// get or use code
 				if (args.length == 1) {
+					// ReferralPro.GetRefCode
+					if (!ReferralPro.perms.has(p, "ReferralPro.Admin") && !ReferralPro.perms.has(p, "ReferralPro.GetRefCode")) {
+						p.sendMessage("No permision");
+						return false;
+					}
 					p.sendMessage(Utils.FormatString(p, ConfigManager.instance.showCode));
 				} else {
+					// ReferralPro.UseRefCode
+					if (!ReferralPro.perms.has(p, "ReferralPro.Admin") && !ReferralPro.perms.has(p, "ReferralPro.UseRefCode")) {
+						p.sendMessage("No permision");
+						return false;
+					}
 					//UIAnvilCode.GUI(p, args[1]);
 					ReferPlayerCode(p, args[1]);
 				}
@@ -148,7 +167,79 @@ public class Referral implements CommandExecutor, TabExecutor {
 					//essentials_nickname
 				}				
 				break;
-		
+			case GiveReward:
+				if (!ReferralPro.perms.has(p, "ReferralPro.Admin") && !ReferralPro.perms.has(p, "ReferralPro.GiveReward")) {
+					p.sendMessage("No permision");
+					return false;
+				}
+				
+				if (args.length >= 2) {
+					// check which trigger
+					if (args[1].equalsIgnoreCase(GiveRewardCommands.Reward.toString())) {
+						if (args.length == 4) {
+							if (args[2].equalsIgnoreCase("refer")) {
+								String uUID = ReferralPro.Instance.db.GetPlayersUUID(args[3]);
+								if (uUID != null) {
+									ReferralPro.Instance.db.CreateReward(new Reward(-999, uUID, p.getUniqueId().toString(), 1));
+									p.sendMessage(Utils.FormatString(p, "Reward given"));
+								} else {
+									p.sendMessage(Utils.FormatString(p, "Player not found"));
+								}
+								
+							// The referred
+							} else if (args[2].equalsIgnoreCase("referred")) {
+								String uUID = ReferralPro.Instance.db.GetPlayersUUID(args[3]);
+								if (uUID != null) {
+									ReferralPro.Instance.db.CreateReward(new Reward(-999, uUID, p.getUniqueId().toString(), 0));
+									p.sendMessage(Utils.FormatString(p, "Reward given"));
+								} else {
+									p.sendMessage(Utils.FormatString(p, "Player not found"));
+								}
+							} else {
+								p.sendMessage(Utils.FormatString(p, "Incorrect use: /Ref Trigger Reward Refer/Referred <player>"));
+							}
+						} else {
+							p.sendMessage(Utils.FormatString(p, "Incorrect use: /Ref Trigger Reward Refer/Referred <player>"));
+						}
+					} else if (args[1].equalsIgnoreCase(GiveRewardCommands.MilestoneReward.toString())) {
+						if (args.length == 4) {
+							Player playerReward = Bukkit.getPlayer(args[2]);
+							if (playerReward != null) {
+								try {
+									int rank = Integer.parseInt(args[3]);
+									ReferralPro.Instance.rewards.GiveMileStoneRewards(p, rank);
+									p.sendMessage(Utils.FormatString(p, "Milestone reward given"));
+								} catch (Exception e) {
+									// TODO: handle exception
+									// or dont
+									p.sendMessage(Utils.FormatString(p, "Failt to cast: " + args[3]));
+								}
+							} else {
+								p.sendMessage(Utils.FormatString(p, "This player needs to be online in order to give the reward"));
+							}
+						}
+						else {
+							p.sendMessage(Utils.FormatString(p, "Incorrect use: /Ref Trigger MilestoneReward <player> <Milestone - min>"));
+						}
+					} else if (args[1].equalsIgnoreCase(GiveRewardCommands.RandomReward.toString())) {
+						if (args.length == 3) {
+							Player playerReward = Bukkit.getPlayer(args[2]);
+							if (playerReward != null) {
+								ReferralPro.Instance.rewards.GiveRandomRewards(p);
+								p.sendMessage(Utils.FormatString(p, "Random reward given"));
+							} else {
+								p.sendMessage(Utils.FormatString(p, "This player needs to be online in order to give the reward"));
+							}
+						} else {
+							p.sendMessage(Utils.FormatString(p, "Incorrect use: /Ref Trigger RandomReward <player>"));
+						}
+					}
+				}
+				break;
+			case Trigger:
+				
+			
+				break;
 			default:
 				
 				break;
@@ -431,6 +522,47 @@ public class Referral implements CommandExecutor, TabExecutor {
         return;		
 	}
 	
+	private void TriggerCommands (CommandSender sender, String[] args) {  
+		// /ref Trigger <Player> <Commands> <Commands> <Commands> <Commands>
+		if (args.length < 3) {
+			sender.sendMessage("incorrect use /ref Trigger <player> <Command>");
+			return;
+		}
+		
+		String playerUUIDLookup = ReferralPro.Instance.db.GetPlayersUUID(args[1]);
+		if (playerUUIDLookup == null) {
+			return;
+		}
+		
+		String playerUUID = ReferralPro.Instance.db.PlayerReferraldBy(playerUUIDLookup); 
+		if (playerUUID == null) {
+			return;
+		}
+		
+		String playerName = ReferralPro.Instance.db.GetPlayersName(playerUUID); 
+		if (playerName == null) {
+			return;
+		}
+		
+		String strCommand = "";
+		
+		for (int i = 2; i < args.length; i++) {
+			if (i >= 3) {
+				strCommand += " ";	
+			}
+			strCommand += args[i];
+		}
+		
+		sender.sendMessage("player: " + playerName);
+		
+		strCommand = strCommand.replace("%player%", playerName);
+		
+		sender.sendMessage("Command: " + strCommand);
+		
+		ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+		Bukkit.dispatchCommand(console, strCommand);
+	}
+	
 	public enum Commands {
 		Invites,
 		Rewards,
@@ -439,7 +571,15 @@ public class Referral implements CommandExecutor, TabExecutor {
 		Profile,
 		Reload,
 		Code,
-		Top
+		Top,
+		Trigger,
+		GiveReward
+	}
+	
+	public enum GiveRewardCommands {
+		Reward,
+		MilestoneReward,
+		RandomReward
 	}
 	
 	@Override
@@ -455,35 +595,79 @@ public class Referral implements CommandExecutor, TabExecutor {
     	if (args.length <= 1) {
     		for (Commands  command : Commands.values()) { 
         		if (command.toString().toLowerCase().contains(args[0].toLowerCase()) || args.length == 0) {
-        			if ((command == Commands.Admin || command == Commands.Reload) && !ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
+        			if ((command == Commands.Admin || command == Commands.Reload || command == Commands.Trigger || command == Commands.GiveReward) && !ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
 						continue;
 					}
         			
                 	availableCommands.add(command.toString());
     			}	
             }
+		} else {
+	    	// Command profile
+	    	if (args[0].equalsIgnoreCase(Commands.Profile.toString()) && args.length == 2) {
+	    		for (Player p : ReferralPro.Instance.getServer().getOnlinePlayers()) {
+	        		if (p.getName().toString().toLowerCase().contains(args[1].toLowerCase())) {
+	        			availableCommands.add(p.getName());
+	        		}
+				}
+			}
+	    	
+	    	// Command GiveRewardCommands
+	    	if (args[0].equalsIgnoreCase(Commands.GiveReward.toString()) && args.length >= 2 && ReferralPro.perms.has(sender, "ReferralPro.Admin")) {
+	    		// show triggers
+	    		if (args.length == 2) {
+					for (GiveRewardCommands trigger : GiveRewardCommands.values()) { 
+		        		if (trigger.toString().toLowerCase().contains(args[1].toLowerCase())) {
+		                	availableCommands.add(trigger.toString());
+		    			}	
+		            }
+				} 
+	    		// default reward
+	    		else if(args[1].equalsIgnoreCase(GiveRewardCommands.Reward.toString()) && (args.length >= 3 && args.length <= 4)) {
+	    			if (args.length == 3) {
+	    				availableCommands.add("Refer");
+		    			availableCommands.add("Referred");
+		    		} else if (args.length == 4){
+			    		availableCommands = AddOnlinePlayers(availableCommands);
+		    		} else{
+						//availableCommands = ReferralPro.Instance.rewards.getAvailableRewards();
+					}
+	    		} 
+				// 
+				else if(args[1].equalsIgnoreCase(GiveRewardCommands.MilestoneReward.toString()) && (args.length == 3 || args.length == 4)) {
+					if (args.length == 3) {
+			    		availableCommands = AddOnlinePlayers(availableCommands, args[2]);
+					} else {
+						availableCommands = ReferralPro.Instance.rewards.getAvailableMilestoneRewards();
+					}
+	    		} else {
+		    		availableCommands = AddOnlinePlayers(availableCommands);
+	    		}
+			}
+	    	
 		}
     	
-    	if (args[0].equalsIgnoreCase(Commands.Profile.toString()) && args.length == 2) {
-    		for (Player p : ReferralPro.Instance.getServer().getOnlinePlayers()) {
-        		if (p.getName().toString().toLowerCase().contains(args[1].toLowerCase())) {
-        			availableCommands.add(p.getName());
-        		}
-			}
-		}
     	
     	if (availableCommands.isEmpty()) {
-    		for (Player p : ReferralPro.Instance.getServer().getOnlinePlayers()) {
-        		if (p.getName().toString().toLowerCase().contains(args[0].toLowerCase())) {
-        			availableCommands.add(p.getName());
-        		}
-			}
+    		availableCommands = AddOnlinePlayers(availableCommands, args[0]);
 		}
-    	
-    	
+    	    	
     	return availableCommands;
-
-
-        //return null;
     }
+	
+	public ArrayList<String> AddOnlinePlayers(ArrayList<String> currentlist, String arg) {
+		for (Player p : ReferralPro.Instance.getServer().getOnlinePlayers()) {
+    		if (p.getName().toString().toLowerCase().contains(arg.toLowerCase())) {
+        		currentlist.add(p.getName());
+    		}
+		}
+		return currentlist;
+	}
+	
+	public ArrayList<String> AddOnlinePlayers(ArrayList<String> currentlist) {
+		for (Player p : ReferralPro.Instance.getServer().getOnlinePlayers()) {
+        		currentlist.add(p.getName());
+		}
+		return currentlist;
+	}
 }

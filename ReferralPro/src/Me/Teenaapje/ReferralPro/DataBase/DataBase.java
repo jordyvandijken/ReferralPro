@@ -22,7 +22,7 @@ import Me.Teenaapje.ReferralPro.Listener.Reward;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class DataBase {
-	public String host, database, username, password, mainTable, requestTable, blockedTable, rewardsTable, playerCodeTable;
+	public String host, database, username, password, mainTable, requestTable, blockedTable, rewardsTable, playerCodeTable, parameters, dboption;
 	public int port;
 	private Connection connection;
 	
@@ -39,13 +39,16 @@ public class DataBase {
 		blockedTable = referralPro.getConfig().getString("blockedTable");
 		rewardsTable = referralPro.getConfig().getString("rewardsTable");
 		playerCodeTable = referralPro.getConfig().getString("playerCodeTable");
-		
-		if (referralPro.getConfig().getString("db").compareTo("local") == 0) {
+		parameters = referralPro.getConfig().getString("databaseParameters");
+		dboption = referralPro.getConfig().getString("db");
+
+		if (dboption.compareTo("local") == 0) {
 			sqlLiteSetup();
-		} else if (referralPro.getConfig().getString("db").compareTo("mysql") == 0) {
+		} else if (dboption.compareTo("mysql") == 0) {
 			mysqlSetup();
 		} else {
 			referralPro.getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + referralPro.getDescription().getName() + " Incorrect selected database!");
+			return;
 		}
 		
 		createReferredDB();
@@ -103,11 +106,12 @@ public class DataBase {
 					return;
 				}
 
-				Class.forName("com.mysql.jdbc.Driver");
+				Class.forName("com.mysql.cj.jdbc.Driver");
 				setConnection(DriverManager.getConnection("jdbc:mysql://" + 
 															this.host + ":" + 
 															this.port + "/" + 
-															this.database, 
+															this.database +
+															this.parameters, 
 															this.username, 
 															this.password));
 
@@ -282,8 +286,15 @@ public class DataBase {
 			//
 
 
-			PreparedStatement statement = getConnection().prepareStatement("SELECT U.UUID, U.NAME, (SELECT count(*)from [" + mainTable + "] US WHERE US.REFERRED=U.UUID) as REFTOTAL "
-					+ " FROM " + mainTable + " U ORDER BY REFTOTAL DESC, NAME ASC LIMIT ?, ?");
+			PreparedStatement statement;
+			
+			if (referralPro.getConfig().getString("db").compareTo("local") == 0) {
+				statement = getConnection().prepareStatement("SELECT U.UUID, U.NAME, (SELECT count(*)from [" + mainTable + "] US WHERE US.REFERRED=U.UUID) as REFTOTAL "
+						+ " FROM " + mainTable + " U ORDER BY REFTOTAL DESC, NAME ASC LIMIT ?, ?");
+			} else {
+				statement = getConnection().prepareStatement("SELECT U.UUID, U.NAME, (SELECT count(*)from " + mainTable + " US WHERE US.REFERRED=U.UUID) as REFTOTAL "
+						+ " FROM " + mainTable + " U ORDER BY REFTOTAL DESC, NAME ASC LIMIT ?, ?");
+			}
 				
 			statement.setInt(1, min);
 			statement.setInt(2, max);

@@ -4,7 +4,7 @@
   <groupId>ReferralPro</groupId>
   <artifactId>ReferralPro</artifactId>
   <name>ReferralPro</name>
-  <version>1.2</version>
+  <version>1.4.7</version>
   <description>Refer an Friend</description>
   <build>
     <sourceDirectory>src</sourceDirectory>

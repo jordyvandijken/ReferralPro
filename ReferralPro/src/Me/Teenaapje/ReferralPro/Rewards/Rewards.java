@@ -118,6 +118,16 @@ public class Rewards {
 	    }
 	}
 	
+	public ArrayList<String> getAvailableRewards () {
+    	ArrayList<String> availableCommands = new ArrayList<String>();
+
+    	for (RankRewards rankRewards : senderRewards) {
+    		availableCommands.add(rankRewards.rank);
+		}	
+    	
+    	return availableCommands;
+	}
+
 	
 	//////////////////////////////////
 	//
@@ -137,6 +147,17 @@ public class Rewards {
 				
 				referralPro.db.LastRewardUpdate(p, mileRewards.min);
 				
+				return;
+			}
+		}
+	}
+	
+	public void GiveMileStoneRewards(Player p, int rankReward) {		
+		for (MileStoneRewards mileRewards : mileStoneRewards) {
+			if (rankReward == mileRewards.min) {
+				// use commands
+				ReferralPro.Instance.UseCommand(mileRewards.commands, p);
+							
 				return;
 			}
 		}
@@ -174,6 +195,16 @@ public class Rewards {
 
 		
 		return 0;
+	}
+	
+	public ArrayList<String> getAvailableMilestoneRewards () {
+    	ArrayList<String> availableCommands = new ArrayList<String>();
+
+    	for (MileStoneRewards mileRewards : mileStoneRewards) {
+    		availableCommands.add(Integer.toString(mileRewards.min));
+		}
+    	
+    	return availableCommands;
 	}
 	
 	public class MileStoneRewards {

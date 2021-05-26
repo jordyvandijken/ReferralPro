@@ -153,6 +153,38 @@ public class Placeholders extends PlaceholderExpansion {
         			
             return Integer.toString(pos);
         }
+        
+        // %referralpro_topplayer-#%
+        if(identifier.contains("topplayer")){
+        	// try to get position
+        	try {
+            	String a = identifier.split("-")[1];
+            	
+            	int place = Integer.parseInt(a);
+            	
+            	return ReferralPro.Instance.leaderboard.GetLeaderboard().get(0).playerName;
+            	//return ReferralPro.Instance.leaderboard.GetLeaderboard().get(place-1).playerName;
+			} catch (Exception e) {
+		        return identifier;
+			}
+        }
+        player.sendMessage(identifier);
+        player.sendMessage(Boolean.toString(identifier.contains("topplayer")));
+        
+        // %referralpro_topplayer-#%
+        if(identifier.contains("topreferrals")){
+        	// try to get position
+        	try {
+            	String a = identifier.split("-")[1];
+            	
+            	int place = Integer.parseInt(a);
+            	
+            	return Integer.toString(ReferralPro.Instance.leaderboard.GetLeaderboard().get(0).totalRefers);
+            	//return Integer.toString(ReferralPro.Instance.leaderboard.GetLeaderboard().get(place-1).totalRefers);
+			} catch (Exception e) {
+		        return identifier;
+			}
+        }
  
         // We return null if an invalid placeholder (f.e. %someplugin_placeholder3%) 
         // was provided

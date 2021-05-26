@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>ReferralPro</groupId>
    <artifactId>ReferralPro</artifactId>
-   <version>1.2</version>
+   <version>1.4.7</version>
    <name>ReferralPro</name>
    <description>Refer an Friend</description>
    <repositories>
@@ -33,30 +33,35 @@
          <version>1.15.2-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
       </dependency>
+      <!-- vault -->
       <dependency>
          <groupId>com.github.MilkBowl</groupId>
          <artifactId>VaultAPI</artifactId>
          <version>1.7</version>
          <scope>provided</scope>
       </dependency>
+      <!-- Anvil UI -->
       <dependency>
          <groupId>com.github.WesJD</groupId>
          <artifactId>AnvilGUI</artifactId>
          <version>-SNAPSHOT</version>
          <scope>compile</scope>
       </dependency>
+      <!-- placeHolderAPi -->
       <dependency>
          <groupId>me.clip</groupId>
          <artifactId>placeholderapi</artifactId>
          <version>2.10.6</version>
          <scope>provided</scope>
       </dependency>
+      <!-- Bstat -->
       <dependency>
 	     <groupId>org.bstats</groupId>
 	     <artifactId>bstats-bukkit</artifactId>
 	     <version>1.7</version>
 	     <scope>compile</scope>
 	  </dependency>
+	  <!-- Songoda Api -->
 	  <dependency>
   		 <groupId>sll.coding</groupId>
   		 <artifactId>SongodaAPI</artifactId>

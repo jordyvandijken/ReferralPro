@@ -51,9 +51,12 @@ public class UIReferral {
 				   Utils.FormatString(null, ConfigManager.instance.uIRefCodeExpl));
 		
 		// the referral code
-		if (!ReferralPro.Instance.db.PlayerReferrald(p.getUniqueId().toString())) {
-			Utils.CreateButton(toReturn, element.GetButton("refercode"), Utils.FormatString(p, ConfigManager.instance.uIRefButtonRefCode));
+		if (ReferralPro.perms.has(p, "ReferralPro.Admin") || ReferralPro.perms.has(p, "ReferralPro.UseRefCode")) {
+			if (!ReferralPro.Instance.db.PlayerReferrald(p.getUniqueId().toString())) {
+				Utils.CreateButton(toReturn, element.GetButton("refercode"), Utils.FormatString(p, ConfigManager.instance.uIRefButtonRefCode));
+			}
 		}
+		
 		
 		
 		if (ReferralPro.perms.has(p, "ReferralPro.Admin")) {
