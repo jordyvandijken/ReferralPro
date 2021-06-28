@@ -35,7 +35,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.permission.Permission;
-import sll.coding.songodaapi.Resource;
+//import sll.coding.songodaapi.Resource;
 
 public class ReferralPro extends JavaPlugin{
 	
@@ -94,7 +94,7 @@ public class ReferralPro extends JavaPlugin{
 		// add the custom chart
 		metrics.addCustomChart(new Metrics.SingleLineChart("players_referred", callable));
 
-		
+		/*
 		String lastVersion = getDescription().getVersion();
 		String newVersion = null;
 		try {

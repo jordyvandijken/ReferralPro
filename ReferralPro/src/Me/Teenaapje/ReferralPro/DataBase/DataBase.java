@@ -106,7 +106,11 @@ public class DataBase {
 					return;
 				}
 
-				Class.forName("com.mysql.cj.jdbc.Driver");
+				try {
+					Class.forName("com.mysql.cj.jdbc.Driver");
+		        } catch (Exception ex) {
+					Class.forName("com.mysql.jdbc.driver");
+		        }
 				setConnection(DriverManager.getConnection("jdbc:mysql://" + 
 															this.host + ":" + 
 															this.port + "/" + 
