@@ -47,6 +47,8 @@ public class ConfigManager {
 	public int leaderboardShowTotal;
 	
 	public String fillerName;
+	public boolean giveRewardInstant;
+
 	
 	//########################################################
 	//#
@@ -179,6 +181,7 @@ public class ConfigManager {
 		leaderboardShowTotal = config.getInt("leaderboardShowTotal");
 		
 		fillerName = config.getString("fillerName");
+		giveRewardInstant = config.getBoolean("giveRewardInstant");
 		
 		//########################################################
 		//#

@@ -27,7 +27,8 @@ public class UIElementManager {
 		// loop ui's
 		for (String ui : file.getConfigurationSection("ui").getKeys(false)) {
 			int rows = file.getInt("ui." + ui + ".rows");
-			
+			boolean enableUI = file.getBoolean("ui." + ui + ".enable");
+
 			// 
 			HashMap<String, Button> buttons = new HashMap<String, Button>();
 			
@@ -64,7 +65,7 @@ public class UIElementManager {
 				}	
 			}//*/
 			
-			UIElement element = new UIElement(rows, buttons, fillers, true);
+			UIElement element = new UIElement(rows, buttons, fillers, enableUI);
 			
 			this.ui.put(ui, element);
 		}//*/

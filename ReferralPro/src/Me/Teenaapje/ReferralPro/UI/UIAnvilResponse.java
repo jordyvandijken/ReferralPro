@@ -37,7 +37,11 @@ public class UIAnvilResponse {
 		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
 	}
 	
-	public static Inventory GUI (String anvilMessage, int anvilCase) {
+	public static Inventory GUI (Player p, String anvilMessage, int anvilCase) {
+		if (!element.enable) {
+			return UIReferral.GUI(p); 
+		}
+		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 

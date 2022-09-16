@@ -38,7 +38,11 @@ public class UICodeConfirm {
 
 	}
 	
-	public static Inventory GUI (String playerSender) {
+	public static Inventory GUI (Player p, String playerSender) {
+		if (!element.enable) {
+			return UIReferral.GUI(p); 
+		}
+		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);
 		toReturn.setContents(inv.getContents());
 
