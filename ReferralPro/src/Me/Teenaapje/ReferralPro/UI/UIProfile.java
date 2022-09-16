@@ -33,12 +33,10 @@ public class UIProfile {
 		
 		inv = Bukkit.createInventory(null, invTotal); 
 
-		
 		Utils.CreateFillers(inv, element.fillers);
 
 		Utils.CreateButton(inv, element.GetButton("back"), Utils.FormatString(null, ConfigManager.instance.uIButtonGoBack));
 		Utils.CreateButton(inv, element.GetButton("close"), Utils.FormatString(null, ConfigManager.instance.uIButtonClose));
-		
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -73,12 +71,12 @@ public class UIProfile {
 		if (playerExists) {
 			// the player
 			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.instance.uIProfiles),
-																 											Utils.FormatString(op, ConfigManager.instance.uIProfileIsRefed), 
+																 											//Utils.FormatString(op, ConfigManager.instance.uIProfileIsRefed), 
 																 											Utils.FormatString(op, ConfigManager.instance.uIProfileRefedBy));
 		} else {
 			// the player
-			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.instance.uIProfiles), Utils.FormatString(null, ConfigManager.instance.uIProfileNonExist));
-
+			Utils.CreatePlayerHead(toReturn, element.GetButton("playerhead").position, pProfile, pProfile + Utils.FormatString(op, ConfigManager.instance.uIProfiles), 
+																											Utils.FormatString(null, ConfigManager.instance.uIProfileNonExist));
 		}
 
 		

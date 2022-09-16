@@ -3,11 +3,9 @@ package Me.Teenaapje.ReferralPro.Rewards;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import Me.Teenaapje.ReferralPro.ReferralPro;
-import Me.Teenaapje.ReferralPro.Utils.Utils;
 
 public class Rewards {
 	

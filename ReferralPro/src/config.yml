@@ -129,7 +129,7 @@ tryRefEachOther: "&4You can't refer each other."
 # The option to refer older players
 # Can the player refer someone who has joined first
 # true to allow it - false to restrict it
-canReferOlderPlayer: true
+canReferOlderPlayer: false
 # The message when true for sender
 tryRefOlderPlayer: "&4You can't refer an older player!"
 

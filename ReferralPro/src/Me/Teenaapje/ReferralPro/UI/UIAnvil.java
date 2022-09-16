@@ -54,7 +54,7 @@ public class UIAnvil {
 			
 			
 			// check if its not the same player
-			if (senderString.compareTo(receiverString) == 0) {
+			if (receiverString == null || senderString.compareTo(receiverString) == 0) {
 		        player.openInventory(UIAnvilResponse.GUI(Utils.FormatString(player, ConfigManager.instance.uIAnvilCantRefSelf), 1));
 	            return AnvilGUI.Response.text("");
 			}

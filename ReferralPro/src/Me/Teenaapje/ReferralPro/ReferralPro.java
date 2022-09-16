@@ -1,11 +1,11 @@
 package Me.Teenaapje.ReferralPro;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.bstats.bukkit.Metrics;
+//import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -29,7 +29,6 @@ import Me.Teenaapje.ReferralPro.UI.UIReferral;
 import Me.Teenaapje.ReferralPro.UI.UIReferralAccept;
 import Me.Teenaapje.ReferralPro.UI.UIRewards;
 import Me.Teenaapje.ReferralPro.UIElements.UIElementManager;
-import Me.Teenaapje.ReferralPro.Utils.ServerVersion;
 import Me.Teenaapje.ReferralPro.Utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -92,7 +91,7 @@ public class ReferralPro extends JavaPlugin{
 		};
 
 		// add the custom chart
-		metrics.addCustomChart(new Metrics.SingleLineChart("players_referred", callable));
+		metrics.addCustomChart(new Metrics.SingleLineChart("players_referred", callable));//*/
 
 		/*
 		String lastVersion = getDescription().getVersion();

@@ -68,7 +68,7 @@ public class UIAnvilCode {
 			}
 
 			// Check if the player try to refer an older player
-			if (!ReferralPro.Instance.getConfig().getBoolean("canReferOlderPlayer") && p.getFirstPlayed() > op.getFirstPlayed()) {			
+			if (!ReferralPro.Instance.getConfig().getBoolean("canReferOlderPlayer") && op.getFirstPlayed() > p.getFirstPlayed()) {			
 		        //player.openInventory(UIAnvilResponse.GUI("You can't refer an older player!", 1));
 	            return AnvilGUI.Response.text(Utils.FormatString(p, ConfigManager.instance.tryRefOlderPlayer));
 			}
@@ -76,6 +76,7 @@ public class UIAnvilCode {
 			// Check if server uses time limit if so did the player play enough
 			int pTime = ReferralPro.Instance.getConfig().getInt("minPlayTime");
 	        if (pTime != -1 && ((p.getLastPlayed() - p.getFirstPlayed()) / 60000) < pTime) {
+	        	Utils.SendMessage(null, null, Long. toString(p.getLastPlayed()));
 		        //player.openInventory(UIAnvilResponse.GUI("You haven't played enough to use a refer", 1));
 	            return AnvilGUI.Response.text(Utils.FormatString(p, ConfigManager.instance.notEnoughPlayTimeCode));
 			}

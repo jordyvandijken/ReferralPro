@@ -1055,7 +1055,7 @@ public class DataBase {
 	
 	public boolean RemoveAllRewards() {
 		try {
-			PreparedStatement statement = getConnection().prepareStatement("delete from " + rewardsTable);
+			PreparedStatement statement = getConnection().prepareStatement("delete from " + rewardsTable + "; VACUUM;");
 					
 			statement.executeUpdate();
 			

@@ -37,99 +37,77 @@ public class InventoryClickListener implements Listener {
 		
 		
 		String title = e.getView().getTitle();
+
+		if (title.equals(UIReferral.invName) 		||
+			title.equals(UIReferInvites.invName) 	|| 
+			title.equals(UIReferralAccept.invName) 	|| 
+			title.equals(UIAnvilResponse.invName) 	||
+			title.equals(UIProfile.invName) 		||
+			title.equals(UIBlocked.invName)			||
+			title.equals(UIRewards.invName) 		||
+			title.equals(UICodeConfirm.invName) 	||
+			title.equals(UIAdmin.invName)) {
 		
-		// The Main UI
-		if (title.equals(UIReferral.invName)) {
 			e.setCancelled(true);
 
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			if (e.getCurrentItem() == null || e.getInventory() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
 				return;
 			}
-
-			UIReferral.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the referral invites are
-		if (title.equals(UIReferInvites.invName)) {
-			e.setCancelled(true);
 			
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
-				return;
-			}
-			UIReferInvites.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can accept the referral
-		if (title.equals(UIReferralAccept.invName)) {		
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
-				return;
-			}
-			UIReferralAccept.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player gets response from the anvil
-		if (title.equals(UIAnvilResponse.invName)) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
-				return;
-			}
-			UIAnvilResponse.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can see its profile
-		if (title.equals(UIProfile.invName)) {
-			e.setCancelled(true);
 			
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			// The Main UI
+			if (title.equals(UIReferral.invName)) {
+				UIReferral.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 				return;
 			}
-			UIProfile.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can see the blocked list
-		if (title.equals(UIBlocked.invName)) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			
+			// The UI where the referral invites are
+			if (title.equals(UIReferInvites.invName)) {
+				UIReferInvites.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 				return;
 			}
-			UIBlocked.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can see the Rewards
-		if (title.equals(UIRewards.invName)) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			
+			// The UI where the player can accept the referral
+			if (title.equals(UIReferralAccept.invName)) {		
+				UIReferralAccept.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 				return;
 			}
-			UIRewards.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can see the Code confirm
-		if (title.equals(UICodeConfirm.invName)) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			
+			// The UI where the player gets response from the anvil
+			if (title.equals(UIAnvilResponse.invName)) {
+				UIAnvilResponse.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 				return;
 			}
-			UICodeConfirm.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
-		}
-		
-		// The UI where the player can see the admin panel
-		if (title.equals(UIAdmin.invName)) {
-			e.setCancelled(true);
-			if (e.getCurrentItem() == null || e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
+			
+			// The UI where the player can see its profile
+			if (title.equals(UIProfile.invName)) {
+				UIProfile.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
 				return;
 			}
-			UIAdmin.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
-			return;
+			
+			// The UI where the player can see the blocked list
+			if (title.equals(UIBlocked.invName)) {
+				UIBlocked.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+				return;
+			}
+			
+			// The UI where the player can see the Rewards
+			if (title.equals(UIRewards.invName)) {
+				UIRewards.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+				return;
+			}
+			
+			// The UI where the player can see the Code confirm
+			if (title.equals(UICodeConfirm.invName)) {
+				UICodeConfirm.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+				return;
+			}
+			
+			// The UI where the player can see the admin panel
+			if (title.equals(UIAdmin.invName)) {
+				UIAdmin.Clicked((Player) e.getWhoClicked(), e.getSlot(), e.getCurrentItem(), e.getInventory());
+				return;
+			}
 		}
     }
 }

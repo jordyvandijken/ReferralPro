@@ -89,13 +89,16 @@ public class Utils {
     			
     	posString = Integer.toString(pos);
 		
+    	String playerCode = ReferralPro.Instance.db.GetPlayerCode(playerUUID);
+    	playerCode = playerCode == null ? "" : playerCode; 
+    	
 		return ChatColor.translateAlternateColorCodes('&', string.replace("%player_name%", playerName)
 				 .replace("%referralpro_total%", Integer.toString(plugin.db.GetReferrals(playerUUID)))
 				 .replace("%referralpro_referred%", Boolean.toString(plugin.db.PlayerReferrald(playerUUID)))
 				 .replace("%referralpro_refedby%", playerReferredBy)
 				 .replace("%referralpro_nextmilepoint%", Integer.toString(ReferralPro.Instance.rewards.NextMileRewardTotal(playerUUID)))
 				 .replace("%referralpro_nextmileneeded%", Integer.toString(ReferralPro.Instance.rewards.NextMileReward(playerUUID)))
-				 .replace("%referralpro_refcode%", ReferralPro.Instance.db.GetPlayerCode(playerUUID))
+				 .replace("%referralpro_refcode%", playerCode)
 				 .replace("%referralpro_boardposition%", posString));
 	}
 	
@@ -196,6 +199,7 @@ public class Utils {
 			ItemStack item;
 			
 			item = new ItemStack(Material.getMaterial(filler.fillerItem),  1);
+			
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName(ConfigManager.instance.fillerName);
 			item.setItemMeta(meta);
