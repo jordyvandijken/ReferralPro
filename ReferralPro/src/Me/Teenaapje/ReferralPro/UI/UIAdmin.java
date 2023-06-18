@@ -147,15 +147,18 @@ public class UIAdmin {
 	    	// Not able to reopen last inv - is wonky
 	    	// TODO need to try to open with a delay
 	    })
-	    .onComplete((player, text) -> {           //called when the inventory output slot is clicked
-	    	player.openInventory(UIProfile.GUI(player, text));
-
+	    .onClick((slot, stateSnapshot) -> {           //called when the inventory output slot is clicked
+	    	if (slot != AnvilGUI.Slot.OUTPUT) {
+	            return java.util.Collections.emptyList();
+	        } 
 	    	
-	    	return AnvilGUI.Response.text("");			
+	    	stateSnapshot.getPlayer().openInventory(UIProfile.GUI(stateSnapshot.getPlayer(), stateSnapshot.getText()));
+
+	    	return java.util.Arrays.asList(AnvilGUI.ResponseAction.replaceInputText(""));
 	    })
 	    //.preventClose()                           					//prevents the inventory from being closed
 	    .text("player")														//sets the text the GUI should start with
-	    .item(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
+	    .itemLeft(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
 	    //.item(new ItemStack(Material.PLAYER_HEAD)) 					//use a custom item for the first slot
 	    .title(Utils.FormatString(null, "Look up who?"))   											//set the title of the GUI (only works in 1.14+)
 	    .plugin(ReferralPro.Instance)             						//set the plugin instance

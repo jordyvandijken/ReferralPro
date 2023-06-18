@@ -22,7 +22,15 @@ public class UIAnvilCode {
 	    	// TODO need to try to open with a delay
 	    })
 	    //called when the inventory output slot is clicked
-	    .onComplete((player, code) -> { 
+	    .onClick((slot, stateSnapshot) -> { 
+	    	if (slot != AnvilGUI.Slot.OUTPUT) {
+	            return java.util.Collections.emptyList();
+	        } 
+	    	
+	    	Player player = stateSnapshot.getPlayer();
+	    	String code = stateSnapshot.getText();
+	    	
+	    	
 	    	// check length
 	    	if (code.length() < ConfigManager.instance.codeLength) {
 	            return AnvilGUI.Response.text(Utils.FormatString(p, ConfigManager.instance.uIAnvilCodeShort));
@@ -143,7 +151,7 @@ public class UIAnvilCode {
 	    })
 	    //.preventClose()                           					//prevents the inventory from being closed
 	    .text(pCode)														//sets the text the GUI should start with
-	    .item(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
+	    .itemLeft(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
 	    //.item(new ItemStack(Material.PLAYER_HEAD)) 					//use a custom item for the first slot
 	    .title(Utils.FormatString(p, ConfigManager.instance.uIAnvilCodeTitle))   											//set the title of the GUI (only works in 1.14+)
 	    .plugin(ReferralPro.Instance)             						//set the plugin instance

@@ -21,7 +21,15 @@ public class UIAnvil {
 	    	// Not able to reopen last inv - is wonky
 	    	// TODO need to try to open with a delay
 	    })
-	    .onComplete((player, text) -> {           //called when the inventory output slot is clicked
+	    .onClick((slot, stateSnapshot) -> {           //called when the inventory output slot is clicked
+	    	if (slot != AnvilGUI.Slot.OUTPUT) {
+	            return java.util.Collections.emptyList();
+	        } 
+	    	
+	    	Player player = stateSnapshot.getPlayer();
+	    	String text = stateSnapshot.getText();
+	    	
+	    	
 	    	// make uuid fromm string to get op
 	    	OfflinePlayer op = Bukkit.getOfflinePlayer(text);
 	    	
@@ -149,7 +157,7 @@ public class UIAnvil {
 	    })
 	    //.preventClose()                           					//prevents the inventory from being closed
 	    .text(name)														//sets the text the GUI should start with
-	    .item(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
+	    .itemLeft(Utils.CreateItem(null, "PLAYER_HEAD", 1, 0, " ", " ")) 	//use a custom item for the first slot
 	    //.item(new ItemStack(Material.PLAYER_HEAD)) 					//use a custom item for the first slot
 	    .title(Utils.FormatString(p, ConfigManager.instance.uIAnvilTitle))   											//set the title of the GUI (only works in 1.14+)
 	    .plugin(ReferralPro.Instance)             						//set the plugin instance
