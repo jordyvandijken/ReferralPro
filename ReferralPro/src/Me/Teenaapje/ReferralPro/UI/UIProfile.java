@@ -41,6 +41,9 @@ public class UIProfile {
 	
 	@SuppressWarnings("deprecation")
 	public static Inventory GUI (Player p, String pProfile) {
+		if (!element.enable) {
+			return UIReferral.GUI(p); 
+		}
 		//long startTime = System.nanoTime();
 		
 		Inventory toReturn = Bukkit.createInventory(null,  invTotal, invName);

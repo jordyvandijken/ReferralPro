@@ -358,7 +358,7 @@ public class Referral implements CommandExecutor, TabExecutor {
     
     	if (ConfigManager.instance.codeConfirmation) {
     		// Open confirmation pannel
-    	    player.openInventory(UICodeConfirm.GUI(ReferralPro.Instance.db.GetPlayersName(UUIDs)));
+    	    player.openInventory(UICodeConfirm.GUI(player, ReferralPro.Instance.db.GetPlayersName(UUIDs)));
 		} else {
 			// get the players UUID
 			String playerUUID = player.getUniqueId().toString();
@@ -366,12 +366,22 @@ public class Referral implements CommandExecutor, TabExecutor {
 			// Set the Referral
 			ReferralPro.Instance.db.ReferralPlayer(UUIDs, playerUUID);
 
-			// The player who got referred
-			ReferralPro.Instance.db.CreateReward(new Reward(-999, playerUUID, UUIDs, 0));
-			
-			// The player who referred someone
-			ReferralPro.Instance.db.CreateReward(new Reward(-999, UUIDs, playerUUID, 1));
+			OfflinePlayer otherp = Bukkit.getOfflinePlayer(UUID.fromString(UUIDs));
 
+			// Ch
+			if (ConfigManager.instance.giveRewardInstant && otherp.isOnline()) {
+				ReferralPro.Instance.rewards.GiveSenderReward(Bukkit.getPlayer(UUID.fromString(UUIDs)));
+			} else {
+				// The player who got referred
+				ReferralPro.Instance.db.CreateReward(new Reward(-999, playerUUID, UUIDs, 0));
+			}
+			
+			if (ConfigManager.instance.giveRewardInstant && player.isOnGround()) {
+				ReferralPro.Instance.rewards.GiveReceiverReward(player);
+			} else {
+				// The player who referred someone
+				ReferralPro.Instance.db.CreateReward(new Reward(-999, UUIDs, playerUUID, 1));
+			}
 			// Remove all open requests
 			ReferralPro.Instance.db.RemovePlayerRequests(playerUUID);
 			
